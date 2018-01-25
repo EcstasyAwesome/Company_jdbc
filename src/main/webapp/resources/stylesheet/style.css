@@ -1,0 +1,154 @@
+/*Основной шаблон*/
+
+*, *:before, *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+body {
+    background-color: rgba(255, 255, 255, 0);
+    font: 16px/1.42857 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 0;
+}
+
+header {
+    background-color: #000000;
+    color: #fff;
+    height: 220px;
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+    padding: 10px 10px;
+}
+
+header h1, header p {
+    display: block;
+    position: relative;
+    top: -150px;
+    left: 220px;
+}
+
+nav {
+    display: block;
+    background-color: #eee;
+    border: 1px solid #ddd;
+    height: 45px;
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+}
+
+main {
+    display: block;
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+}
+
+article {
+    float: left;
+    padding: 0 15px;
+    width: 75%;
+    overflow: hidden;
+}
+
+aside {
+    float: right;
+    padding-left: 5px;
+    padding-right: 5px;
+    width: 25%;
+    display: block;
+    overflow: hidden;
+}
+
+menu {
+    padding: 0px;
+}
+
+footer {
+    background-color: #373737;
+    clear: both;
+    color: #fff;
+    padding: 10px 0px;
+    line-height: 0.3;
+    text-align: center;
+    height: 45px;
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+}
+
+footer small, footer a {
+    color: #ffffff;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+/*Стили таблици добавления пользователей*/
+.add-table {
+    border: none;
+    padding: 3px;
+    font-weight: normal;
+    text-align: right;
+}
+
+/*Стили таблици изменения пользователей*/
+.update-table {
+    border: none;
+    padding: 3px;
+    font-weight: normal;
+    text-align: center;
+}
+
+/*Стили таблици поиска пользователей*/
+.search-table {
+    border: solid 1px black;
+    padding: 3px;
+    font-weight: normal;
+    text-align: center;
+}
+
+/*Стили таблици заголовков*/
+.table-top {
+    border: solid 1px black;
+    background: #eee;
+    font-weight: bold;
+}
+
+/*Стили таблици главного меню*/
+.nav-menu {
+    margin-top: -16px;
+    border: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#nav-menu-left {
+    text-align: left;
+    padding-left: 10px;
+}
+
+#nav-menu-right {
+    text-align: right;
+    padding-right: 10px;
+}
+
+/*Стиль кнопки выхода*/
+input.logout {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    text-decoration: none;
+    cursor: pointer;
+    font-size:16px;
+
+}

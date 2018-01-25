@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//com.company.util.HibernateUtil/com.company.util.HibernateUtil Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/lists?useSSL=false</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">root</property>
+        <property name="hibernate.connection.pool_size">2</property>
+        <property name="hibernate.current_session_context_class">thread</property>
+        <!--<property name="connection.datasource">java:comp/env/jdbc/mydb</property>-->
+        <property name="hibernate.show_sql">false</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <mapping class="com.company.pojo.User"/>
+        <mapping class="com.company.pojo.Position"/>
+    </session-factory>
+</hibernate-configuration>
