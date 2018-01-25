@@ -3,14 +3,13 @@
 <html lang="ru">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>404</title>
+    <title>ERROR 404</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/stylesheet/login.css">
 </head>
 <body>
 <div class="page">
     <div class="form">
-        <h1>404</h1>
-        <h2>Страница не существует</h2>
+        <img src="${pageContext.request.contextPath}/resources/img/404.png" width="300">
         <c:if test="${pageContext.session.getAttribute('previousPage')!=null}">
             <form action="${pageContext.session.getAttribute('previousPage')}">
                 <button>назад</button>
