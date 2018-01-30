@@ -35,21 +35,19 @@
 <main>
     <article>
         <form id="add" method="post">
-            <input type="hidden" name="method" value="PUT">
-            <input type="hidden" name="form" value="addPosition">
+            <input type="hidden" name="method" value="ADD">
             <h4>Заполните форму</h4>
             <table>
                 <tr>
                     <td class="add-table">Должность:</td>
-                    <td class="add-table"><input type="text" name="position_name" placeholder=" Введите название"
-                                                 size="18" required
-                                                 autofocus>
+                    <td class="add-table"><input type="text" name="position_name" placeholder="Введите название"
+                                                 size="18" required autofocus>
                     </td>
                 </tr>
                 <tr>
                     <td class="add-table">Доп. информация:</td>
-                    <td class="add-table"><textarea name="position_description" placeholder=" Ведите описание"
-                                                    rows="5"></textarea></td>
+                    <td class="add-table"><textarea name="position_description" placeholder="Ведите описание"
+                                                    rows="5" required></textarea></td>
                 </tr>
                 <tr>
                     <td class="add-table" colspan="2"><input type="submit" value="Добавить"></td>
@@ -60,8 +58,8 @@
     <aside>
         <h4>Меню:</h4>
         <menu>
-            <li><a href="/company/positions">Список</a></li>
-            <li><a href="/company/positions/add">Добавить</a></li>
+            <li><a href="/positions">Список</a></li>
+            <li><a href="/positions/add">Добавить</a></li>
         </menu>
     </aside>
 </main>

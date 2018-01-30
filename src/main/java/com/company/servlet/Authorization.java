@@ -50,11 +50,7 @@ public class Authorization extends HttpServlet {
                     register(req, resp);
                     break;
                 case "LOGOUT":
-                    HttpSession session = req.getSession(false);
-                    User user = (User) session.getAttribute("sessionUser");
-                    System.out.println(String.format("-> [%s] Выполнен выход: %s", getClass().getSimpleName(), user));
-                    session.invalidate();
-                    resp.sendRedirect(LinkManager.AUTHORIZATION_LINK);
+                    logout(req, resp);
                     break;
             }
         }
@@ -121,5 +117,13 @@ public class Authorization extends HttpServlet {
         } finally {
             session.close();
         }
+    }
+
+    private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute("sessionUser");
+        System.out.println(String.format("-> [%s] Выполнен выход: %s", getClass().getSimpleName(), user));
+        session.invalidate();
+        response.sendRedirect(LinkManager.AUTHORIZATION_LINK);
     }
 }

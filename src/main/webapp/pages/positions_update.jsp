@@ -35,52 +35,30 @@
 <main>
     <article>
         <br>
-        <c:if test="${button eq false}">
-            <form>
-                <input type="hidden" name="key" value="position_id">
-                <select name="value" required>
-                    <option selected disabled>Выберите ID</option>
-                    <c:if test="${positions!=null}">
-                        <c:forEach items="${positions}" var="position">
-                            <option value="${position.getId()}">ID${position.getId()} - ${position.getName()}</option>
-                        </c:forEach>
-                    </c:if>
-                    <c:if test="${positions.isEmpty()}">
-                        <option disabled>список пуст</option>
-                    </c:if>
-                </select>
-                <input type="submit" value="Редактировать">
-            </form>
-        </c:if>
-        <c:if test="${button}">
-            <form id="update" method="post">
-                <input type="hidden" name="method" value="PUT">
-                <input type="hidden" name="form" value="updatePosition">
-                <table>
-                    <tr>
-                        <td class="update-table">Должность</td>
-                        <td class="update-table">Доп. информация</td>
-                    </tr>
-                    <tr>
-                        <td class="update-table"><input type="text" size="15" value="${positions.get(0).getName()}"
-                                                        placeholder="Выберите ID"
-                                                        name="position_name" required></td>
-                        <td class="update-table"><textarea name="position_description" rows="5"
-                                                           required>${positions.get(0).getDescription()}</textarea></td>
-                    </tr>
-                </table>
-                <input type="hidden" name="position_id" value="${positions.get(0).getId()}">
-                <p><input type="submit" value="Сохранить изменения"></p>
-            </form>
-        </c:if>
+        <form id="update" method="post">
+            <input type="hidden" name="method" value="UPDATE">
+            <table>
+                <tr>
+                    <td class="update-table">Должность</td>
+                    <td class="update-table">Доп. информация</td>
+                </tr>
+                <tr>
+                    <td class="update-table"><input type="text" size="15" value="${position.getPositionName()}"
+                                                    name="position_name" required></td>
+                    <td class="update-table"><textarea name="position_description" rows="5"
+                                                       required>${position.getPositionDescription()}</textarea>
+                    </td>
+                </tr>
+            </table>
+            <input type="hidden" name="position_id" value="${position.getPositionId()}">
+            <p><input type="submit" value="Сохранить изменения"></p>
+        </form>
     </article>
     <aside>
         <h4>Меню:</h4>
         <menu>
-            <li><a href="/company/positions">Список</a></li>
-            <li><a href="/company/positions/add">Добавить</a></li>
-            <li><a href="/company/positions/update">Изменить</a></li>
-            <li><a href="/company/positions/delete">Удалить</a></li>
+            <li><a href="/positions">Список</a></li>
+            <li><a href="/positions/add">Добавить</a></li>
         </menu>
     </aside>
 </main>

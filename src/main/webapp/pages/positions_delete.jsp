@@ -37,28 +37,17 @@
         <br>
         <form method="post">
             <input type="hidden" name="method" value="DELETE">
-            <input type="hidden" name="form" value="deletePosition">
-            <select name="position_id" required>
-                <option selected disabled>Выберите ID</option>
-                <c:if test="${positions!=null}">
-                    <c:forEach items="${positions}" var="position">
-                        <option value="${position.getId()}">ID${position.getId()} - ${position.getName()}</option>
-                    </c:forEach>
-                </c:if>
-                <c:if test="${positions.isEmpty()}">
-                    <option disabled>список пуст</option>
-                </c:if>
-            </select>
+            <input type="hidden" name="position_id" value="${position.getPositionId()}">
+            <p>${position}</p>
+            <p>Удалить данную должность?</p>
             <input type="submit" value="Удалить">
         </form>
     </article>
     <aside>
         <h4>Меню:</h4>
         <menu>
-            <li><a href="/company/positions">Список</a></li>
-            <li><a href="/company/positions/add">Добавить</a></li>
-            <li><a href="/company/positions/update">Изменить</a></li>
-            <li><a href="/company/positions/delete">Удалить</a></li>
+            <li><a href="/positions">Список</a></li>
+            <li><a href="/positions/add">Добавить</a></li>
         </menu>
     </aside>
 </main>

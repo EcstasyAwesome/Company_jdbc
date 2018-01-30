@@ -1,6 +1,7 @@
 package com.company.servlet;
 
 import com.company.filter.Dispatcher;
+import com.company.pojo.Position;
 import com.company.util.HibernateUtil;
 import com.company.util.LinkManager;
 import org.hibernate.Session;
@@ -11,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(
@@ -22,119 +22,117 @@ import java.util.List;
 
 public class Positions extends HttpServlet {
 
-    private List getPositions(){
-        List result = new ArrayList<>();
-        Session session = HibernateUtil.getSession();
-        session.beginTransaction();
-        result = session.createQuery("FROM Position").getResultList();
-        session.getTransaction().commit();
-        session.close();
-        return result;
-    }
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String key = req.getParameter("key");
-        String value = req.getParameter("value");
-//        req.setAttribute("users", new UserDAO(connection).getUsersList(key, value));
-        req.setAttribute("positions", getPositions());
-        if (req.getQueryString() == null) {
-            req.setAttribute("button", false);
-        } else req.setAttribute("button", true);
+        if (req.getQueryString() != null) req.setAttribute("position", getPosition(req));
+        else req.setAttribute("positions", getPositions());
         req.getRequestDispatcher(LinkManager.getInstance().getList().get(Dispatcher.getLink()).getPath()).forward(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String method = req.getParameter("method");
         if (method != null) {
             switch (method) {
-                case "PUT":
-                    doPut(req, resp);
+                case "ADD":
+                    addPosition(req, resp);
+                    break;
+                case "UPDATE":
+                    updatePosition(req, resp);
                     break;
                 case "DELETE":
-                    doDelete(req, resp);
+                    deletePosition(req, resp);
                     break;
             }
         }
     }
 
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String form = req.getParameter("form");
-        int id;
-        String surname;
-        String firstName;
-        String secondName;
-        long phoneNumber;
-        int position;
-        String login;
-        String password;
-        boolean admin;
-        String name;
-        String description;
-        if (form != null) {
-            switch (form) {
-                case "addUser":
-                    surname = req.getParameter("user_surname");
-                    firstName = req.getParameter("user_firstName");
-                    secondName = req.getParameter("user_secondName");
-                    phoneNumber = Long.parseLong(req.getParameter("user_phoneNumber"));
-                    String positionId = req.getParameter("position_id");
-                    position = positionId != null ? Integer.parseInt(positionId) : 5;
-                    login = req.getParameter("user_login");
-                    password = req.getParameter("user_password");
-                    String isAdmin = req.getParameter("user_isAdmin");
-                    admin = isAdmin != null && Boolean.parseBoolean(isAdmin);
-//                    new UserDAO(connection).addUser(surname, firstName, secondName, phoneNumber, position, login, password, admin);
-                    resp.sendRedirect("/company/users");
-                    break;
-                case "updateUser":
-                    surname = req.getParameter("user_surname");
-                    firstName = req.getParameter("user_firstName");
-                    secondName = req.getParameter("user_secondName");
-                    phoneNumber = Long.parseLong(req.getParameter("user_phoneNumber"));
-                    position = Integer.parseInt(req.getParameter("position_id"));
-                    id = Integer.parseInt(req.getParameter("user_id"));
-                    password = req.getParameter("user_password");
-                    admin = Boolean.parseBoolean(req.getParameter("user_isAdmin"));
-//                    new UserDAO(connection).updateUser(id, surname, firstName, secondName, phoneNumber, position, password, admin);
-                    resp.sendRedirect("/company/users?key=user_id&value=" + id);
-                    break;
-                case "addPosition":
-                    name = req.getParameter("position_name");
-                    description = req.getParameter("position_description");
-//                    new PositionDAO(connection).addPosition(name, description);
-                    resp.sendRedirect("/company/positions");
-                    break;
-                case "updatePosition":
-                    id = Integer.parseInt(req.getParameter("position_id"));
-                    name = req.getParameter("position_name");
-                    description = req.getParameter("position_description");
-//                    new PositionDAO(connection).updatePosition(id, name, description);
-                    resp.sendRedirect("/company/positions");
-                    break;
-            }
+    private Position getPosition(HttpServletRequest request) {
+        Session session = HibernateUtil.getSession();
+        int id = Integer.parseInt(request.getParameter("id"));
+        Position result = null;
+        try {
+            session.beginTransaction();
+            result = session.get(Position.class, id);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session.getTransaction() != null) session.getTransaction().rollback();
+            System.err.println(e.getMessage());
+        } finally {
+            session.close();
         }
+        return result;
     }
 
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String form = req.getParameter("form");
-        int id;
-        if (form != null) {
-            switch (form) {
-                case "deleteUser":
-                    id = Integer.parseInt(req.getParameter("user_id"));
-//                    new UserDAO(connection).deleteUser(id);
-                    resp.sendRedirect("/company/users");
-                    break;
-                case "deletePosition":
-                    id = Integer.parseInt(req.getParameter("position_id"));
-//                    new PositionDAO(connection).deletePosition(id);
-                    resp.sendRedirect("/company/positions");
-                    break;
-            }
+    private List getPositions() {
+        Session session = HibernateUtil.getSession();
+        List result = null;
+        try {
+            session.beginTransaction();
+            result = session.createQuery("FROM Position").getResultList();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session.getTransaction() != null) session.getTransaction().rollback();
+            System.err.println(e.getMessage());
+        } finally {
+            session.close();
         }
+        return result;
+    }
+
+    private void addPosition(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String name = request.getParameter("position_name");
+        String description = request.getParameter("position_description");
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            Position position = new Position(name, description);
+            session.save(position);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session.getTransaction() != null) session.getTransaction().rollback();
+            System.err.println(e.getMessage());
+        } finally {
+            session.close();
+        }
+        response.sendRedirect(LinkManager.POSITIONS_LINK);
+    }
+
+    private void updatePosition(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int id = Integer.parseInt(request.getParameter("position_id"));
+        String name = request.getParameter("position_name");
+        String description = request.getParameter("position_description");
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            Position position = session.get(Position.class, id);
+            position.setPositionName(name);
+            position.setPositionDescription(description);
+            session.update(position);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session.getTransaction() != null) session.getTransaction().rollback();
+            System.err.println(e.getMessage());
+        } finally {
+            session.close();
+        }
+        response.sendRedirect(LinkManager.POSITIONS_LINK);
+    }
+
+    private void deletePosition(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int id = Integer.parseInt(request.getParameter("position_id"));
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            Position position = session.get(Position.class, id);
+            session.delete(position);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session.getTransaction() != null) session.getTransaction().rollback();
+            System.err.println(e.getMessage());
+        } finally {
+            session.close();
+        }
+        response.sendRedirect(LinkManager.POSITIONS_LINK);
     }
 }

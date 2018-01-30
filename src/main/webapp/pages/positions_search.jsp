@@ -48,14 +48,8 @@
                         <td class="search-table">${position.getPositionName()}</td>
                         <td class="search-table">${position.getPositionDescription()}</td>
                         <td class="search-table">
-                            <form id="update" method="post" action="/company/positions/update">
-                                <input type="hidden" name="method" value="UPDATE">
-                            </form>
-                            <form id="delete" method="post" action="/company/positions/delete">
-                                <input type="hidden" name="method" value="DELETE">
-                            </form>
-                            <input form="update" type="image" src="${pageContext.request.contextPath}/resources/img/edit_icon.png">
-                            <input form="delete" type="image" src="${pageContext.request.contextPath}/resources/img/delete_icon.png">
+                            <a href="/positions/update?id=${position.getPositionId()}"><img src="${pageContext.request.contextPath}/resources/img/edit_icon.png"></a>
+                            <a href="/positions/delete?id=${position.getPositionId()}"><img src="${pageContext.request.contextPath}/resources/img/delete_icon.png"></a>
                         </td>
                     </tr>
                 </c:forEach>
@@ -71,8 +65,8 @@
     <aside>
         <h4>Меню:</h4>
         <menu>
-            <li><a href="/company/positions">Список</a></li>
-            <li><a href="/company/positions/add">Добавить</a></li>
+            <li><a href="/positions">Список</a></li>
+            <li><a href="/positions/add">Добавить</a></li>
         </menu>
     </aside>
 </main>
