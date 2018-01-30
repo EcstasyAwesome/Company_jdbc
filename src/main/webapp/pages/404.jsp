@@ -15,7 +15,7 @@
                 <button>назад</button>
             </form>
         </c:if>
-        <form action="/company">
+        <form action="/">
             <button>главная</button>
         </form>
     </div>

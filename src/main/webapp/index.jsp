@@ -6,8 +6,7 @@
 </head>
 <body>
 <div align="center">
-    <h2>Hello world!<br>
-        <a href="/company">Company</a></h2>
+    <h2>Hello world!</h2>
 </div>
 </body>
 </html>

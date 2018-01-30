@@ -13,20 +13,20 @@
     <p>Поиск пользователей по параметрам</p>
 </header>
 <nav>
-    <form id="LOGOUT" method="post">
+    <form id="LOGOUT" action="/authorization" method="post">
         <input type="hidden" name="method" value="LOGOUT">
     </form>
     <table class="nav-menu">
         <tr>
             <td id="nav-menu-left">
-                <a href="/company">Главная</a> |
-                <a href="/company/positions">Должностя</a> |
-                <a href="/company/users">Пользователи</a> |
-                <a href="/company/about">О нас</a>
+                <a href="/">Главная</a> |
+                <a href="/positions">Должностя</a> |
+                <a href="/users">Пользователи</a> |
+                <a href="/about">О нас</a>
             </td>
             <td id="nav-menu-right">
-                <a href="/company/profile">Профиль</a> |
-                <a href="/company/edit">Редактировать</a> |
+                <a href="/profile">Профиль</a> |
+                <a href="/edit">Редактировать</a> |
                 <input type="submit" form="LOGOUT" class="logout" value="Выход">
             </td>
         </tr>
@@ -65,7 +65,7 @@
                     </tr>
                 </c:forEach>
             </c:if>
-            <c:if test="${users.isEmpty()}">
+            <c:if test="${users==null || users.isEmpty()}">
                 <tr>
                     <td class="search-table" colspan="6">Данные отсуствуют</td>
                 </tr>
@@ -97,7 +97,7 @@
             <select name="value" required>
                 <option selected disabled>Выберите должность</option>
                 <c:forEach items="${positions}" var="position">
-                    <option value="${position.getId()}">${position.getName()}</option>
+                    <option value="${position.getPositionId()}">${position.getPositionName()}</option>
                     <c:if test="${positions.isEmpty()}">
                         <option disabled>Cписок пуст</option>
                     </c:if>

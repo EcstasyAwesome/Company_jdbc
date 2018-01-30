@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @WebFilter(
         filterName = "Dispatcher",
-        description = "link dispatcher",
+        description = "links dispatcher",
         urlPatterns = "/*"
 )
 public class Dispatcher implements Filter {
@@ -45,7 +45,6 @@ public class Dispatcher implements Filter {
                     chain.doFilter(request, response); // goes next
                 } else req.getRequestDispatcher(LinkManager.ACCESS_PAGE).forward(req, resp); // no entry
             } else resp.sendRedirect(LinkManager.AUTHORIZATION_LINK); // redirect to authorization page
-        } else if (link.equals("/")) chain.doFilter(req, resp); // if request url is 'http://localhost:8080/'
-        else req.getRequestDispatcher(LinkManager.NOT_FOUND_PAGE).forward(req, resp); // wrong link, get 404
+        } else req.getRequestDispatcher(LinkManager.NOT_FOUND_PAGE).forward(req, resp); // wrong link, get 404
     }
 }

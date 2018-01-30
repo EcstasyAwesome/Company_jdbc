@@ -49,6 +49,13 @@ public class Authorization extends HttpServlet {
                 case "REGISTER":
                     register(req, resp);
                     break;
+                case "LOGOUT":
+                    HttpSession session = req.getSession(false);
+                    User user = (User) session.getAttribute("sessionUser");
+                    System.out.println(String.format("-> [%s] Выполнен выход: %s", getClass().getSimpleName(), user));
+                    session.invalidate();
+                    resp.sendRedirect(LinkManager.AUTHORIZATION_LINK);
+                    break;
             }
         }
     }
@@ -79,7 +86,6 @@ public class Authorization extends HttpServlet {
         } catch (PersistenceException e) {
             if (session.getTransaction() != null) session.getTransaction().rollback();
             System.err.println(e.getMessage());
-            System.err.println(e.getLocalizedMessage());
             request.setAttribute("message", "Пользователь '" + login + "' не зарегистрирован");
             request.getRequestDispatcher(LinkManager.LOGIN_PAGE).forward(request, response);
         } finally {
@@ -97,7 +103,7 @@ public class Authorization extends HttpServlet {
         Session session = HibernateUtil.getSession();
         try {
             session.beginTransaction();
-            Position position = session.get(Position.class, 6);
+            Position position = session.get(Position.class, 6); // default
             User user = new User(surname, firstName, secondName, phoneNumber, login, password, new Date(), false, position);
             session.save(user);
             session.getTransaction().commit();

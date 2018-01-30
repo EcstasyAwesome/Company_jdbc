@@ -12,20 +12,20 @@
     <h1>Ошибка</h1>
 </header>
 <nav>
-    <form id="LOGOUT" method="post">
+    <form id="LOGOUT" action="/authorization" method="post">
         <input type="hidden" name="method" value="LOGOUT">
     </form>
     <table class="nav-menu">
         <tr>
             <td id="nav-menu-left">
-                <a href="/company">Главная</a> |
-                <a href="/company/positions">Должностя</a> |
-                <a href="/company/users">Пользователи</a> |
-                <a href="/company/about">О нас</a>
+                <a href="/">Главная</a> |
+                <a href="/positions">Должностя</a> |
+                <a href="/users">Пользователи</a> |
+                <a href="/about">О нас</a>
             </td>
             <td id="nav-menu-right">
-                <a href="/company/profile">Профиль</a> |
-                <a href="/company/edit">Редактировать</a> |
+                <a href="/profile">Профиль</a> |
+                <a href="/edit">Редактировать</a> |
                 <input type="submit" form="LOGOUT" class="logout" value="Выход">
             </td>
         </tr>

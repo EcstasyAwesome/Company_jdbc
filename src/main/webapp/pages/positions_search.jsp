@@ -13,20 +13,20 @@
     <p>Просмотр всех должностей</p>
 </header>
 <nav>
-    <form id="LOGOUT" method="post">
+    <form id="LOGOUT" action="/authorization" method="post">
         <input type="hidden" name="method" value="LOGOUT">
     </form>
     <table class="nav-menu">
         <tr>
             <td id="nav-menu-left">
-                <a href="/company">Главная</a> |
-                <a href="/company/positions">Должностя</a> |
-                <a href="/company/users">Пользователи</a> |
-                <a href="/company/about">О нас</a>
+                <a href="/">Главная</a> |
+                <a href="/positions">Должностя</a> |
+                <a href="/users">Пользователи</a> |
+                <a href="/about">О нас</a>
             </td>
             <td id="nav-menu-right">
-                <a href="/company/profile">Профиль</a> |
-                <a href="/company/edit">Редактировать</a> |
+                <a href="/profile">Профиль</a> |
+                <a href="/edit">Редактировать</a> |
                 <input type="submit" form="LOGOUT" class="logout" value="Выход">
             </td>
         </tr>
@@ -44,13 +44,23 @@
             <c:if test="${positions!=null}">
                 <c:forEach items="${positions}" var="position">
                     <tr>
-                        <td class="search-table">${position.getId()}</td>
-                        <td class="search-table">${position.getName()}</td>
-                        <td class="search-table">${position.getDescription()}</td>
+                        <td class="search-table">${position.getPositionId()}</td>
+                        <td class="search-table">${position.getPositionName()}</td>
+                        <td class="search-table">${position.getPositionDescription()}</td>
+                        <td class="search-table">
+                            <form id="update" method="post" action="/company/positions/update">
+                                <input type="hidden" name="method" value="UPDATE">
+                            </form>
+                            <form id="delete" method="post" action="/company/positions/delete">
+                                <input type="hidden" name="method" value="DELETE">
+                            </form>
+                            <input form="update" type="image" src="${pageContext.request.contextPath}/resources/img/edit_icon.png">
+                            <input form="delete" type="image" src="${pageContext.request.contextPath}/resources/img/delete_icon.png">
+                        </td>
                     </tr>
                 </c:forEach>
             </c:if>
-            <c:if test="${positions.isEmpty()}">
+            <c:if test="${positions==null || positions.isEmpty()}">
                 <tr>
                     <td class="search-table" colspan="3">Данные отсуствуют</td>
                 </tr>
@@ -63,8 +73,6 @@
         <menu>
             <li><a href="/company/positions">Список</a></li>
             <li><a href="/company/positions/add">Добавить</a></li>
-            <li><a href="/company/positions/update">Изменить</a></li>
-            <li><a href="/company/positions/delete">Удалить</a></li>
         </menu>
     </aside>
 </main>
