@@ -30,7 +30,7 @@ public class Positions extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String method = req.getParameter("method");
         if (method != null) {
             switch (method) {
