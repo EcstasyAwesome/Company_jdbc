@@ -108,10 +108,8 @@
     <aside>
         <h4>Меню:</h4>
         <menu>
-            <li><a href="/company/users">Список/Поиск</a></li>
-            <li><a href="/company/users/add">Добавить</a></li>
-            <li><a href="/company/users/update">Изменить</a></li>
-            <li><a href="/company/users/delete">Удалить</a></li>
+            <li><a href="/users">Список/Поиск</a></li>
+            <li><a href="/users/add">Добавить</a></li>
         </menu>
     </aside>
 </main>
