@@ -24,7 +24,8 @@ public class Positions extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getQueryString() != null) req.setAttribute("position", getPosition(req));
+        if (req.getQueryString() != null && req.getQueryString().length() > 0)
+            req.setAttribute("position", getPosition(req));
         if (req.getPathInfo() == null) req.setAttribute("positions", getPositions());
         req.getRequestDispatcher(LinkManager.getInstance().getList().get(Dispatcher.getLink()).getPath()).forward(req, resp);
     }

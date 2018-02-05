@@ -33,19 +33,15 @@
 </nav>
 <main>
     <div align="center">
-        <p>Логин: ${sessionUser.getLogin()}</p>
-        <p>Фамилия: ${sessionUser.getSurname()}</p>
-        <p>Имя: ${sessionUser.getFirstName()}</p>
-        <p>Отчество: ${sessionUser.getSecondName()}</p>
-        <p>Телефон: ${sessionUser.getPhoneNumber()}</p>
-        <p>Должность: <c:forEach items="${positions}" var="position">
-            <c:if test="${sessionUser.getPosition()==position.getId()}">
-                ${position.getName()}
-            </c:if>
-        </c:forEach></p>
-        <p>Дата регистрации: ${sessionUser.getRegisterDate()}</p>
-        <p>Статус: <c:if test="${sessionUser.isAdmin() eq true}">Администратор</c:if>
-            <c:if test="${sessionUser.isAdmin() eq false}">Пользователь</c:if></p>
+        <p>Логин: ${sessionUser.getUserLogin()}</p>
+        <p>Фамилия: ${sessionUser.getUserSurname()}</p>
+        <p>Имя: ${sessionUser.getUserFirstName()}</p>
+        <p>Отчество: ${sessionUser.getUserSecondName()}</p>
+        <p>Телефон: ${sessionUser.getUserPhoneNumber()}</p>
+        <p>Должность: ${sessionUser.getPositionByPositionId().getPositionName()}</p>
+        <p>Дата регистрации: ${sessionUser.getUserRegisterDate()}</p>
+        <p>Статус: <c:if test="${sessionUser.getUserIsAdmin() eq true}">Администратор</c:if>
+            <c:if test="${sessionUser.getUserIsAdmin() eq false}">Пользователь</c:if></p>
     </div>
 </main>
 <footer>

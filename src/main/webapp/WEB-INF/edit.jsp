@@ -44,21 +44,19 @@
                 <td class="update-table">Пароль</td>
             </tr>
             <tr>
-                <td class="update-table"><input type="text" size="15" value="${sessionUser.getSurname()}"
+                <td class="update-table"><input type="text" size="15" value="${sessionUser.getUserSurname()}"
                                                 name="user_surname" required></td>
-                <td class="update-table"><input type="text" size="15" value="${sessionUser.getFirstName()}"
+                <td class="update-table"><input type="text" size="15" value="${sessionUser.getUserFirstName()}"
                                                 name="user_firstName" required></td>
-                <td class="update-table"><input type="text" size="15" value="${sessionUser.getSecondName()}"
+                <td class="update-table"><input type="text" size="15" value="${sessionUser.getUserSecondName()}"
                                                 name="user_secondName" required></td>
-                <td class="update-table"><input type="text" size="15" value="${sessionUser.getPhoneNumber()}"
+                <td class="update-table"><input type="text" size="15" value="${sessionUser.getUserPhoneNumber()}"
                                                 name="user_phoneNumber" required></td>
-                <td class="update-table"><input type="text" size="15" value="${sessionUser.getPassword()}"
+                <td class="update-table"><input type="text" size="15" value="${sessionUser.getUserPassword()}"
                                                 name="user_password" required></td>
             </tr>
         </table>
-        <input type="hidden" name="user_id" value="${sessionUser.getId()}">
-        <input type="hidden" name="position_id" value="${sessionUser.getPosition()}">
-        <input type="hidden" name="user_id" value="${sessionUser.isAdmin()}">
+        <input type="hidden" name="user_id" value="${sessionUser.getUserId()}">
         <p align="center"><input type="submit" value="Сохранить изменения"></p>
     </form>
 </main>
