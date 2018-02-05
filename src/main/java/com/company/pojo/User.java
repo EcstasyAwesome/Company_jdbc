@@ -173,6 +173,13 @@ public class User {
         this.positionByPositionId = positionByPositionId;
     }
 
+    public String basicInfo() {
+        return userSurname + " " +
+                userFirstName + " " +
+                userSecondName + " - " +
+                (userIsAdmin ? "Администатор" : "Пользователь");
+    }
+
     @Override
     public String toString() {
         return userId + ", " +

@@ -3,14 +3,14 @@
 <html lang="ru">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Главная</title>
+    <title>Добавить должность</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/stylesheet/style.css">
 </head>
 <body>
 <header>
     <img src="${pageContext.request.contextPath}/resources/img/ecstasy_logo.jpg" alt="Логотип" height="200" width="200">
-    <h1>Главная</h1>
-    <p>my first servlet</p>
+    <h1>Должностя</h1>
+    <p>Добавить новую должность</p>
 </header>
 <nav>
     <form id="LOGOUT" action="/authorization" method="post">
@@ -33,7 +33,38 @@
     </table>
 </nav>
 <main>
-    <h2 style="text-align: center">Добро пожаловать</h2>
+    <article>
+        <br>
+        <form id="add" method="post">
+            <input type="hidden" name="method" value="ADD">
+            <table align="center">
+                <tr>
+                    <th width="200" class="table-top">Должность</th>
+                    <th width="400" class="table-top">Доп. информация</th>
+                </tr>
+                <tr>
+                    <td class="search-table">
+                        <input class="edit-input" type="text" name="position_name" placeholder="Введите название"
+                               required autofocus>
+                    </td>
+                    <td class="search-table">
+                        <input class="edit-input" type="text" name="position_description" placeholder="Ведите описание"
+                               required>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" align="center"><br><input type="submit" value="Добавить"></td>
+                </tr>
+            </table>
+        </form>
+    </article>
+    <aside>
+        <h4>Меню:</h4>
+        <menu>
+            <li><a href="/positions">Список</a></li>
+            <li><a href="/positions/add">Добавить</a></li>
+        </menu>
+    </aside>
 </main>
 <footer>
     <address>

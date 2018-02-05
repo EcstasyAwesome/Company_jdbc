@@ -3,14 +3,13 @@
 <html lang="ru">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Удалить должность</title>
+    <title>Профиль пользователя</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/stylesheet/style.css">
 </head>
 <body>
 <header>
     <img src="${pageContext.request.contextPath}/resources/img/ecstasy_logo.jpg" alt="Логотип" height="200" width="200">
-    <h1>Должностя</h1>
-    <p>Удалить существующую должность</p>
+    <h1>Профиль пользователя</h1>
 </header>
 <nav>
     <form id="LOGOUT" action="/authorization" method="post">
@@ -18,13 +17,13 @@
     </form>
     <table class="nav-menu">
         <tr>
-            <td id="nav-menu-left">
+            <td class="nav-menu-left">
                 <a href="/">Главная</a> |
                 <a href="/positions">Должностя</a> |
                 <a href="/users">Пользователи</a> |
                 <a href="/about">О нас</a>
             </td>
-            <td id="nav-menu-right">
+            <td class="nav-menu-right">
                 <a href="/profile">Профиль</a> |
                 <a href="/edit">Редактировать</a> |
                 <input type="submit" form="LOGOUT" class="logout" value="Выход">
@@ -33,23 +32,21 @@
     </table>
 </nav>
 <main>
-    <article>
-        <br>
-        <form method="post">
-            <input type="hidden" name="method" value="DELETE">
-            <input type="hidden" name="position_id" value="${position.getPositionId()}">
-            <p>${position}</p>
-            <p>Удалить данную должность?</p>
-            <input type="submit" value="Удалить">
-        </form>
-    </article>
-    <aside>
-        <h4>Меню:</h4>
-        <menu>
-            <li><a href="/positions">Список</a></li>
-            <li><a href="/positions/add">Добавить</a></li>
-        </menu>
-    </aside>
+    <div align="center">
+        <p>Логин: ${sessionUser.getLogin()}</p>
+        <p>Фамилия: ${sessionUser.getSurname()}</p>
+        <p>Имя: ${sessionUser.getFirstName()}</p>
+        <p>Отчество: ${sessionUser.getSecondName()}</p>
+        <p>Телефон: ${sessionUser.getPhoneNumber()}</p>
+        <p>Должность: <c:forEach items="${positions}" var="position">
+            <c:if test="${sessionUser.getPosition()==position.getId()}">
+                ${position.getName()}
+            </c:if>
+        </c:forEach></p>
+        <p>Дата регистрации: ${sessionUser.getRegisterDate()}</p>
+        <p>Статус: <c:if test="${sessionUser.isAdmin() eq true}">Администратор</c:if>
+            <c:if test="${sessionUser.isAdmin() eq false}">Пользователь</c:if></p>
+    </div>
 </main>
 <footer>
     <address>

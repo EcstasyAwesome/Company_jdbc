@@ -3,14 +3,14 @@
 <html lang="ru">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Изменить должность</title>
+    <title>Удалить пользователя</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/stylesheet/style.css">
 </head>
 <body>
 <header>
     <img src="${pageContext.request.contextPath}/resources/img/ecstasy_logo.jpg" alt="Логотип" height="200" width="200">
-    <h1>Должностя</h1>
-    <p>Изменить существующую должность</p>
+    <h1>Пользователи</h1>
+    <p>Удалить существующего пользователя</p>
 </header>
 <nav>
     <form id="LOGOUT" action="/authorization" method="post">
@@ -18,13 +18,13 @@
     </form>
     <table class="nav-menu">
         <tr>
-            <td id="nav-menu-left">
+            <td class="nav-menu-left">
                 <a href="/">Главная</a> |
                 <a href="/positions">Должностя</a> |
                 <a href="/users">Пользователи</a> |
                 <a href="/about">О нас</a>
             </td>
-            <td id="nav-menu-right">
+            <td class="nav-menu-right">
                 <a href="/profile">Профиль</a> |
                 <a href="/edit">Редактировать</a> |
                 <input type="submit" form="LOGOUT" class="logout" value="Выход">
@@ -35,30 +35,31 @@
 <main>
     <article>
         <br>
-        <form id="update" method="post">
-            <input type="hidden" name="method" value="UPDATE">
-            <table>
-                <tr>
-                    <td class="update-table">Должность</td>
-                    <td class="update-table">Доп. информация</td>
-                </tr>
-                <tr>
-                    <td class="update-table"><input type="text" size="15" value="${position.getPositionName()}"
-                                                    name="position_name" required></td>
-                    <td class="update-table"><textarea name="position_description" rows="5"
-                                                       required>${position.getPositionDescription()}</textarea>
-                    </td>
-                </tr>
-            </table>
-            <input type="hidden" name="position_id" value="${position.getPositionId()}">
-            <p><input type="submit" value="Сохранить изменения"></p>
+        <form method="post">
+            <input type="hidden" name="method" value="DELETE">
+            <input type="hidden" name="form" value="deleteUser">
+            <select name="user_id" required>
+                <option selected disabled>Выберите ID</option>
+                <c:if test="${users!=null}">
+                    <c:forEach items="${users}" var="user">
+                        <option value="${user.getId()}">ID${user.getId()}
+                            - ${user.getSurname()} ${user.getFirstName()} ${user.getSecondName()}</option>
+                    </c:forEach>
+                </c:if>
+                <c:if test="${users.isEmpty()}">
+                    <option disabled>Список пуст</option>
+                </c:if>
+            </select>
+            <input type="submit" value="Удалить">
         </form>
     </article>
     <aside>
         <h4>Меню:</h4>
         <menu>
-            <li><a href="/positions">Список</a></li>
-            <li><a href="/positions/add">Добавить</a></li>
+            <li><a href="/company/users">Список/Поиск</a></li>
+            <li><a href="/company/users/add">Добавить</a></li>
+            <li><a href="/company/users/update">Изменить</a></li>
+            <li><a href="/company/users/delete">Удалить</a></li>
         </menu>
     </aside>
 </main>

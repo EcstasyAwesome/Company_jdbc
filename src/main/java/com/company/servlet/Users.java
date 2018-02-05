@@ -4,6 +4,7 @@ import com.company.filter.Dispatcher;
 import com.company.util.LinkManager;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +12,12 @@ import java.io.IOException;
 /*
 * in developing
 */
+
+@WebServlet(
+        name = "Users",
+        description = "Users servlet",
+        urlPatterns = "/users/*"
+)
 public class Users extends HttpServlet {
 
     @Override

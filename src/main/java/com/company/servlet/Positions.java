@@ -25,7 +25,7 @@ public class Positions extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (req.getQueryString() != null) req.setAttribute("position", getPosition(req));
-        else req.setAttribute("positions", getPositions());
+        if (req.getPathInfo() == null) req.setAttribute("positions", getPositions());
         req.getRequestDispatcher(LinkManager.getInstance().getList().get(Dispatcher.getLink()).getPath()).forward(req, resp);
     }
 
@@ -49,7 +49,7 @@ public class Positions extends HttpServlet {
 
     private Position getPosition(HttpServletRequest request) {
         Session session = HibernateUtil.getSession();
-        int id = Integer.parseInt(request.getParameter("id"));
+        int id = Integer.parseInt(request.getParameter("position_id"));
         Position result = null;
         try {
             session.beginTransaction();

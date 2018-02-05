@@ -18,13 +18,13 @@
     </form>
     <table class="nav-menu">
         <tr>
-            <td id="nav-menu-left">
+            <td class="nav-menu-left">
                 <a href="/">Главная</a> |
                 <a href="/positions">Должностя</a> |
                 <a href="/users">Пользователи</a> |
                 <a href="/about">О нас</a>
             </td>
-            <td id="nav-menu-right">
+            <td class="nav-menu-right">
                 <a href="/profile">Профиль</a> |
                 <a href="/edit">Редактировать</a> |
                 <input type="submit" form="LOGOUT" class="logout" value="Выход">

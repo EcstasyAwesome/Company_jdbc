@@ -3,14 +3,14 @@
 <html lang="ru">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Добавить должность</title>
+    <title>Изменить должность</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/stylesheet/style.css">
 </head>
 <body>
 <header>
     <img src="${pageContext.request.contextPath}/resources/img/ecstasy_logo.jpg" alt="Логотип" height="200" width="200">
     <h1>Должностя</h1>
-    <p>Добавить новую должность</p>
+    <p>Изменить существующую должность</p>
 </header>
 <nav>
     <form id="LOGOUT" action="/authorization" method="post">
@@ -18,13 +18,13 @@
     </form>
     <table class="nav-menu">
         <tr>
-            <td id="nav-menu-left">
+            <td class="nav-menu-left">
                 <a href="/">Главная</a> |
                 <a href="/positions">Должностя</a> |
                 <a href="/users">Пользователи</a> |
                 <a href="/about">О нас</a>
             </td>
-            <td id="nav-menu-right">
+            <td class="nav-menu-right">
                 <a href="/profile">Профиль</a> |
                 <a href="/edit">Редактировать</a> |
                 <input type="submit" form="LOGOUT" class="logout" value="Выход">
@@ -34,23 +34,29 @@
 </nav>
 <main>
     <article>
-        <form id="add" method="post">
-            <input type="hidden" name="method" value="ADD">
-            <h4>Заполните форму</h4>
-            <table>
+        <form id="update" method="post">
+            <input type="hidden" name="method" value="UPDATE">
+            <input type="hidden" name="position_id" value="${position.getPositionId()}">
+            <p>* - поля, доступные для изменения</p>
+            <table align="center">
                 <tr>
-                    <td class="add-table">Должность:</td>
-                    <td class="add-table"><input type="text" name="position_name" placeholder="Введите название"
-                                                 size="18" required autofocus>
+                    <th width="40" class="table-top">ID</th>
+                    <th width="200" class="table-top">Должность*</th>
+                    <th width="400" class="table-top">Доп. информация*</th>
+                </tr>
+                <tr>
+                    <td class="search-table">${position.getPositionId()}</td>
+                    <td class="search-table">
+                        <input class="edit-input" value="${position.getPositionName()}" name="position_name" autofocus
+                               required>
+                    </td>
+                    <td class="search-table">
+                        <input class="edit-input" type="text" value="${position.getPositionDescription()}"
+                               name="position_description" required>
                     </td>
                 </tr>
                 <tr>
-                    <td class="add-table">Доп. информация:</td>
-                    <td class="add-table"><textarea name="position_description" placeholder="Ведите описание"
-                                                    rows="5" required></textarea></td>
-                </tr>
-                <tr>
-                    <td class="add-table" colspan="2"><input type="submit" value="Добавить"></td>
+                    <td colspan="3" align="center"><br><input type="submit" value="Сохранить изменения"></td>
                 </tr>
             </table>
         </form>

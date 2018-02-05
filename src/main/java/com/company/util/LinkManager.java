@@ -16,24 +16,24 @@ public class LinkManager {
     public static final String ABOUT_LINK = "/about";
     public static final String USERS_LINK = "/users";
     public static final String POSITIONS_LINK = "/positions";
-    public static final String LOGIN_PAGE = "/pages/login.jsp";
-    public static final String REGISTER_PAGE = "/pages/register.jsp";
-    public static final String ACCESS_PAGE = "/pages/access.jsp";
-    public static final String NOT_FOUND_PAGE = "/pages/404.jsp";
+    public static final String LOGIN_PAGE = "/WEB-INF/login.jsp";
+    public static final String REGISTER_PAGE = "/WEB-INF/register.jsp";
+    public static final String ACCESS_PAGE = "/WEB-INF/access.jsp";
+    public static final String NOT_FOUND_PAGE = "/WEB-INF/404.jsp";
 
     private LinkManager() {
         list.put(MAIN_LINK, new Page("/index.jsp", true));
-        list.put(PROFILE_LINK, new Page("/pages/profile.jsp", true));
-        list.put(EDIT_LINK, new Page("/pages/edit.jsp", true));
-        list.put(ABOUT_LINK, new Page("/pages/about.jsp", true));
-        list.put(USERS_LINK, new Page("/pages/users_search.jsp", true));
-        list.put(USERS_LINK + "/add", new Page("/pages/users_add.jsp", false));
-        list.put(USERS_LINK + "/update", new Page("/pages/users_update.jsp", false));
-        list.put(USERS_LINK + "/delete", new Page("/pages/users_delete.jsp", false));
-        list.put(POSITIONS_LINK, new Page("/pages/positions_search.jsp", true));
-        list.put(POSITIONS_LINK + "/add", new Page("/pages/positions_add.jsp", false));
-        list.put(POSITIONS_LINK + "/update", new Page("/pages/positions_update.jsp", false));
-        list.put(POSITIONS_LINK + "/delete", new Page("/pages/positions_delete.jsp", false));
+        list.put(PROFILE_LINK, new Page("/WEB-INF/profile.jsp", true));
+        list.put(EDIT_LINK, new Page("/WEB-INF/edit.jsp", true));
+        list.put(ABOUT_LINK, new Page("/WEB-INF/about.jsp", true));
+        list.put(USERS_LINK, new Page("/WEB-INF/users_search.jsp", true));
+        list.put(USERS_LINK + "/add", new Page("/WEB-INF/users_add.jsp", false));
+        list.put(USERS_LINK + "/update", new Page("/WEB-INF/users_update.jsp", false));
+        list.put(USERS_LINK + "/delete", new Page("/WEB-INF/users_delete.jsp", false));
+        list.put(POSITIONS_LINK, new Page("/WEB-INF/positions_search.jsp", true));
+        list.put(POSITIONS_LINK + "/add", new Page("/WEB-INF/positions_add.jsp", false));
+        list.put(POSITIONS_LINK + "/update", new Page("/WEB-INF/positions_update.jsp", false));
+        list.put(POSITIONS_LINK + "/delete", new Page("/WEB-INF/positions_delete.jsp", false));
     }
 
     public static LinkManager getInstance() {

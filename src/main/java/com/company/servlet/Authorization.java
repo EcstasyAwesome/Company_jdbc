@@ -72,7 +72,7 @@ public class Authorization extends HttpServlet {
             session.getTransaction().commit();
             if (user.getUserPassword().equals(password)) {
                 httpSession.setAttribute("sessionUser", user);
-                System.out.println(String.format("-> [%s] Выполнен вход: %s", getClass().getSimpleName(), user));
+                System.out.println(String.format("-> [%s] Выполнен вход: %s", getClass().getSimpleName(), user.basicInfo()));
                 response.sendRedirect(LinkManager.MAIN_LINK);
             } else {
                 request.setAttribute("message", "Ошибка доступа. Не правильный пароль");
@@ -122,7 +122,7 @@ public class Authorization extends HttpServlet {
     private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("sessionUser");
-        System.out.println(String.format("-> [%s] Выполнен выход: %s", getClass().getSimpleName(), user));
+        System.out.println(String.format("-> [%s] Выполнен выход: %s", getClass().getSimpleName(), user.basicInfo()));
         session.invalidate();
         response.sendRedirect(LinkManager.AUTHORIZATION_LINK);
     }
