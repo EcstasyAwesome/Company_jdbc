@@ -32,18 +32,48 @@
     </table>
 </nav>
 <main>
-    <div align="center">
-        <img src="${pageContext.request.contextPath}${sessionUser.getUserAvatar()}">
-        <p>Логин: ${sessionUser.getUserLogin()}</p>
-        <p>Фамилия: ${sessionUser.getUserSurname()}</p>
-        <p>Имя: ${sessionUser.getUserFirstName()}</p>
-        <p>Отчество: ${sessionUser.getUserSecondName()}</p>
-        <p>Телефон: ${sessionUser.getUserPhoneNumber()}</p>
-        <p>Должность: ${sessionUser.getPositionByPositionId().getPositionName()}</p>
-        <p>Дата регистрации: ${sessionUser.getUserRegisterDate()}</p>
-        <p>Статус: <c:if test="${sessionUser.getUserIsAdmin() eq true}">Администратор</c:if>
-            <c:if test="${sessionUser.getUserIsAdmin() eq false}">Пользователь</c:if></p>
-    </div>
+    <br>
+    <table align="center">
+        <tr>
+            <td rowspan="8" width="250" align="center">
+                <img src="${pageContext.request.contextPath}${sessionUser.getUserAvatar()}">
+            </td>
+            <td width="110">Логин:</td>
+            <td>${sessionUser.getUserLogin()}</td>
+        </tr>
+        <tr>
+            <td>Фамилия:</td>
+            <td>${sessionUser.getUserSurname()}</td>
+        </tr>
+        <tr>
+            <td>Имя:</td>
+            <td>${sessionUser.getUserFirstName()}</td>
+        </tr>
+        <tr>
+            <td>Отчество:</td>
+            <td>${sessionUser.getUserSecondName()}</td>
+        </tr>
+        <tr>
+            <td>Телефон:</td>
+            <td>${sessionUser.getUserPhoneNumber()}</td>
+        </tr>
+        <tr>
+            <td>Должность:</td>
+            <td>${sessionUser.getPositionByPositionId().getPositionName()}</td>
+        </tr>
+        <tr>
+            <td>Регистрация:</td>
+            <td>${sessionUser.getUserRegisterDate()}</td>
+        </tr>
+        <tr>
+            <td>Статус:</td>
+            <td>
+                <c:if test="${sessionUser.getUserIsAdmin() eq true}">Администратор</c:if>
+                <c:if test="${sessionUser.getUserIsAdmin() eq false}">Пользователь</c:if>
+            </td>
+        </tr>
+    </table>
+    <br>
 </main>
 <footer>
     <address>
