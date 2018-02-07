@@ -43,11 +43,11 @@
                     <th width="400" class="table-top">Доп. информация</th>
                 </tr>
                 <tr>
-                    <td class="search-table">
+                    <td class="table-main">
                         <input class="edit-input" type="text" name="position_name" placeholder="Введите название"
                                required autofocus>
                     </td>
-                    <td class="search-table">
+                    <td class="table-main">
                         <input class="edit-input" type="text" name="position_description" placeholder="Ведите описание"
                                required>
                     </td>

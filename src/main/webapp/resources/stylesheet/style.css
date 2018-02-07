@@ -92,24 +92,8 @@ table {
     border-collapse: collapse;
 }
 
-/*Стили таблици добавления пользователей*/
-.add-table {
-    border: none;
-    padding: 3px;
-    font-weight: normal;
-    text-align: right;
-}
-
-/*Стили таблици изменения пользователей*/
-.update-table {
-    border: none;
-    padding: 3px;
-    font-weight: normal;
-    text-align: center;
-}
-
 /*Стили таблици поиска пользователей*/
-.search-table {
+.table-main {
     border: solid 1px black;
     padding: 3px;
     font-weight: normal;

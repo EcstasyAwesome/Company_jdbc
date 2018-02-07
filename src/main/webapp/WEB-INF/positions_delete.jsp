@@ -45,9 +45,9 @@
                     <th width="400" class="table-top">Доп. информация</th>
                 </tr>
                 <tr>
-                    <td class="search-table">${position.getPositionId()}</td>
-                    <td class="search-table">${position.getPositionName()}</td>
-                    <td class="search-table">${position.getPositionDescription()}</td>
+                    <td class="table-main">${position.getPositionId()}</td>
+                    <td class="table-main">${position.getPositionName()}</td>
+                    <td class="table-main">${position.getPositionDescription()}</td>
                 </tr>
                 <tr>
                     <td colspan="3" align="center"><br>Удалить данную должность?</td>

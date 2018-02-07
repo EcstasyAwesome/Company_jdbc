@@ -44,10 +44,10 @@
             <c:if test="${positions!=null}">
                 <c:forEach items="${positions}" var="position">
                     <tr>
-                        <td class="search-table">${position.getPositionId()}</td>
-                        <td class="search-table">${position.getPositionName()}</td>
-                        <td class="search-table">${position.getPositionDescription()}</td>
-                        <td class="search-table">
+                        <td class="table-main">${position.getPositionId()}</td>
+                        <td class="table-main">${position.getPositionName()}</td>
+                        <td class="table-main">${position.getPositionDescription()}</td>
+                        <td class="table-main">
                             <a href="/positions/update?position_id=${position.getPositionId()}"><img src="${pageContext.request.contextPath}/resources/img/edit_icon.png"></a>
                             <a href="/positions/delete?position_id=${position.getPositionId()}"><img src="${pageContext.request.contextPath}/resources/img/delete_icon.png"></a>
                         </td>
@@ -56,7 +56,7 @@
             </c:if>
             <c:if test="${positions==null || positions.isEmpty()}">
                 <tr>
-                    <td class="search-table" colspan="3">Данные отсуствуют</td>
+                    <td class="table-main" colspan="3">Данные отсуствуют</td>
                 </tr>
             </c:if>
         </table>

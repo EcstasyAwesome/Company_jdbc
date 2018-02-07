@@ -45,18 +45,20 @@
                     <th width="400" class="table-top">Доп. информация*</th>
                 </tr>
                 <tr>
-                    <td class="search-table">${position.getPositionId()}</td>
-                    <td class="search-table">
+                    <td class="table-main">${position.getPositionId()}</td>
+                    <td class="table-main">
                         <input class="edit-input" value="${position.getPositionName()}" name="position_name" autofocus
                                required>
                     </td>
-                    <td class="search-table">
+                    <td class="table-main">
                         <input class="edit-input" type="text" value="${position.getPositionDescription()}"
                                name="position_description" required>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="3" align="center"><br><input type="submit" value="Сохранить изменения"></td>
+                    <td colspan="3" align="center">
+                        <br><input type="submit" value="Сохранить изменения">
+                    </td>
                 </tr>
             </table>
         </form>
