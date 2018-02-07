@@ -123,7 +123,7 @@ public class Authorization extends HttpServlet {
             request.setAttribute("firstName", firstName);
             request.setAttribute("secondName", secondName);
             request.setAttribute("phoneNumber", phoneNumber);
-            request.setAttribute("message", "Привышен размер файла. Предел " + MAX_FILE_SIZE / 1024 + "КБ");
+            request.setAttribute("message", "Файл слишком большой " + Long.parseLong(e.getMessage()) / 1024 + "КБ");
             request.getRequestDispatcher(LinkManager.REGISTER_PAGE).forward(request, response);
         } finally {
             if (session.getTransaction() != null) session.getTransaction().rollback();
@@ -133,7 +133,7 @@ public class Authorization extends HttpServlet {
 
     static String saveAvatar(HttpServletRequest request, String attributeName) throws IOException, ServletException {
         Part avatar = request.getPart(attributeName);
-        if (avatar.getSize() > MAX_FILE_SIZE) throw new IllegalStateException(avatar.getSize() + " bytes");
+        if (avatar.getSize() > MAX_FILE_SIZE) throw new IllegalStateException(String.valueOf(avatar.getSize()));
         else if (avatar.getSize() > 0) {
             String tmp = request.getServletContext().getRealPath("");
             String projectPath = tmp.substring(0, tmp.indexOf("target"));
