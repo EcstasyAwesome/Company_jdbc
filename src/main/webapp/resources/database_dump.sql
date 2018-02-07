@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `lists` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `lists`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: localhost    Database: lists
@@ -27,7 +29,7 @@ CREATE TABLE `positions` (
   `position_name` varchar(20) NOT NULL,
   `position_description` varchar(30) NOT NULL,
   PRIMARY KEY (`position_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,6 +44,7 @@ CREATE TABLE `users` (
   `user_surname` varchar(20) NOT NULL,
   `user_firstName` varchar(20) NOT NULL,
   `user_secondName` varchar(20) NOT NULL,
+  `user_avatar` varchar(50) NOT NULL,
   `user_phoneNumber` bigint(12) NOT NULL,
   `user_login` varchar(20) NOT NULL,
   `user_password` varchar(20) NOT NULL,
@@ -51,7 +54,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_login_UNIQUE` (`user_login`),
   KEY `position_id_idx` (`position_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -63,4 +66,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-25 13:18:15
+-- Dump completed on 2018-02-07 12:32:30
