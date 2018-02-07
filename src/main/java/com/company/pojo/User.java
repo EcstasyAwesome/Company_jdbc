@@ -10,6 +10,7 @@ public class User {
     private String userSurname;
     private String userFirstName;
     private String userSecondName;
+    private String userAvatar;
     private long userPhoneNumber;
     private String userLogin;
     private String userPassword;
@@ -56,6 +57,16 @@ public class User {
 
     public void setUserSecondName(String userSecondName) {
         this.userSecondName = userSecondName;
+    }
+
+    @Basic
+    @Column(name = "user_avatar", nullable = false, length = 50)
+    public String getUserAvatar() {
+        return userAvatar;
+    }
+
+    public void setUserAvatar(String userAvatar) {
+        this.userAvatar = userAvatar;
     }
 
     @Basic
@@ -112,12 +123,13 @@ public class User {
     public User() {
     }
 
-    public User(String userSurname, String userFirstName, String userSecondName, long userPhoneNumber,
+    public User(String userSurname, String userFirstName, String userSecondName, String userAvatar, long userPhoneNumber,
                 String userLogin, String userPassword, Date userRegisterDate, boolean userIsAdmin,
                 Position positionByPositionId) {
         this.userSurname = userSurname;
         this.userFirstName = userFirstName;
         this.userSecondName = userSecondName;
+        this.userAvatar = userAvatar;
         this.userPhoneNumber = userPhoneNumber;
         this.userLogin = userLogin;
         this.userPassword = userPassword;
@@ -140,6 +152,8 @@ public class User {
             return false;
         if (userSecondName != null ? !userSecondName.equals(that.userSecondName) : that.userSecondName != null)
             return false;
+        if (userAvatar != null ? !userAvatar.equals(that.userAvatar) : that.userAvatar != null)
+            return false;
         if (userLogin != null ? !userLogin.equals(that.userLogin) : that.userLogin != null) return false;
         if (userPassword != null ? !userPassword.equals(that.userPassword) : that.userPassword != null) return false;
         if (userRegisterDate != null ? !userRegisterDate.equals(that.userRegisterDate) : that.userRegisterDate != null)
@@ -155,6 +169,7 @@ public class User {
         result = 31 * result + (userSurname != null ? userSurname.hashCode() : 0);
         result = 31 * result + (userFirstName != null ? userFirstName.hashCode() : 0);
         result = 31 * result + (userSecondName != null ? userSecondName.hashCode() : 0);
+        result = 31 * result + (userAvatar != null ? userAvatar.hashCode() : 0);
         result = 31 * result + (int) (userPhoneNumber ^ (userPhoneNumber >>> 32));
         result = 31 * result + (userLogin != null ? userLogin.hashCode() : 0);
         result = 31 * result + (userPassword != null ? userPassword.hashCode() : 0);
@@ -186,6 +201,7 @@ public class User {
                 userSurname + ", " +
                 userFirstName + ", " +
                 userSecondName + ", " +
+                userAvatar + ", " +
                 userPhoneNumber + ", " +
                 userLogin + ", " +
                 userPassword + ", " +

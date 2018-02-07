@@ -34,7 +34,7 @@ public class Dispatcher implements Filter {
         if (link.endsWith("/") & link.length() > 1) {
             link = link.substring(0, link.length() - 1); // get rid of '/' at the end
             resp.sendRedirect(link); // goes on correct link
-        } else if (link.startsWith(LinkManager.RESOURCES_FOLDER))
+        } else if (link.startsWith(LinkManager.RESOURCES_FOLDER) | link.startsWith(LinkManager.RESOURCES_EXTERNAL_FOLDER))
             chain.doFilter(request, response); // its resource, goes next
         else if (link.equals(LinkManager.AUTHORIZATION_LINK))
             chain.doFilter(request, response); // goes to authorization servlet

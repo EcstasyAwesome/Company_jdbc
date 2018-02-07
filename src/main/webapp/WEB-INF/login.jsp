@@ -14,10 +14,10 @@
             <input type="text" name="login" value="${login}" placeholder="логин" required autofocus/>
             <input type="password" name="password" placeholder="пароль" required/>
             <button>войти</button>
-            <c:if test="${message!=null}">
-                <p class="message">${message}</p>
-            </c:if>
         </form>
+        <c:if test="${message!=null}">
+            <p class="message">${message}</p>
+        </c:if>
         <form class="register-page" method="post">
             <input type="hidden" name="method" value="GO_REGISTER">
             <button>регистрация</button>

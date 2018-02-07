@@ -4,16 +4,15 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Регистрация</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/stylesheet/login.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/stylesheet/register.css">
 </head>
 <body>
 <div class="page">
     <div class="form">
-        <form id="add" method="post">
+        <form id="add" method="post" enctype="multipart/form-data">
             <input type="hidden" name="method" value="REGISTER">
-            <h4>Заполните форму<br>
-                <small>Все поля обязательны к заполнению!</small>
-            </h4>
+            <h2>Форма регистрации</h2>
+            <p>* - поле можно оставить пустым</p>
             <table align="center">
                 <tr>
                     <td class="add-table">Логин:</td>
@@ -42,16 +41,22 @@
                 </tr>
                 <tr>
                     <td class="add-table">Телефон:</td>
-                    <td class="add-table"><input type="text" name="user_phoneNumber" pattern="[0-9]{10,12}"
-                                                 value="${phoneNumber}" placeholder="Ваш номер телефона" size="20" required>
+                    <td class="add-table"><input style="" type="text" name="user_phoneNumber" pattern="[0-9]{10,12}"
+                                                 value="${phoneNumber}" placeholder="Ваш номер телефона" size="20"
+                                                 required>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="add-table">Фото *:</td>
+                    <td class="add-table"><input type="file" name="user_avatar" accept="image/jpeg,image/png,image/gif">
                     </td>
                 </tr>
             </table>
             <button>зарегистрироваться</button>
-            <c:if test="${message!=null}">
-                <p class="error">${message}</p>
-            </c:if>
         </form>
+        <c:if test="${message!=null}">
+            <p class="message">${message}</p>
+        </c:if>
         <form class="login-page" method="post">
             <input type="hidden" name="method" value="GO_LOGIN">
             <button>вход</button>

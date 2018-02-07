@@ -33,6 +33,7 @@
 </nav>
 <main>
     <div align="center">
+        <img src="${pageContext.request.contextPath}${sessionUser.getUserAvatar()}">
         <p>Логин: ${sessionUser.getUserLogin()}</p>
         <p>Фамилия: ${sessionUser.getUserSurname()}</p>
         <p>Имя: ${sessionUser.getUserFirstName()}</p>

@@ -4,6 +4,7 @@ import com.company.pojo.Position;
 import com.company.pojo.User;
 import com.company.util.HibernateUtil;
 import com.company.util.LinkManager;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
@@ -12,12 +13,10 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
+import javax.servlet.http.*;
+import java.io.*;
 import java.util.Date;
 
 @WebServlet(
@@ -25,7 +24,10 @@ import java.util.Date;
         description = "responsible for authorization and registration",
         urlPatterns = LinkManager.AUTHORIZATION_LINK
 )
+@MultipartConfig
 public class Authorization extends HttpServlet {
+
+    public static final int MAX_FILE_SIZE = 1024 * 1024;
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -80,16 +82,16 @@ public class Authorization extends HttpServlet {
                 request.getRequestDispatcher(LinkManager.LOGIN_PAGE).forward(request, response);
             }
         } catch (PersistenceException e) {
-            if (session.getTransaction() != null) session.getTransaction().rollback();
             System.err.println(e.getMessage());
             request.setAttribute("message", "Пользователь '" + login + "' не зарегистрирован");
             request.getRequestDispatcher(LinkManager.LOGIN_PAGE).forward(request, response);
         } finally {
+            if (session.getTransaction() != null) session.getTransaction().rollback();
             session.close();
         }
     }
 
-    private void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void register(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String login = request.getParameter("user_login");
         String password = request.getParameter("user_password");
         String surname = request.getParameter("user_surname");
@@ -98,15 +100,16 @@ public class Authorization extends HttpServlet {
         long phoneNumber = Long.parseLong(request.getParameter("user_phoneNumber")); // have pattern on page
         Session session = HibernateUtil.getSession();
         try {
+            String userAvatar = saveAvatar(request, "user_avatar");
             session.beginTransaction();
             Position position = session.get(Position.class, 6); // default
-            User user = new User(surname, firstName, secondName, phoneNumber, login, password, new Date(), false, position);
+            User user = new User(surname, firstName, secondName, userAvatar, phoneNumber, login, password, new Date(),
+                    false, position);
             session.save(user);
             session.getTransaction().commit();
             request.setAttribute("message", "Регистрация успешно завершена");
             request.getRequestDispatcher(LinkManager.LOGIN_PAGE).forward(request, response);
-        } catch (Exception e) {
-            if (session.getTransaction() != null) session.getTransaction().rollback();
+        } catch (HibernateException e) {
             System.err.println(e.getMessage());
             request.setAttribute("surname", surname);
             request.setAttribute("firstName", firstName);
@@ -114,9 +117,35 @@ public class Authorization extends HttpServlet {
             request.setAttribute("phoneNumber", phoneNumber);
             request.setAttribute("message", "Логин '" + login + "' уже зарегистрирован");
             request.getRequestDispatcher(LinkManager.REGISTER_PAGE).forward(request, response);
+        } catch (IllegalStateException e) {
+            System.err.println(e.getMessage());
+            request.setAttribute("surname", surname);
+            request.setAttribute("firstName", firstName);
+            request.setAttribute("secondName", secondName);
+            request.setAttribute("phoneNumber", phoneNumber);
+            request.setAttribute("message", "Привышен размер файла. Предел " + MAX_FILE_SIZE / 1024 + "КБ");
+            request.getRequestDispatcher(LinkManager.REGISTER_PAGE).forward(request, response);
         } finally {
+            if (session.getTransaction() != null) session.getTransaction().rollback();
             session.close();
         }
+    }
+
+    static String saveAvatar(HttpServletRequest request, String attributeName) throws IOException, ServletException {
+        Part avatar = request.getPart(attributeName);
+        if (avatar.getSize() > MAX_FILE_SIZE) throw new IllegalStateException(avatar.getSize() + " bytes");
+        else if (avatar.getSize() > 0) {
+            String tmp = request.getServletContext().getRealPath("");
+            String projectPath = tmp.substring(0, tmp.indexOf("target"));
+            String storagePath = "storage" + File.separator + "avatar";
+            File file = new File(projectPath + File.separator + storagePath);
+            if (!file.exists()) file.mkdir();
+            String fileType = avatar.getSubmittedFileName().substring(avatar.getSubmittedFileName().lastIndexOf("."));
+            String fileName = projectPath + File.separator + storagePath + File.separator + new Date().getTime() + fileType;
+            avatar.write(fileName);
+            return fileName.substring(projectPath.length()).replaceAll(File.separator + File.separator, "/");
+        }
+        return LinkManager.DEFAULT_AVATAR;
     }
 
     private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
