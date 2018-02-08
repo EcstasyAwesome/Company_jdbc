@@ -15,7 +15,7 @@
                 <tr>
                     <td>Логин:</td>
                     <td><input type="text" name="user_login" placeholder="Придумайте логин"
-                               size="20" required autofocus></td>
+                               value="${login}" size="20" required autofocus></td>
                 </tr>
                 <tr>
                     <td>Пароль:</td>

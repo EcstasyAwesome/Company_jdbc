@@ -2,6 +2,7 @@ package com.company.servlet;
 
 import com.company.pojo.Position;
 import com.company.pojo.User;
+import com.company.util.AvatarUtil;
 import com.company.util.HibernateUtil;
 import com.company.util.LinkManager;
 import org.hibernate.HibernateException;
@@ -26,8 +27,6 @@ import java.util.Date;
 )
 @MultipartConfig
 public class Authorization extends HttpServlet {
-
-    public static final int MAX_FILE_SIZE = 1024 * 1024;
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -99,8 +98,9 @@ public class Authorization extends HttpServlet {
         String secondName = request.getParameter("user_secondName");
         long phoneNumber = Long.parseLong(request.getParameter("user_phoneNumber")); // have pattern on page
         Session session = HibernateUtil.getSession();
+        AvatarUtil avatar = new AvatarUtil(request);
         try {
-            String userAvatar = saveAvatar(request, "user_avatar");
+            String userAvatar = avatar.save();
             session.beginTransaction();
             Position position = session.get(Position.class, 6); // default
             User user = new User(surname, firstName, secondName, userAvatar, phoneNumber, login, password, new Date(),
@@ -109,43 +109,24 @@ public class Authorization extends HttpServlet {
             session.getTransaction().commit();
             request.setAttribute("message", "Регистрация успешно завершена");
             request.getRequestDispatcher(LinkManager.LOGIN_PAGE).forward(request, response);
-        } catch (HibernateException e) {
+        } catch (Exception e) {
+            avatar.rollBack();
             System.err.println(e.getMessage());
             request.setAttribute("surname", surname);
             request.setAttribute("firstName", firstName);
             request.setAttribute("secondName", secondName);
             request.setAttribute("phoneNumber", phoneNumber);
-            request.setAttribute("message", "Логин '" + login + "' уже зарегистрирован");
-            request.getRequestDispatcher(LinkManager.REGISTER_PAGE).forward(request, response);
-        } catch (IllegalStateException e) {
-            System.err.println(e.getMessage());
-            request.setAttribute("surname", surname);
-            request.setAttribute("firstName", firstName);
-            request.setAttribute("secondName", secondName);
-            request.setAttribute("phoneNumber", phoneNumber);
-            request.setAttribute("message", "Файл слишком большой " + Long.parseLong(e.getMessage()) / 1024 + "КБ");
+            if (e instanceof HibernateException)
+                request.setAttribute("message", "Логин '" + login + "' уже зарегистрирован");
+            if (e instanceof IllegalStateException) {
+                request.setAttribute("login", login);
+                request.setAttribute("message", "Загружаемый файл слишком большой");
+            }
             request.getRequestDispatcher(LinkManager.REGISTER_PAGE).forward(request, response);
         } finally {
             if (session.getTransaction() != null) session.getTransaction().rollback();
             session.close();
         }
-    }
-
-    static String saveAvatar(HttpServletRequest request, String attributeName) throws IOException, ServletException {
-        Part avatar = request.getPart(attributeName);
-        if (avatar.getSize() > MAX_FILE_SIZE) throw new IllegalStateException(String.valueOf(avatar.getSize()));
-        else if (avatar.getSize() > 0) {
-            String tmp = request.getServletContext().getRealPath("");
-            String projectPath = tmp.substring(0, tmp.indexOf("target"));
-            String storagePath = "storage" + File.separator + "avatar";
-            File file = new File(projectPath + File.separator + storagePath);
-            if (!file.exists()) file.mkdir();
-            String fileType = avatar.getSubmittedFileName().substring(avatar.getSubmittedFileName().lastIndexOf("."));
-            String fileName = projectPath + File.separator + storagePath + File.separator + new Date().getTime() + fileType;
-            avatar.write(fileName);
-            return fileName.substring(projectPath.length()).replaceAll(File.separator + File.separator, "/");
-        }
-        return LinkManager.DEFAULT_AVATAR;
     }
 
     private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {

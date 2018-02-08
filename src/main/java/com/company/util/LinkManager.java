@@ -21,7 +21,6 @@ public class LinkManager {
     public static final String REGISTER_PAGE = "/WEB-INF/register.jsp";
     public static final String ACCESS_PAGE = "/WEB-INF/access.jsp";
     public static final String NOT_FOUND_PAGE = "/WEB-INF/404.jsp";
-    public static final String DEFAULT_AVATAR = RESOURCES_FOLDER + "img/avatar.png";
 
     private LinkManager() {
         list.put(MAIN_LINK, new Page("/index.jsp", true));
