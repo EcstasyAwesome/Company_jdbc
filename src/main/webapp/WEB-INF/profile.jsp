@@ -36,7 +36,7 @@
     <table align="center">
         <tr>
             <td rowspan="8" width="250" align="center">
-                <img src="${pageContext.request.contextPath}${sessionUser.getUserAvatar()}">
+                <img src="${pageContext.request.contextPath}${sessionUser.getUserAvatar()}" width="200">
             </td>
             <td width="110">Логин:</td>
             <td>${sessionUser.getUserLogin()}</td>

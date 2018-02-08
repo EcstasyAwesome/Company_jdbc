@@ -64,12 +64,9 @@ public class Authorization extends HttpServlet {
         Session session = HibernateUtil.getSession();
         try {
             session.beginTransaction();
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<User> query = builder.createQuery(User.class);
-            Root<User> root = query.from(User.class);
-            query.select(root).where(builder.equal(root.get("userLogin"), login));
-            Query<User> query1 = session.createQuery(query);
-            User user = query1.getSingleResult();
+            Query query = session.createQuery("from User where userLogin = :login");
+            query.setParameter("login", login);
+            User user = (User) query.getSingleResult();
             session.getTransaction().commit();
             if (user.getUserPassword().equals(password)) {
                 httpSession.setAttribute("sessionUser", user);
@@ -102,9 +99,12 @@ public class Authorization extends HttpServlet {
         try {
             String userAvatar = avatar.save();
             session.beginTransaction();
+            Query query = session.createQuery("from User where userLogin = :login");
+            query.setParameter("login", login);
+            if (!query.list().isEmpty())throw new HibernateException("Duplicate entry");
             Position position = session.get(Position.class, 5); // default
-            User user = new User(surname, firstName, secondName, userAvatar, phoneNumber, login, password, new Date(),
-                    false, position);
+            User user = new User(surname, firstName, secondName, userAvatar, phoneNumber, login, password,
+                    new Date(),false, position);
             session.save(user);
             session.getTransaction().commit();
             request.setAttribute("message", "Регистрация успешно завершена");

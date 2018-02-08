@@ -46,7 +46,8 @@ public class AvatarUtil {
         User sessionUser = (User) httpSession.getAttribute("sessionUser");
         if (sessionUser != null && !sessionUser.getUserAvatar().equals(defaultAvatar)) {
             String path = sessionUser.getUserAvatar().replaceAll("/", File.separator + File.separator);
-            File file = new File(storagePath + path.substring(1));
+            File file = new File(storagePath + path);
+            System.out.println(file.getPath());
             if (file.exists())
                 if (file.delete()) {
                     Session session = HibernateUtil.getSession();

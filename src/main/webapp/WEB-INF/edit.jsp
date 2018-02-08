@@ -38,7 +38,7 @@
         <table align="center">
             <tr>
                 <td rowspan="6" width="250" align="center">
-                    <img src="${pageContext.request.contextPath}${sessionUser.getUserAvatar()}">
+                    <img src="${pageContext.request.contextPath}${sessionUser.getUserAvatar()}" width="200">
                 </td>
                 <td width="110">Фамилия:</td>
                 <td><input type="text" size="15" value="${sessionUser.getUserSurname()}"
