@@ -78,7 +78,6 @@ public class Authorization extends HttpServlet {
                 request.getRequestDispatcher(LinkManager.LOGIN_PAGE).forward(request, response);
             }
         } catch (PersistenceException e) {
-            System.err.println(e.getMessage());
             request.setAttribute("message", "Пользователь '" + login + "' не зарегистрирован");
             request.getRequestDispatcher(LinkManager.LOGIN_PAGE).forward(request, response);
         } finally {
@@ -101,17 +100,16 @@ public class Authorization extends HttpServlet {
             session.beginTransaction();
             Query query = session.createQuery("from User where userLogin = :login");
             query.setParameter("login", login);
-            if (!query.list().isEmpty())throw new HibernateException("Duplicate entry");
+            if (!query.list().isEmpty()) throw new HibernateException("Duplicate entry");
             Position position = session.get(Position.class, 5); // default
             User user = new User(surname, firstName, secondName, userAvatar, phoneNumber, login, password,
-                    new Date(),false, position);
+                    new Date(), false, position);
             session.save(user);
             session.getTransaction().commit();
             request.setAttribute("message", "Регистрация успешно завершена");
             request.getRequestDispatcher(LinkManager.LOGIN_PAGE).forward(request, response);
         } catch (Exception e) {
             avatar.rollBack();
-            System.err.println(e.getMessage());
             request.setAttribute("surname", surname);
             request.setAttribute("firstName", firstName);
             request.setAttribute("secondName", secondName);

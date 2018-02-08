@@ -44,17 +44,25 @@
                     <th width="200" class="table-top">Должность</th>
                     <th width="400" class="table-top">Доп. информация</th>
                 </tr>
+                <c:if test="${position!=null}">
                 <tr>
                     <td class="table-main">${position.getPositionId()}</td>
                     <td class="table-main">${position.getPositionName()}</td>
                     <td class="table-main">${position.getPositionDescription()}</td>
                 </tr>
                 <tr>
-                    <td colspan="3" align="center"><br>Удалить данную должность?</td>
+                    <td colspan="3" align="center"><br>Будут удалены все работники на этой должности!
+                        <br>Удалить данную должность?</td>
                 </tr>
                 <tr>
-                    <td colspan="3" align="center"><input type="submit" value="Удалить"></td>
+                    <td colspan="3" align="center"><br><input type="submit" value="Удалить"></td>
                 </tr>
+                </c:if>
+                <c:if test="${position==null}">
+                    <tr>
+                        <td class="table-main" colspan="3">Запись уже не существует</td>
+                    </tr>
+                </c:if>
             </table>
         </form>
     </article>

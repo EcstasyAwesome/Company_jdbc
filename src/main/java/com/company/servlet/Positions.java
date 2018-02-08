@@ -56,10 +56,8 @@ public class Positions extends HttpServlet {
             session.beginTransaction();
             result = session.get(Position.class, id);
             session.getTransaction().commit();
-        } catch (Exception e) {
-            if (session.getTransaction() != null) session.getTransaction().rollback();
-            System.err.println(e.getMessage());
         } finally {
+            if (session.getTransaction() != null) session.getTransaction().rollback();
             session.close();
         }
         return result;
@@ -72,10 +70,8 @@ public class Positions extends HttpServlet {
             session.beginTransaction();
             result = session.createQuery("FROM Position").getResultList();
             session.getTransaction().commit();
-        } catch (Exception e) {
-            if (session.getTransaction() != null) session.getTransaction().rollback();
-            System.err.println(e.getMessage());
         } finally {
+            if (session.getTransaction() != null) session.getTransaction().rollback();
             session.close();
         }
         return result;
@@ -90,10 +86,8 @@ public class Positions extends HttpServlet {
             Position position = new Position(name, description);
             session.save(position);
             session.getTransaction().commit();
-        } catch (Exception e) {
-            if (session.getTransaction() != null) session.getTransaction().rollback();
-            System.err.println(e.getMessage());
         } finally {
+            if (session.getTransaction() != null) session.getTransaction().rollback();
             session.close();
         }
         response.sendRedirect(LinkManager.POSITIONS_LINK);
@@ -111,10 +105,8 @@ public class Positions extends HttpServlet {
             position.setPositionDescription(description);
             session.update(position);
             session.getTransaction().commit();
-        } catch (Exception e) {
-            if (session.getTransaction() != null) session.getTransaction().rollback();
-            System.err.println(e.getMessage());
         } finally {
+            if (session.getTransaction() != null) session.getTransaction().rollback();
             session.close();
         }
         response.sendRedirect(LinkManager.POSITIONS_LINK);
@@ -128,10 +120,8 @@ public class Positions extends HttpServlet {
             Position position = session.get(Position.class, id);
             session.delete(position);
             session.getTransaction().commit();
-        } catch (Exception e) {
-            if (session.getTransaction() != null) session.getTransaction().rollback();
-            System.err.println(e.getMessage());
         } finally {
+            if (session.getTransaction() != null) session.getTransaction().rollback();
             session.close();
         }
         response.sendRedirect(LinkManager.POSITIONS_LINK);

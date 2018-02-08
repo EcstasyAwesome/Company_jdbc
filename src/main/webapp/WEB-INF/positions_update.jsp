@@ -44,6 +44,7 @@
                     <th width="200" class="table-top">Должность*</th>
                     <th width="400" class="table-top">Доп. информация*</th>
                 </tr>
+                <c:if test="${position!=null}">
                 <tr>
                     <td class="table-main">${position.getPositionId()}</td>
                     <td class="table-main">
@@ -60,6 +61,12 @@
                         <br><input type="submit" value="Сохранить изменения">
                     </td>
                 </tr>
+                </c:if>
+                <c:if test="${position==null}">
+                    <tr>
+                        <td class="table-main" colspan="3">Запись уже не существует</td>
+                    </tr>
+                </c:if>
             </table>
         </form>
     </article>

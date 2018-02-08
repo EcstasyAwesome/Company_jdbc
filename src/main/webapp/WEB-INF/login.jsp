@@ -16,7 +16,7 @@
             <button>войти</button>
         </form>
         <c:if test="${message!=null}">
-            <p class="message">${message}</p>
+            <p class="message">${message}</p><br>
         </c:if>
         <form class="register-page" method="post">
             <input type="hidden" name="method" value="GO_REGISTER">
