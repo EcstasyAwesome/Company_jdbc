@@ -73,7 +73,8 @@
                 <td align="center"><br>Удалить фото? <input type="checkbox" name="deleteAvatar" value="true">
                 <td colspan="2" align="center">
                     <small>Данное поле можно оставить пустым<br>
-                        Максимальный размер файла 1024КБ</small>
+                        Максимальный размер файла 1024КБ
+                    </small>
                 </td>
             </tr>
             <tr>
