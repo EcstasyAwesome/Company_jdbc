@@ -32,32 +32,55 @@
     </table>
 </nav>
 <main>
-    <form id="update" method="post">
-        <input type="hidden" name="method" value="PUT">
-        <input type="hidden" name="form" value="updateUser">
+    <br>
+    <form method="post" enctype="multipart/form-data">
+        <input type="hidden" name="method" value="UPDATE">
         <table align="center">
             <tr>
-                <td class="update-table">Фамилия</td>
-                <td class="update-table">Имя</td>
-                <td class="update-table">Отчество</td>
-                <td class="update-table">Телефон</td>
-                <td class="update-table">Пароль</td>
+                <td rowspan="6" width="250" align="center">
+                    <img src="${pageContext.request.contextPath}${sessionUser.getUserAvatar()}">
+                </td>
+                <td width="110">Фамилия:</td>
+                <td><input type="text" size="15" value="${sessionUser.getUserSurname()}"
+                           name="user_surname" required></td>
             </tr>
             <tr>
-                <td class="update-table"><input type="text" size="15" value="${sessionUser.getUserSurname()}"
-                                                name="user_surname" required></td>
-                <td class="update-table"><input type="text" size="15" value="${sessionUser.getUserFirstName()}"
-                                                name="user_firstName" required></td>
-                <td class="update-table"><input type="text" size="15" value="${sessionUser.getUserSecondName()}"
-                                                name="user_secondName" required></td>
-                <td class="update-table"><input type="text" size="15" value="${sessionUser.getUserPhoneNumber()}"
-                                                name="user_phoneNumber" required></td>
-                <td class="update-table"><input type="text" size="15" value="${sessionUser.getUserPassword()}"
-                                                name="user_password" required></td>
+                <td>Имя:</td>
+                <td><input type="text" size="15" value="${sessionUser.getUserFirstName()}"
+                           name="user_firstName" required></td>
+            </tr>
+            <tr>
+                <td>Отчество:</td>
+                <td><input type="text" size="15" value="${sessionUser.getUserSecondName()}"
+                           name="user_secondName" required></td>
+            </tr>
+            <tr>
+                <td>Телефон:</td>
+                <td><input type="text" size="15" value="${sessionUser.getUserPhoneNumber()}"
+                           name="user_phoneNumber" required></td>
+            </tr>
+            <tr>
+                <td>Пароль:</td>
+                <td><input type="text" size="15" value="${sessionUser.getUserPassword()}"
+                           name="user_password" required></td>
+            </tr>
+            <tr>
+                <td>Фото:</td>
+                <td><input type="file" name="user_avatar" accept="image/jpeg,image/png,image/gif">
+                </td>
+            </tr>
+            <tr>
+                <td align="center"><br>Удалить фото? <input type="checkbox" name="deleteAvatar" value="true">
+                <td colspan="2" align="center">
+                    <small>Данное поле можно оставить пустым<br>
+                        Максимальный размер файла 1024КБ</small>
+                </td>
+            </tr>
+            <tr>
+                </td>
+                <td colspan="3" align="center"><br><input type="submit" value="Сохранить изменения"></td>
             </tr>
         </table>
-        <input type="hidden" name="user_id" value="${sessionUser.getUserId()}">
-        <p align="center"><input type="submit" value="Сохранить изменения"></p>
     </form>
 </main>
 <footer>

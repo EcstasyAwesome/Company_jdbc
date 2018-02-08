@@ -42,13 +42,11 @@
                     <td><input style="" type="text" name="user_phoneNumber" pattern="[0-9]{12}"
                                <c:if test="${phoneNumber==null}">value="380"</c:if>
                                <c:if test="${phoneNumber!=null}">value="${phoneNumber}"</c:if>
-                               size="20" required>
-                    </td>
+                               size="20" required></td>
                 </tr>
                 <tr>
                     <td>Фото:</td>
-                    <td><input type="file" name="user_avatar" accept="image/jpeg,image/png,image/gif">
-                    </td>
+                    <td><input type="file" name="user_avatar" accept="image/jpeg,image/png,image/gif"></td>
                 </tr>
                 <tr>
                     <td colspan="2" align="center">Данное поле можно оставить пустым

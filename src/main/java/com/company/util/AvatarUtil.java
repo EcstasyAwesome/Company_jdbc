@@ -44,7 +44,7 @@ public class AvatarUtil {
     public void delete() {
         HttpSession httpSession = request.getSession(false);
         User sessionUser = (User) httpSession.getAttribute("sessionUser");
-        if (sessionUser != null) {
+        if (sessionUser != null && !sessionUser.getUserAvatar().equals(defaultAvatar)) {
             String path = sessionUser.getUserAvatar().replaceAll("/", File.separator + File.separator);
             File file = new File(storagePath + path.substring(1));
             if (file.exists())

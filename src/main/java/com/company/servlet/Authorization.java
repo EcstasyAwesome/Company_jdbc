@@ -102,7 +102,7 @@ public class Authorization extends HttpServlet {
         try {
             String userAvatar = avatar.save();
             session.beginTransaction();
-            Position position = session.get(Position.class, 6); // default
+            Position position = session.get(Position.class, 5); // default
             User user = new User(surname, firstName, secondName, userAvatar, phoneNumber, login, password, new Date(),
                     false, position);
             session.save(user);
