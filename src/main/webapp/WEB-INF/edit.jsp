@@ -78,7 +78,7 @@
                         <input form="avatar" type="submit" value="Удалить фото" disabled>
                     </c:if>
                     <c:if test="${!sessionUser.getUserAvatar().endsWith('avatar.png')}">
-                        <input form="avatar" type="submit" value="Удалить фото" disabled>
+                        <input form="avatar" type="submit" value="Удалить фото">
                     </c:if>
                 </td>
                 <td colspan="2" align="center">
