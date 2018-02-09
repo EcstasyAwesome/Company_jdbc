@@ -10,9 +10,6 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 import javax.persistence.PersistenceException;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -96,7 +93,7 @@ public class Authorization extends HttpServlet {
         Session session = HibernateUtil.getSession();
         AvatarUtil avatar = new AvatarUtil(request);
         try {
-            String userAvatar = avatar.save();
+            String userAvatar = avatar.saveOrUpdate();
             session.beginTransaction();
             Query query = session.createQuery("from User where userLogin = :login");
             query.setParameter("login", login);

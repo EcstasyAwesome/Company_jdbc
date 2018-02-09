@@ -13,18 +13,22 @@ import java.util.Date;
 
 public class AvatarUtil {
 
-    private String defaultAvatar = "/resources/img/avatar.png";
+    private final String defaultAvatar = "/resources/img/avatar.png";
     private String saveAvatar;
     private String storagePath;
     private HttpServletRequest request;
+    private HttpSession httpSession;
+    private User sessionUser;
 
     public AvatarUtil(HttpServletRequest request) {
-        this.request = request;
         String tmp = request.getServletContext().getRealPath("");
         storagePath = tmp.substring(0, tmp.indexOf("target"));
+        httpSession = request.getSession(false);
+        sessionUser = (User) httpSession.getAttribute("sessionUser");
+        this.request = request;
     }
 
-    public String save() throws IllegalStateException, IOException, ServletException {
+    public String saveOrUpdate() throws IllegalStateException, IOException, ServletException {
         Part file = request.getPart("user_avatar");
         int maxFileSize = 1024 * 1024;
         if (file.getSize() > maxFileSize) throw new IllegalStateException(file.getSize() + "КБ");
@@ -36,27 +40,32 @@ public class AvatarUtil {
             String filePath = storagePath + pathToFile + File.separator + new Date().getTime() + fileType;
             file.write(filePath);
             saveAvatar = filePath;
+            if (sessionUser != null) delete(false);
             return filePath.substring(storagePath.length()).replaceAll(File.separator + File.separator, "/");
         }
+        if (sessionUser != null && file.getSize() == 0) return sessionUser.getUserAvatar();
         return defaultAvatar;
     }
 
-    public void delete() {
-        HttpSession httpSession = request.getSession(false);
-        User sessionUser = (User) httpSession.getAttribute("sessionUser");
+    /**
+     * @param deleteAndUpdate false - only delete from storage
+     *                        true - delete from storage and update current user at session and database
+     * @see #delete(boolean)
+     */
+
+    public void delete(boolean deleteAndUpdate) {
         if (sessionUser != null && !sessionUser.getUserAvatar().equals(defaultAvatar)) {
             String path = sessionUser.getUserAvatar().replaceAll("/", File.separator + File.separator);
             File file = new File(storagePath + path);
             if (file.exists())
-                if (file.delete()) {
+                if (file.delete() && deleteAndUpdate) {
                     Session session = HibernateUtil.getSession();
                     try {
                         session.beginTransaction();
-                        User user = session.get(User.class, sessionUser.getUserId());
-                        user.setUserAvatar(defaultAvatar);
-                        session.update(user);
+                        sessionUser.setUserAvatar(defaultAvatar);
+                        session.update(sessionUser);
                         session.getTransaction().commit();
-                        httpSession.setAttribute("sessionUser", user);
+                        httpSession.setAttribute("sessionUser", sessionUser);
                     } finally {
                         if (session.getTransaction() != null) session.getTransaction().rollback();
                         session.close();

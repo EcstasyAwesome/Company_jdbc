@@ -58,7 +58,7 @@
             <button>зарегистрироваться</button>
         </form>
         <c:if test="${message!=null}">
-            <p class="message">${message}</p><br>
+            <p class="server-answer">${message}</p><br>
         </c:if>
         <form class="login-page" method="post">
             <input type="hidden" name="method" value="GO_LOGIN">

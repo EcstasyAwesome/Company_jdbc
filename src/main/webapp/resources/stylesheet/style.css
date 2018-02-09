@@ -125,7 +125,7 @@ table {
     padding-right: 10px;
 }
 
-.edit-input {
+input.edit-input {
     border: 0;
     width: 100%;
     text-align: center;
@@ -140,6 +140,11 @@ input.logout {
     background: none;
     text-decoration: none;
     cursor: pointer;
-    font-size:16px;
+    font-size: 16px;
+}
 
+.server-answer {
+    margin: 15px 0 0;
+    color: #EF3B3A;
+    font-size: 14px;
 }

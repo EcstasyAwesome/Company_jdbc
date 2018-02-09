@@ -33,6 +33,9 @@
 </nav>
 <main>
     <br>
+    <form id="avatar" method="post">
+        <input type="hidden" name="method" value="DELETE">
+    </form>
     <form method="post" enctype="multipart/form-data">
         <input type="hidden" name="method" value="UPDATE">
         <table align="center">
@@ -70,16 +73,22 @@
                 </td>
             </tr>
             <tr>
-                <td align="center"><br>Удалить фото? <input type="checkbox" name="deleteAvatar" value="true">
+                <td align="center">
+                    <input form="avatar" type="submit" value="Удалить фото">
+                </td>
                 <td colspan="2" align="center">
                     <small>Данное поле можно оставить пустым<br>
                         Максимальный размер файла 1024КБ
                     </small>
+                    <c:if test="${profileError!=null}">
+                        <p class="server-answer">${profileError}</p>
+                    </c:if>
                 </td>
             </tr>
             <tr>
+                <td colspan="3" align="center">
+                    <br><input type="submit" value="Сохранить изменения">
                 </td>
-                <td colspan="3" align="center"><br><input type="submit" value="Сохранить изменения"></td>
             </tr>
         </table>
     </form>
