@@ -21,7 +21,7 @@ public class Position {
     }
 
     @Basic
-    @Column(name = "position_name", nullable = false, length = 20)
+    @Column(name = "position_name", unique = true, nullable = false, length = 20)
     public String getPositionName() {
         return positionName;
     }

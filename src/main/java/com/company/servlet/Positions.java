@@ -4,7 +4,9 @@ import com.company.filter.Dispatcher;
 import com.company.pojo.Position;
 import com.company.util.HibernateUtil;
 import com.company.util.LinkManager;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +19,7 @@ import java.util.List;
 @WebServlet(
         name = "Positions",
         description = "Positions servlet",
-        urlPatterns = "/positions/*"
+        urlPatterns = LinkManager.POSITIONS_LINK + "/*"
 )
 
 public class Positions extends HttpServlet {
@@ -31,7 +33,7 @@ public class Positions extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String method = req.getParameter("method");
         if (method != null) {
             switch (method) {
@@ -68,7 +70,7 @@ public class Positions extends HttpServlet {
         List result = null;
         try {
             session.beginTransaction();
-            result = session.createQuery("FROM Position").getResultList();
+            result = session.createQuery("from Position").getResultList();
             session.getTransaction().commit();
         } finally {
             if (session.getTransaction() != null) session.getTransaction().rollback();
@@ -77,20 +79,28 @@ public class Positions extends HttpServlet {
         return result;
     }
 
-    private void addPosition(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void addPosition(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String name = request.getParameter("position_name");
         String description = request.getParameter("position_description");
         Session session = HibernateUtil.getSession();
         try {
             session.beginTransaction();
+            Query query = session.createQuery("from Position where positionName = :name");
+            query.setParameter("name", name);
+            if (!query.list().isEmpty()) throw new HibernateException("Duplicate entry");
             Position position = new Position(name, description);
             session.save(position);
             session.getTransaction().commit();
+            response.sendRedirect(LinkManager.POSITIONS_LINK);
+        } catch (HibernateException e) {
+            request.setAttribute("positionError", "Должность '" + name + "' уже существует");
+            request.setAttribute("position_description", description);
+            request.getRequestDispatcher(LinkManager.getInstance().getList().get(LinkManager.POSITIONS_LINK + "/add")
+                    .getPath()).forward(request, response);
         } finally {
             if (session.getTransaction() != null) session.getTransaction().rollback();
             session.close();
         }
-        response.sendRedirect(LinkManager.POSITIONS_LINK);
     }
 
     private void updatePosition(HttpServletRequest request, HttpServletResponse response) throws IOException {

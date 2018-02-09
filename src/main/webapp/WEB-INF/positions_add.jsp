@@ -49,11 +49,15 @@
                     </td>
                     <td class="table-main">
                         <input class="edit-input" type="text" name="position_description" placeholder="Ведите описание"
-                               required>
+                               value="${position_description}" required>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="3" align="center"><br><input type="submit" value="Добавить"></td>
+                    <td colspan="3" align="center">
+                        <c:if test="${positionError!=null}">
+                            <p class="server-answer">${positionError}</p>
+                        </c:if>
+                        <br><input type="submit" value="Добавить"></td>
                 </tr>
             </table>
         </form>
