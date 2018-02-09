@@ -57,7 +57,7 @@
             <tr>
                 <td>Телефон:</td>
                 <td><input type="text" size="15" value="${sessionUser.getUserPhoneNumber()}"
-                           pattern="[0-9]{12}" name="user_phoneNumber" required></td>
+                           pattern="380[0-9]{9}" name="user_phoneNumber" required></td>
             </tr>
             <tr>
                 <td>Пароль:</td>
