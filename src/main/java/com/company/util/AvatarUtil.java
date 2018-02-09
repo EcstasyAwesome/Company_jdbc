@@ -40,7 +40,7 @@ public class AvatarUtil {
             String filePath = storagePath + pathToFile + File.separator + new Date().getTime() + fileType;
             file.write(filePath);
             saveAvatar = filePath;
-            if (sessionUser != null) delete(false);
+            delete(false);
             return filePath.substring(storagePath.length()).replaceAll(File.separator + File.separator, "/");
         }
         if (sessionUser != null && file.getSize() == 0) return sessionUser.getUserAvatar();
