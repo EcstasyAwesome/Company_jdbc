@@ -39,7 +39,7 @@
                 </tr>
                 <tr>
                     <td>Телефон:</td>
-                    <td><input style="" type="text" name="user_phoneNumber" pattern="[0-9]{12}"
+                    <td><input style="" type="text" name="user_phoneNumber" pattern="380[0-9]{9}"
                                <c:if test="${phoneNumber==null}">value="380"</c:if>
                                <c:if test="${phoneNumber!=null}">value="${phoneNumber}"</c:if>
                                size="20" required></td>
