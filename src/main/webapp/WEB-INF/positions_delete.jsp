@@ -22,7 +22,7 @@
                 <a href="/">Главная</a> |
                 <a href="/positions">Должностя</a> |
                 <a href="/users">Пользователи</a> |
-                <a href="/about">О нас</a>
+                <a href="/about">О компании</a>
             </td>
             <td class="nav-menu-right">
                 <a href="/profile">Профиль</a> |
@@ -80,7 +80,7 @@
         <a href="mailto:ecstasy.awesome@gmail.com">Написать письмо</a>
     </address>
     <p>
-        <small>Ecstasy © 2017</small>
+        <small>Ecstasy © 2018</small>
     </p>
 </footer>
 </body>

@@ -21,7 +21,7 @@
                 <a href="/">Главная</a> |
                 <a href="/positions">Должностя</a> |
                 <a href="/users">Пользователи</a> |
-                <a href="/about">О нас</a>
+                <a href="/about">О компании</a>
             </td>
             <td class="nav-menu-right">
                 <a href="/profile">Профиль</a> |
@@ -74,7 +74,12 @@
             </tr>
             <tr>
                 <td align="center">
-                    <input form="avatar" type="submit" value="Удалить фото">
+                    <c:if test="${sessionUser.getUserAvatar().endsWith('avatar.png')}">
+                        <input form="avatar" type="submit" value="Удалить фото" disabled>
+                    </c:if>
+                    <c:if test="${!sessionUser.getUserAvatar().endsWith('avatar.png')}">
+                        <input form="avatar" type="submit" value="Удалить фото" disabled>
+                    </c:if>
                 </td>
                 <td colspan="2" align="center">
                     <small>Данное поле можно оставить пустым<br>
@@ -98,7 +103,7 @@
         <a href="mailto:ecstasy.awesome@gmail.com">Написать письмо</a>
     </address>
     <p>
-        <small>Ecstasy © 2017</small>
+        <small>Ecstasy © 2018</small>
     </p>
 </footer>
 </body>
