@@ -41,7 +41,7 @@ public class AvatarUtil {
             file.write(filePath);
             saveAvatar = filePath;
             delete(false);
-            return filePath.substring(storagePath.length()).replaceAll(File.separator + File.separator, "/");
+            return filePath.substring(storagePath.length()-1).replaceAll(File.separator + File.separator, "/");
         }
         if (sessionUser != null && file.getSize() == 0) return sessionUser.getUserAvatar();
         return defaultAvatar;
