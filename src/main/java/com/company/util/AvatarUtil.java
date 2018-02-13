@@ -83,6 +83,7 @@ public class AvatarUtil {
     /**
      * delete from storage old user avatar after saving new file {@link #isSaved}
      * does not allow the storage of unnecessary files
+     *
      * @see #clean()
      */
 
@@ -93,6 +94,7 @@ public class AvatarUtil {
     /**
      * delete from storage saved avatar if something went wrong (example - fail registration) {@link #isSaved}
      * does not allow the storage of unnecessary files
+     *
      * @see #rollBack()
      */
 

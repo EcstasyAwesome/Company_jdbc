@@ -15,7 +15,7 @@ public class User {
     private String userLogin;
     private String userPassword;
     private Date userRegisterDate;
-    private boolean userIsAdmin;
+    private int userStatus;
     private Position positionByPositionId;
 
     @Id
@@ -111,20 +111,20 @@ public class User {
     }
 
     @Basic
-    @Column(name = "user_isAdmin", nullable = false)
-    public boolean getUserIsAdmin() {
-        return userIsAdmin;
+    @Column(name = "user_status", nullable = false)
+    public int getUserStatus() {
+        return userStatus;
     }
 
-    public void setUserIsAdmin(boolean userIsAdmin) {
-        this.userIsAdmin = userIsAdmin;
+    public void setUserStatus(int userStatus) {
+        this.userStatus = userStatus;
     }
 
     public User() {
     }
 
     public User(String userSurname, String userFirstName, String userSecondName, String userAvatar, long userPhoneNumber,
-                String userLogin, String userPassword, Date userRegisterDate, boolean userIsAdmin,
+                String userLogin, String userPassword, Date userRegisterDate, int userStatus,
                 Position positionByPositionId) {
         this.userSurname = userSurname;
         this.userFirstName = userFirstName;
@@ -134,7 +134,7 @@ public class User {
         this.userLogin = userLogin;
         this.userPassword = userPassword;
         this.userRegisterDate = userRegisterDate;
-        this.userIsAdmin = userIsAdmin;
+        this.userStatus = userStatus;
         this.positionByPositionId = positionByPositionId;
     }
 
@@ -158,7 +158,7 @@ public class User {
         if (userPassword != null ? !userPassword.equals(that.userPassword) : that.userPassword != null) return false;
         if (userRegisterDate != null ? !userRegisterDate.equals(that.userRegisterDate) : that.userRegisterDate != null)
             return false;
-        if (userIsAdmin != that.userIsAdmin) return false;
+        if (userStatus != that.userStatus) return false;
 
         return true;
     }
@@ -174,7 +174,7 @@ public class User {
         result = 31 * result + (userLogin != null ? userLogin.hashCode() : 0);
         result = 31 * result + (userPassword != null ? userPassword.hashCode() : 0);
         result = 31 * result + (userRegisterDate != null ? userRegisterDate.hashCode() : 0);
-        result = 31 * result + (userIsAdmin ? 1231 : 1237);
+        result = 31 * result + userStatus;
         return result;
     }
 
@@ -191,8 +191,7 @@ public class User {
     public String basicInfo() {
         return userSurname + " " +
                 userFirstName + " " +
-                userSecondName + " - " +
-                (userIsAdmin ? "Администатор" : "Пользователь");
+                userSecondName;
     }
 
     @Override
@@ -206,7 +205,7 @@ public class User {
                 userLogin + ", " +
                 userPassword + ", " +
                 userRegisterDate + ", " +
-                userIsAdmin + ", " +
+                userStatus + ", " +
                 positionByPositionId;
     }
 }
