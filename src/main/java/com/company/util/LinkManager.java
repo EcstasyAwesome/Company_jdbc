@@ -5,36 +5,30 @@ import java.util.Map;
 
 public class LinkManager {
 
-    private Map<String, Page> list = new HashMap<>();
     private static LinkManager instance;
+    private Map<String, Page> list = new HashMap<>();
 
-    public static final String RESOURCES_FOLDER = "/resources/";
-    public static final String RESOURCES_EXTERNAL_FOLDER = "/storage/";
-    public static final String AUTHORIZATION_LINK = "/authorization";
-    public static final String MAIN_LINK = "/";
-    public static final String PROFILE_LINK = "/profile";
-    public static final String EDIT_LINK = "/edit";
-    public static final String ABOUT_LINK = "/about";
-    public static final String USERS_LINK = "/users";
-    public static final String POSITIONS_LINK = "/positions";
-    public static final String LOGIN_PAGE = "/WEB-INF/login.jsp";
-    public static final String REGISTER_PAGE = "/WEB-INF/register.jsp";
-    public static final String ACCESS_PAGE = "/WEB-INF/access.jsp";
-    public static final String NOT_FOUND_PAGE = "/WEB-INF/404.jsp";
+    public static final int ACCESS_ALL = 0;
+    public static final int ACCESS_USER = 1;
+    public static final int ACCESS_ADMIN = 2;
+
+    public static final String PAGE_LOGIN = "/WEB-INF/jsp/login.jsp";
+    public static final String PAGE_REGISTER = "/WEB-INF/jsp/registration.jsp";
 
     private LinkManager() {
-        list.put(MAIN_LINK, new Page("/index.jsp", true));
-        list.put(PROFILE_LINK, new Page("/WEB-INF/profile.jsp", true));
-        list.put(EDIT_LINK, new Page("/WEB-INF/edit.jsp", true));
-        list.put(ABOUT_LINK, new Page("/WEB-INF/about.jsp", true));
-        list.put(USERS_LINK, new Page("/WEB-INF/users_search.jsp", true));
-        list.put(USERS_LINK + "/add", new Page("/WEB-INF/users_add.jsp", false));
-        list.put(USERS_LINK + "/update", new Page("/WEB-INF/users_update.jsp", false));
-        list.put(USERS_LINK + "/delete", new Page("/WEB-INF/users_delete.jsp", false));
-        list.put(POSITIONS_LINK, new Page("/WEB-INF/positions_search.jsp", true));
-        list.put(POSITIONS_LINK + "/add", new Page("/WEB-INF/positions_add.jsp", false));
-        list.put(POSITIONS_LINK + "/update", new Page("/WEB-INF/positions_update.jsp", false));
-        list.put(POSITIONS_LINK + "/delete", new Page("/WEB-INF/positions_delete.jsp", false));
+        list.put("/authorization", new Page(null, ACCESS_ALL));
+        list.put("/", new Page("/index.jsp", ACCESS_ALL));
+        list.put("/profile", new Page("/WEB-INF/jsp/profile.jsp", ACCESS_USER));
+        list.put("/edit", new Page("/WEB-INF/jsp/edit.jsp", ACCESS_USER));
+        list.put("/about", new Page("/WEB-INF/jsp/about.jsp", ACCESS_ALL));
+        list.put("/users", new Page("/WEB-INF/jsp/users_search.jsp", ACCESS_USER));
+        list.put("/users/add", new Page("/WEB-INF/jsp/users_add.jsp", ACCESS_ADMIN));
+        list.put("/users/update", new Page("/WEB-INF/jsp/users_update.jsp", ACCESS_ADMIN));
+        list.put("/users/delete", new Page("/WEB-INF/jsp/users_delete.jsp", ACCESS_ADMIN));
+        list.put("/positions", new Page("/WEB-INF/jsp/positions_search.jsp", ACCESS_USER));
+        list.put("/positions/add", new Page("/WEB-INF/jsp/positions_add.jsp", ACCESS_ADMIN));
+        list.put("/positions/update", new Page("/WEB-INF/jsp/positions_update.jsp", ACCESS_ADMIN));
+        list.put("/positions/delete", new Page("/WEB-INF/jsp/positions_delete.jsp", ACCESS_ADMIN));
     }
 
     public static LinkManager getInstance() {
@@ -47,12 +41,18 @@ public class LinkManager {
         return list;
     }
 
+    public boolean isResources(String link) {
+        String path1 = "/resources/";
+        String path2 = "/storage/";
+        return link.startsWith(path1) | link.startsWith(path2);
+    }
+
     public class Page {
 
         private String path;
-        private boolean access;  // access for users
+        private int access;
 
-        private Page(String path, boolean access) {
+        private Page(String path, int access) {
             this.path = path;
             this.access = access;
         }
@@ -61,7 +61,7 @@ public class LinkManager {
             return path;
         }
 
-        public boolean getAccess() {
+        public int getAccess() {
             return access;
         }
     }

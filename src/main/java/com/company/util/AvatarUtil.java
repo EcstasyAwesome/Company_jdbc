@@ -19,6 +19,7 @@ public class AvatarUtil {
     private HttpServletRequest request;
     private HttpSession httpSession;
     private User sessionUser;
+    private boolean isSaved;
 
     public AvatarUtil(HttpServletRequest request) {
         String tmp = request.getServletContext().getRealPath("");
@@ -28,37 +29,42 @@ public class AvatarUtil {
         this.request = request;
     }
 
-    public String saveOrUpdate() throws IllegalStateException, IOException, ServletException {
+    /**
+     * @return returns link for which avatars are available
+     * @throws IllegalStateException if upload file size > maxFileSize
+     * @throws IOException           if can't write file
+     * @see #save()
+     */
+
+    public String save() throws IllegalStateException, IOException, ServletException {
         Part file = request.getPart("user_avatar");
         int maxFileSize = 1024 * 1024;
         if (file.getSize() > maxFileSize) throw new IllegalStateException(file.getSize() + "КБ");
-        if (file.getSize() > 0) {
+        else if (file.getSize() > 0) {
             String pathToFile = "storage" + File.separator + "avatar";
             File folder = new File(storagePath + pathToFile);
             if (!folder.exists()) folder.mkdir();
             String fileType = file.getSubmittedFileName().substring(file.getSubmittedFileName().lastIndexOf("."));
-            String filePath = storagePath + pathToFile + File.separator + new Date().getTime() + fileType;
-            file.write(filePath);
-            saveAvatar = filePath;
-            delete(false);
-            return filePath.substring(storagePath.length()-1).replaceAll(File.separator + File.separator, "/");
+            saveAvatar = storagePath + pathToFile + File.separator + new Date().getTime() + fileType;
+            file.write(saveAvatar);
+            isSaved = true;
+            return saveAvatar.substring(storagePath.length() - 1).replaceAll(File.separator + File.separator, "/");
         }
-        if (sessionUser != null && file.getSize() == 0) return sessionUser.getUserAvatar();
-        return defaultAvatar;
+        return sessionUser != null ? sessionUser.getUserAvatar() : defaultAvatar;
     }
 
     /**
-     * @param deleteAndUpdate false - only delete from storage
-     *                        true - delete from storage and update current user at session and database
+     * @param update false - delete from storage avatar of the current user
+     *               true - delete from storage avatar and update current user in session and database
      * @see #delete(boolean)
      */
 
-    public void delete(boolean deleteAndUpdate) {
+    public void delete(boolean update) {
         if (sessionUser != null && !sessionUser.getUserAvatar().equals(defaultAvatar)) {
-            String path = sessionUser.getUserAvatar().replaceAll("/", File.separator + File.separator);
+            String path = sessionUser.getUserAvatar().replaceAll("[/]", File.separator + File.separator);
             File file = new File(storagePath + path);
             if (file.exists())
-                if (file.delete() && deleteAndUpdate) {
+                if (file.delete() && update) {
                     Session session = HibernateUtil.getSession();
                     try {
                         session.beginTransaction();
@@ -74,8 +80,24 @@ public class AvatarUtil {
         }
     }
 
+    /**
+     * delete from storage old user avatar after saving new file {@link #isSaved}
+     * does not allow the storage of unnecessary files
+     * @see #clean()
+     */
+
+    public void clean() {
+        if (isSaved) delete(false);
+    }
+
+    /**
+     * delete from storage saved avatar if something went wrong (example - fail registration) {@link #isSaved}
+     * does not allow the storage of unnecessary files
+     * @see #rollBack()
+     */
+
     public void rollBack() {
-        if (saveAvatar != null) {
+        if (isSaved) {
             File avatar = new File(saveAvatar);
             if (avatar.exists()) avatar.delete();
         }
