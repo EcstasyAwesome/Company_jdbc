@@ -1,6 +1,6 @@
 package com.company.util;
 
-import com.company.pojo.User;
+import com.company.entity.User;
 import org.hibernate.Session;
 
 import javax.servlet.ServletException;
@@ -88,7 +88,10 @@ public class AvatarUtil {
      */
 
     public void clean() {
-        if (isSaved) delete(false);
+        if (isSaved) {
+            delete(false);
+            isSaved = false;
+        }
     }
 
     /**
@@ -101,7 +104,18 @@ public class AvatarUtil {
     public void rollBack() {
         if (isSaved) {
             File avatar = new File(saveAvatar);
-            if (avatar.exists()) avatar.delete();
+            if (avatar.exists())
+                if (avatar.delete())
+                    isSaved = false;
         }
+    }
+
+    /**
+     * @return returns the current state of the saved object
+     * @see #isSaved()
+     */
+
+    public boolean isSaved() {
+        return isSaved;
     }
 }
