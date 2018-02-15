@@ -16,7 +16,7 @@ import java.io.IOException;
 @WebServlet(
         name = "Users",
         description = "Users servlet",
-        urlPatterns = LinkManager.USERS_LINK + "/*"
+        urlPatterns = "/users/*"
 )
 public class Users extends HttpServlet {
 

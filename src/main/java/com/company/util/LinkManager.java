@@ -6,7 +6,7 @@ import java.util.Map;
 public class LinkManager {
 
     private static LinkManager instance;
-    private Map<String, Page> list = new HashMap<>();
+    private final Map<String, Page> list = new HashMap<>();
 
     public static final String PAGE_LOGIN = "/WEB-INF/jsp/login.jsp";
     public static final String PAGE_REGISTER = "/WEB-INF/jsp/registration.jsp";
@@ -28,8 +28,7 @@ public class LinkManager {
     }
 
     public static LinkManager getInstance() {
-        if (instance == null)
-            return instance = new LinkManager();
+        if (instance == null) return instance = new LinkManager();
         return instance;
     }
 

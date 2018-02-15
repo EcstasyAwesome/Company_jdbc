@@ -1,6 +1,6 @@
 package com.company.util;
 
-import com.company.entity.User;
+import com.company.DAO.entity.User;
 import org.hibernate.Session;
 
 import javax.servlet.ServletException;

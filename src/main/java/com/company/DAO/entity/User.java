@@ -1,4 +1,4 @@
-package com.company.pojo;
+package com.company.DAO.entity;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -121,6 +121,9 @@ public class User {
     }
 
     public User() {
+    }
+
+    public User(int id) {
     }
 
     public User(String userSurname, String userFirstName, String userSecondName, String userAvatar, long userPhoneNumber,

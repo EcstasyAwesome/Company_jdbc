@@ -1,7 +1,7 @@
 package com.company.servlet;
 
-import com.company.pojo.Position;
-import com.company.pojo.User;
+import com.company.DAO.entity.Position;
+import com.company.DAO.entity.User;
 import com.company.util.AvatarUtil;
 import com.company.util.HibernateUtil;
 import com.company.util.LinkManager;
@@ -17,17 +17,14 @@ import javax.servlet.http.*;
 import java.io.*;
 import java.util.Date;
 
-@WebServlet(
-        name = "Authorization",
-        description = "responsible for authorization and registration",
-        urlPatterns = LinkManager.AUTHORIZATION_LINK
-)
+@WebServlet(name = "Authorization", urlPatterns = "/authorization")
 @MultipartConfig
+
 public class Authorization extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher(LinkManager.LOGIN_PAGE).forward(req, resp);
+        req.getRequestDispatcher(LinkManager.PAGE_LOGIN).forward(req, resp);
     }
 
     @Override
@@ -36,10 +33,10 @@ public class Authorization extends HttpServlet {
         if (method != null) {
             switch (method) {
                 case "GO_REGISTER":
-                    req.getRequestDispatcher(LinkManager.REGISTER_PAGE).forward(req, resp);
+                    req.getRequestDispatcher(LinkManager.PAGE_REGISTER).forward(req, resp);
                     break;
                 case "GO_LOGIN":
-                    req.getRequestDispatcher(LinkManager.LOGIN_PAGE).forward(req, resp);
+                    req.getRequestDispatcher(LinkManager.PAGE_LOGIN).forward(req, resp);
                     break;
                 case "LOGIN":
                     login(req, resp);
@@ -68,15 +65,15 @@ public class Authorization extends HttpServlet {
             if (user.getUserPassword().equals(password)) {
                 httpSession.setAttribute("sessionUser", user);
                 System.out.println(String.format("-> [%s] Выполнен вход: %s", getClass().getSimpleName(), user.basicInfo()));
-                response.sendRedirect(LinkManager.MAIN_LINK);
+                response.sendRedirect("/");
             } else {
                 request.setAttribute("message", "Ошибка доступа. Не правильный пароль");
                 request.setAttribute("login", login);
-                request.getRequestDispatcher(LinkManager.LOGIN_PAGE).forward(request, response);
+                request.getRequestDispatcher(LinkManager.PAGE_LOGIN).forward(request, response);
             }
         } catch (PersistenceException e) {
             request.setAttribute("message", "Пользователь '" + login + "' не зарегистрирован");
-            request.getRequestDispatcher(LinkManager.LOGIN_PAGE).forward(request, response);
+            request.getRequestDispatcher(LinkManager.PAGE_LOGIN).forward(request, response);
         } finally {
             if (session.getTransaction() != null) session.getTransaction().rollback();
             session.close();
@@ -89,22 +86,22 @@ public class Authorization extends HttpServlet {
         String surname = request.getParameter("user_surname");
         String firstName = request.getParameter("user_firstName");
         String secondName = request.getParameter("user_secondName");
-        long phoneNumber = Long.parseLong(request.getParameter("user_phoneNumber")); // have pattern on page
+        long phoneNumber = Long.parseLong(request.getParameter("user_phoneNumber"));
         Session session = HibernateUtil.getSession();
         AvatarUtil avatar = new AvatarUtil(request);
         try {
-            String userAvatar = avatar.saveOrUpdate();
+            String userAvatar = avatar.save();
             session.beginTransaction();
             Query query = session.createQuery("from User where userLogin = :login");
             query.setParameter("login", login);
             if (!query.list().isEmpty()) throw new HibernateException("Duplicate entry");
             Position position = session.get(Position.class, 5); // default
             User user = new User(surname, firstName, secondName, userAvatar, phoneNumber, login, password,
-                    new Date(), false, position);
+                    new Date(), 1, position);
             session.save(user);
             session.getTransaction().commit();
             request.setAttribute("message", "Регистрация успешно завершена");
-            request.getRequestDispatcher(LinkManager.LOGIN_PAGE).forward(request, response);
+            request.getRequestDispatcher(LinkManager.PAGE_LOGIN).forward(request, response);
         } catch (Exception e) {
             avatar.rollBack();
             request.setAttribute("surname", surname);
@@ -117,7 +114,7 @@ public class Authorization extends HttpServlet {
                 request.setAttribute("login", login);
                 request.setAttribute("message", "Загружаемый файл слишком большой");
             }
-            request.getRequestDispatcher(LinkManager.REGISTER_PAGE).forward(request, response);
+            request.getRequestDispatcher(LinkManager.PAGE_REGISTER).forward(request, response);
         } finally {
             if (session.getTransaction() != null) session.getTransaction().rollback();
             session.close();
@@ -129,6 +126,6 @@ public class Authorization extends HttpServlet {
         User user = (User) session.getAttribute("sessionUser");
         System.out.println(String.format("-> [%s] Выполнен выход: %s", getClass().getSimpleName(), user.basicInfo()));
         session.invalidate();
-        response.sendRedirect(LinkManager.AUTHORIZATION_LINK);
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
     }
 }

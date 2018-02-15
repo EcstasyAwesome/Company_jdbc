@@ -1,4 +1,4 @@
-package com.company.pojo;
+package com.company.DAO.entity;
 
 import javax.persistence.*;
 
@@ -41,6 +41,9 @@ public class Position {
     }
 
     public Position() {
+    }
+
+    public Position(int id) {
     }
 
     public Position(String positionName, String positionDescription) {

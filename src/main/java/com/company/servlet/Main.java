@@ -1,7 +1,7 @@
 package com.company.servlet;
 
 import com.company.filter.Dispatcher;
-import com.company.pojo.User;
+import com.company.DAO.entity.User;
 import com.company.util.AvatarUtil;
 import com.company.util.HibernateUtil;
 import com.company.util.LinkManager;
@@ -20,7 +20,7 @@ import java.io.IOException;
 @WebServlet(
         name = "Main",
         description = "main servlet",
-        urlPatterns = {LinkManager.PROFILE_LINK, LinkManager.EDIT_LINK, LinkManager.ABOUT_LINK}
+        urlPatterns = {"/profile", "/edit", "/about"}
 )
 @MultipartConfig
 public class Main extends HttpServlet {
@@ -40,7 +40,7 @@ public class Main extends HttpServlet {
                     break;
                 case "DELETE":
                     new AvatarUtil(req).delete(true);
-                    resp.sendRedirect(LinkManager.PROFILE_LINK);
+                    resp.sendRedirect(Dispatcher.getLink());
                     break;
             }
         }
@@ -57,7 +57,7 @@ public class Main extends HttpServlet {
         Session session = HibernateUtil.getSession();
         try {
             User sessionUser = (User) httpSession.getAttribute("sessionUser");
-            String avatar = avatarUtil.saveOrUpdate();
+            String avatar = avatarUtil.save();
             sessionUser.setUserSurname(surname);
             sessionUser.setUserFirstName(firstName);
             sessionUser.setUserSecondName(secondName);
@@ -68,14 +68,15 @@ public class Main extends HttpServlet {
             session.update(sessionUser);
             session.getTransaction().commit();
             httpSession.setAttribute("sessionUser", sessionUser);
-            resp.sendRedirect(LinkManager.PROFILE_LINK);
+            resp.sendRedirect("/profile");
         } catch (Exception e) {
             if (e instanceof HibernateException)
                 req.setAttribute("profileError", "Ошибка при изменении профиля");
             if (e instanceof IllegalStateException)
                 req.setAttribute("profileError", "Загружаемый файл слишком большой");
-            req.getRequestDispatcher(LinkManager.getInstance().getList().get(LinkManager.EDIT_LINK).getPath()).forward(req, resp);
+            req.getRequestDispatcher(LinkManager.getInstance().getList().get(Dispatcher.getLink()).getPath()).forward(req, resp);
         } finally {
+            avatarUtil.clean();
             if (session.getTransaction() != null) session.getTransaction().rollback();
             session.close();
         }

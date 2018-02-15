@@ -7,13 +7,13 @@ import org.hibernate.cfg.*;
 
 public class HibernateUtil {
 
-    private static final SessionFactory ourSessionFactory;
+    private static final SessionFactory SESSION_FACTORY;
 
     static {
         try {
-            ourSessionFactory = new Configuration().configure().buildSessionFactory();
+            SESSION_FACTORY = new Configuration().configure().buildSessionFactory();
         } catch (Throwable ex) {
-            System.err.println(ex.getMessage());
+            ex.printStackTrace();
             throw new ExceptionInInitializerError(ex);
         }
     }
@@ -22,6 +22,6 @@ public class HibernateUtil {
     }
 
     public static Session getSession() throws HibernateException {
-        return ourSessionFactory.openSession();
+        return SESSION_FACTORY.openSession();
     }
 }

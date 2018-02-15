@@ -1,7 +1,7 @@
 package com.company.servlet;
 
 import com.company.filter.Dispatcher;
-import com.company.pojo.Position;
+import com.company.DAO.entity.Position;
 import com.company.util.HibernateUtil;
 import com.company.util.LinkManager;
 import org.hibernate.HibernateException;
@@ -19,17 +19,20 @@ import java.util.List;
 @WebServlet(
         name = "Positions",
         description = "Positions servlet",
-        urlPatterns = LinkManager.POSITIONS_LINK + "/*"
+        urlPatterns = "/positions/*"
 )
 
 public class Positions extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getQueryString() != null && req.getQueryString().length() > 0)
+        if (req.getPathInfo() == null) {
+            req.setAttribute("positions", getPositions());
+            req.getRequestDispatcher(LinkManager.getInstance().getList().get(Dispatcher.getLink()).getPath()).forward(req, resp);
+        } else if (req.getQueryString() != null && req.getQueryString().matches("position_id=\\d+")) {
             req.setAttribute("position", getPosition(req));
-        if (req.getPathInfo() == null) req.setAttribute("positions", getPositions());
-        req.getRequestDispatcher(LinkManager.getInstance().getList().get(Dispatcher.getLink()).getPath()).forward(req, resp);
+            req.getRequestDispatcher(LinkManager.getInstance().getList().get(Dispatcher.getLink()).getPath()).forward(req, resp);
+        } else resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
 
     @Override
@@ -52,8 +55,8 @@ public class Positions extends HttpServlet {
 
     private Position getPosition(HttpServletRequest request) {
         Session session = HibernateUtil.getSession();
-        int id = Integer.parseInt(request.getParameter("position_id"));
         Position result = null;
+        int id = Integer.parseInt(request.getParameter("position_id"));
         try {
             session.beginTransaction();
             result = session.get(Position.class, id);
@@ -91,12 +94,11 @@ public class Positions extends HttpServlet {
             Position position = new Position(name, description);
             session.save(position);
             session.getTransaction().commit();
-            response.sendRedirect(LinkManager.POSITIONS_LINK);
+            response.sendRedirect("/position");
         } catch (HibernateException e) {
             request.setAttribute("positionError", "Должность '" + name + "' уже существует");
             request.setAttribute("position_description", description);
-            request.getRequestDispatcher(LinkManager.getInstance().getList().get(LinkManager.POSITIONS_LINK + "/add")
-                    .getPath()).forward(request, response);
+            request.getRequestDispatcher(LinkManager.getInstance().getList().get("/position/add").getPath()).forward(request, response);
         } finally {
             if (session.getTransaction() != null) session.getTransaction().rollback();
             session.close();
@@ -119,7 +121,7 @@ public class Positions extends HttpServlet {
             if (session.getTransaction() != null) session.getTransaction().rollback();
             session.close();
         }
-        response.sendRedirect(LinkManager.POSITIONS_LINK);
+        response.sendRedirect("/position");
     }
 
     private void deletePosition(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -134,6 +136,6 @@ public class Positions extends HttpServlet {
             if (session.getTransaction() != null) session.getTransaction().rollback();
             session.close();
         }
-        response.sendRedirect(LinkManager.POSITIONS_LINK);
+        response.sendRedirect("/position");
     }
 }

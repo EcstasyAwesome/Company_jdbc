@@ -1,7 +1,7 @@
 package com.company.filter;
 
 import com.company.util.LinkManager;
-import com.company.entity.User;
+import com.company.DAO.entity.User;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;

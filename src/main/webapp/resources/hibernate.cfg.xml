@@ -13,7 +13,7 @@
         <property name="connection.datasource">java:comp/env/jdbc/mydb</property>
         <property name="hibernate.show_sql">false</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-        <mapping class="com.company.pojo.User"/>
-        <mapping class="com.company.pojo.Position"/>
+        <mapping class="com.company.DAO.entity.User"/>
+        <mapping class="com.company.DAO.entity.Position"/>
     </session-factory>
 </hibernate-configuration>
