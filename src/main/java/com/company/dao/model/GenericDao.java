@@ -4,7 +4,7 @@ public interface GenericDao<T, E> {
 
     void create(T newInstance);
 
-    T read(E id);
+    T get(E id);
 
     void update(T instance);
 

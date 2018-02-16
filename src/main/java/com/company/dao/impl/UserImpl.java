@@ -52,7 +52,7 @@ public class UserImpl implements UserDao {
     }
 
     @Override
-    public User read(Integer id) {
+    public User get(Integer id) {
         User user;
         try (Session session = HibernateUtil.getSession()) {
             user = session.get(User.class, id);

@@ -52,7 +52,7 @@ public class PositionImpl implements PositionDao {
     }
 
     @Override
-    public Position read(Integer id) {
+    public Position get(Integer id) {
         Position position;
         try (Session session = HibernateUtil.getSession()) {
             position = session.get(Position.class, id);
