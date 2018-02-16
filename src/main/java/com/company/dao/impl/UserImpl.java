@@ -1,7 +1,7 @@
-package com.company.DAO.daoImpl;
+package com.company.dao.impl;
 
-import com.company.DAO.dao.UserDao;
-import com.company.DAO.entity.User;
+import com.company.dao.model.UserDao;
+import com.company.dao.entity.User;
 import com.company.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
@@ -17,7 +17,7 @@ public class UserImpl implements UserDao {
     @Override
     public List<User> getAll() {
         List<User> result;
-        try (Session session = HibernateUtil.getSession();) {
+        try (Session session = HibernateUtil.getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<User> query = builder.createQuery(User.class);
             Root<User> root = query.from(User.class);
@@ -29,17 +29,19 @@ public class UserImpl implements UserDao {
     }
 
     @Override
-    public void create(User newInstance) {
+    public void create(User newInstance) throws ConstraintViolationException {
         Session session = HibernateUtil.getSession();
-        String login = newInstance.getUserLogin();
+        String login = newInstance.getLogin();
         try {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<User> query = builder.createQuery(User.class);
             Root<User> root = query.from(User.class);
             query.select(root).where(builder.equal(root.get("userLogin"), login));
             Query<User> userQuery = session.createQuery(query);
-            if (!userQuery.list().isEmpty())
-                throw new ConstraintViolationException("Логин '" + login + "' уже существует", null, login);
+            if (!userQuery.list().isEmpty()) {
+                String duplicate = "Логин %s уже существует";
+                throw new ConstraintViolationException(String.format(duplicate, login), null, login);
+            }
             session.beginTransaction();
             session.save(newInstance);
             session.getTransaction().commit();
@@ -56,6 +58,19 @@ public class UserImpl implements UserDao {
             user = session.get(User.class, id);
         }
         return user;
+    }
+
+    @Override
+    public void update(User instance) {
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            session.update(instance);
+            session.getTransaction().commit();
+        } finally {
+            if (session.getTransaction() != null) session.getTransaction().rollback();
+            session.close();
+        }
     }
 
     @Override

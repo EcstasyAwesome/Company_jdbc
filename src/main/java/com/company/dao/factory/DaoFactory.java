@@ -1,9 +1,9 @@
-package com.company.DAO.factory;
+package com.company.dao.factory;
 
-import com.company.DAO.dao.PositionDao;
-import com.company.DAO.dao.UserDao;
-import com.company.DAO.daoImpl.PositionImpl;
-import com.company.DAO.daoImpl.UserImpl;
+import com.company.dao.model.PositionDao;
+import com.company.dao.model.UserDao;
+import com.company.dao.impl.PositionImpl;
+import com.company.dao.impl.UserImpl;
 
 public class DaoFactory {
     private static DaoFactory instance;

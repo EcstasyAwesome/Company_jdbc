@@ -1,6 +1,6 @@
-package com.company.DAO.dao;
+package com.company.dao.model;
 
-import com.company.DAO.entity.Position;
+import com.company.dao.entity.Position;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.company.util;
 
-import com.company.DAO.entity.User;
+import com.company.dao.entity.User;
 import org.hibernate.Session;
 
 import javax.servlet.ServletException;
@@ -50,7 +50,7 @@ public class AvatarUtil {
             isSaved = true;
             return saveAvatar.substring(storagePath.length() - 1).replaceAll(File.separator + File.separator, "/");
         }
-        return sessionUser != null ? sessionUser.getUserAvatar() : defaultAvatar;
+        return sessionUser != null ? sessionUser.getAvatar() : defaultAvatar;
     }
 
     /**
@@ -60,15 +60,15 @@ public class AvatarUtil {
      */
 
     public void delete(boolean update) {
-        if (sessionUser != null && !sessionUser.getUserAvatar().equals(defaultAvatar)) {
-            String path = sessionUser.getUserAvatar().replaceAll("[/]", File.separator + File.separator);
+        if (sessionUser != null && !sessionUser.getAvatar().equals(defaultAvatar)) {
+            String path = sessionUser.getAvatar().replaceAll("[/]", File.separator + File.separator);
             File file = new File(storagePath + path);
             if (file.exists())
                 if (file.delete() && update) {
                     Session session = HibernateUtil.getSession();
                     try {
                         session.beginTransaction();
-                        sessionUser.setUserAvatar(defaultAvatar);
+                        sessionUser.setAvatar(defaultAvatar);
                         session.update(sessionUser);
                         session.getTransaction().commit();
                         httpSession.setAttribute("sessionUser", sessionUser);

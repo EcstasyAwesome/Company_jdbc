@@ -1,7 +1,7 @@
-package com.company.DAO.daoImpl;
+package com.company.dao.impl;
 
-import com.company.DAO.dao.PositionDao;
-import com.company.DAO.entity.Position;
+import com.company.dao.model.PositionDao;
+import com.company.dao.entity.Position;
 import com.company.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
@@ -13,6 +13,8 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class PositionImpl implements PositionDao {
+
+    private final String duplicate = "Должность %s уже существует";
 
     @Override
     public List<Position> getAll() {
@@ -29,9 +31,9 @@ public class PositionImpl implements PositionDao {
     }
 
     @Override
-    public void create(Position newInstance) {
+    public void create(Position newInstance) throws ConstraintViolationException {
         Session session = HibernateUtil.getSession();
-        String name = newInstance.getPositionName();
+        String name = newInstance.getName();
         try {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Position> query = builder.createQuery(Position.class);
@@ -39,7 +41,7 @@ public class PositionImpl implements PositionDao {
             query.select(root).where(builder.equal(root.get("positionName"), name));
             Query<Position> positionQuery = session.createQuery(query);
             if (!positionQuery.list().isEmpty())
-                throw new ConstraintViolationException("Должность '" + name + "' уже существует", null, name);
+                throw new ConstraintViolationException(String.format(duplicate, name), null, name);
             session.beginTransaction();
             session.save(newInstance);
             session.getTransaction().commit();
@@ -56,6 +58,27 @@ public class PositionImpl implements PositionDao {
             position = session.get(Position.class, id);
         }
         return position;
+    }
+
+    @Override
+    public void update(Position instance) throws ConstraintViolationException {
+        Session session = HibernateUtil.getSession();
+        String name = instance.getName();
+        try {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Position> query = builder.createQuery(Position.class);
+            Root<Position> root = query.from(Position.class);
+            query.select(root).where(builder.equal(root.get("positionName"), name));
+            Query<Position> positionQuery = session.createQuery(query);
+            if (!positionQuery.list().isEmpty())
+                throw new ConstraintViolationException(String.format(duplicate, name), null, name);
+            session.beginTransaction();
+            session.update(instance);
+            session.getTransaction().commit();
+        } finally {
+            if (session.getTransaction() != null) session.getTransaction().rollback();
+            session.close();
+        }
     }
 
     @Override
