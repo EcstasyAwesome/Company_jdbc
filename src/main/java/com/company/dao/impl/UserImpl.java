@@ -3,10 +3,12 @@ package com.company.dao.impl;
 import com.company.dao.model.UserDao;
 import com.company.dao.entity.User;
 import com.company.util.HibernateUtil;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.query.Query;
 
+import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -29,6 +31,23 @@ public class UserImpl implements UserDao {
     }
 
     @Override
+    public User getByLogin(String login) throws PersistenceException {
+        User result;
+        try (Session session = HibernateUtil.getSession()) {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<User> query = builder.createQuery(User.class);
+            Root<User> root = query.from(User.class);
+            query.select(root).where(builder.equal(root.get("login"), login));
+            Query<User> userQuery = session.createQuery(query);
+            result = userQuery.getSingleResult();
+        } catch (PersistenceException e) {
+            String noResult = "Пользователь %s не зарегистрирован";
+            throw new PersistenceException(String.format(noResult, login));
+        }
+        return result;
+    }
+
+    @Override
     public void create(User newInstance) throws ConstraintViolationException {
         Session session = HibernateUtil.getSession();
         String login = newInstance.getLogin();
@@ -36,7 +55,7 @@ public class UserImpl implements UserDao {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<User> query = builder.createQuery(User.class);
             Root<User> root = query.from(User.class);
-            query.select(root).where(builder.equal(root.get("userLogin"), login));
+            query.select(root).where(builder.equal(root.get("login"), login));
             Query<User> userQuery = session.createQuery(query);
             if (!userQuery.list().isEmpty()) {
                 String duplicate = "Логин %s уже существует";

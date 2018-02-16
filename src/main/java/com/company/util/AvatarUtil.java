@@ -37,9 +37,9 @@ public class AvatarUtil {
      */
 
     public String save() throws IllegalStateException, IOException, ServletException {
-        Part file = request.getPart("user_avatar");
+        Part file = request.getPart("avatar");
         int maxFileSize = 1024 * 1024;
-        if (file.getSize() > maxFileSize) throw new IllegalStateException(file.getSize() + "КБ");
+        if (file.getSize() > maxFileSize) throw new IllegalStateException("Загружаемый файл больше допустимого");
         else if (file.getSize() > 0) {
             String pathToFile = "storage" + File.separator + "avatar";
             File folder = new File(storagePath + pathToFile);

@@ -38,7 +38,7 @@ public class PositionImpl implements PositionDao {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Position> query = builder.createQuery(Position.class);
             Root<Position> root = query.from(Position.class);
-            query.select(root).where(builder.equal(root.get("positionName"), name));
+            query.select(root).where(builder.equal(root.get("name"), name));
             Query<Position> positionQuery = session.createQuery(query);
             if (!positionQuery.list().isEmpty())
                 throw new ConstraintViolationException(String.format(duplicate, name), null, name);
@@ -68,7 +68,7 @@ public class PositionImpl implements PositionDao {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Position> query = builder.createQuery(Position.class);
             Root<Position> root = query.from(Position.class);
-            query.select(root).where(builder.equal(root.get("positionName"), name));
+            query.select(root).where(builder.equal(root.get("name"), name));
             Query<Position> positionQuery = session.createQuery(query);
             if (!positionQuery.list().isEmpty())
                 throw new ConstraintViolationException(String.format(duplicate, name), null, name);
