@@ -84,7 +84,8 @@ public class PositionImpl implements PositionDao {
     @Override
     public void delete(Integer id) {
         try (Session session = HibernateUtil.getSession()) {
-            Position position = new Position(id);
+            Position position = new Position();
+            position.setId(id);
             session.delete(position);
         }
     }

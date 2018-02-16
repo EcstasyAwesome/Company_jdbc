@@ -14,39 +14,39 @@
             <table align="center">
                 <tr>
                     <td>Логин:</td>
-                    <td><input type="text" name="user_login" placeholder="Придумайте логин"
+                    <td><input type="text" name="login" placeholder="Придумайте логин"
                                value="${login}" size="20" required autofocus></td>
                 </tr>
                 <tr>
                     <td>Пароль:</td>
-                    <td><input type="password" name="user_password" placeholder="Придумайте пароль"
+                    <td><input type="password" name="password" placeholder="Придумайте пароль"
                                size="20" required></td>
                 </tr>
                 <tr>
                     <td>Фамилия:</td>
-                    <td><input type="text" name="user_surname" placeholder="Ваша фамилию"
+                    <td><input type="text" name="surname" placeholder="Ваша фамилию"
                                value="${surname}" size="20" required></td>
                 </tr>
                 <tr>
                     <td>Имя:</td>
-                    <td><input type="text" name="user_firstName" placeholder="Ваше имя" size="20"
+                    <td><input type="text" name="firstName" placeholder="Ваше имя" size="20"
                                value="${firstName}" required></td>
                 </tr>
                 <tr>
                     <td>Отчество:</td>
-                    <td><input type="text" name="user_secondName" placeholder="Ваше отчество"
-                               value="${secondName}" size="20" required></td>
+                    <td><input type="text" name="middleName" placeholder="Ваше отчество"
+                               value="${middleName}" size="20" required></td>
                 </tr>
                 <tr>
                     <td>Телефон:</td>
-                    <td><input style="" type="text" name="user_phoneNumber" pattern="380[0-9]{9}"
-                               <c:if test="${phoneNumber==null}">value="380"</c:if>
-                               <c:if test="${phoneNumber!=null}">value="${phoneNumber}"</c:if>
+                    <td><input style="" type="text" name="phone" pattern="380[0-9]{9}"
+                               <c:if test="${phone==null}">value="380"</c:if>
+                               <c:if test="${phone!=null}">value="${phone}"</c:if>
                                size="20" required></td>
                 </tr>
                 <tr>
                     <td>Фото:</td>
-                    <td><input type="file" name="user_avatar" accept="image/jpeg,image/png,image/gif"></td>
+                    <td><input type="file" name="avatar" accept="image/jpeg,image/png,image/gif"></td>
                 </tr>
                 <tr>
                     <td colspan="2" align="center">Данное поле можно оставить пустым

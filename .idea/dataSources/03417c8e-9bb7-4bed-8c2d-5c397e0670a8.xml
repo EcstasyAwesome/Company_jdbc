@@ -925,6 +925,7 @@
       <Position>1</Position>
       <DataType>int(2)|0</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="234" parent="231" name="name">
@@ -956,6 +957,7 @@
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="240" parent="232" name="surname">

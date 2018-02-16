@@ -3,7 +3,6 @@ package com.company.dao.impl;
 import com.company.dao.model.UserDao;
 import com.company.dao.entity.User;
 import com.company.util.HibernateUtil;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.query.Query;
@@ -41,7 +40,7 @@ public class UserImpl implements UserDao {
             Query<User> userQuery = session.createQuery(query);
             result = userQuery.getSingleResult();
         } catch (PersistenceException e) {
-            String noResult = "Пользователь %s не зарегистрирован";
+            String noResult = "Пользователь '%s' не зарегистрирован";
             throw new PersistenceException(String.format(noResult, login));
         }
         return result;
@@ -58,7 +57,7 @@ public class UserImpl implements UserDao {
             query.select(root).where(builder.equal(root.get("login"), login));
             Query<User> userQuery = session.createQuery(query);
             if (!userQuery.list().isEmpty()) {
-                String duplicate = "Логин %s уже существует";
+                String duplicate = "Логин '%s' уже существует";
                 throw new ConstraintViolationException(String.format(duplicate, login), null, login);
             }
             session.beginTransaction();
@@ -95,7 +94,8 @@ public class UserImpl implements UserDao {
     @Override
     public void delete(Integer id) {
         try (Session session = HibernateUtil.getSession()) {
-            User user = new User(id);
+            User user = new User();
+            user.setId(id);
             session.delete(user);
         }
     }

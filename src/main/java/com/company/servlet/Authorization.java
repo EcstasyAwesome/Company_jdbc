@@ -83,22 +83,25 @@ public class Authorization extends HttpServlet {
 
     private void register(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         AvatarUtil avatar = new AvatarUtil(request);
+        User user = new User();
+        Position position = new Position();
+        position.setId(5); // default
         String login = null;
         String surname = null;
         String firstName = null;
         String middleName = null;
         long phone = 0;
         try {
-            login = request.getParameter(userLogin);
-            String password = request.getParameter(userPassword);
-            surname = request.getParameter(userSurname);
-            firstName = request.getParameter(userFirstName);
-            middleName = request.getParameter(userMiddleName);
-            phone = Long.parseLong(request.getParameter(userPhone));
-            String userAvatar = avatar.save();
-            Position position = new Position(5); // default
-            User user = new User(surname, firstName, middleName, userAvatar, phone, login, password,
-                    new Date(), 1, position);
+            user.setLogin(login = request.getParameter(userLogin));
+            user.setPassword(request.getParameter(userPassword));
+            user.setSurname(surname = request.getParameter(userSurname));
+            user.setFirstName(firstName = request.getParameter(userFirstName));
+            user.setMiddleName(middleName = request.getParameter(userMiddleName));
+            user.setPhone(phone = Long.parseLong(request.getParameter(userPhone)));
+            user.setRegisterDate(new Date());
+            user.setStatus(LinkManager.Page.ACCESS_USER);
+            user.setAvatar(avatar.save());
+            user.setPosition(position);
             userDao.create(user);
             request.setAttribute(message, "Регистрация успешно завершена");
             request.getRequestDispatcher(LinkManager.PAGE_LOGIN).forward(request, response);

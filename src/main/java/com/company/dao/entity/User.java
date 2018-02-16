@@ -123,24 +123,6 @@ public class User {
     public User() {
     }
 
-    public User(int id) {
-    }
-
-    public User(String surname, String firstName, String middleName, String avatar, long phone,
-                String login, String password, Date registerDate, int status,
-                Position position) {
-        this.surname = surname;
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.avatar = avatar;
-        this.phone = phone;
-        this.login = login;
-        this.password = password;
-        this.registerDate = registerDate;
-        this.status = status;
-        this.position = position;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
