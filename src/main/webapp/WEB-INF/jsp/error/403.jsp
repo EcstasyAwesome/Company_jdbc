@@ -10,7 +10,7 @@
 <body>
 <div class="page">
     <div class="form">
-        <img src="${pageContext.request.contextPath}/resources/img/404.png" width="300">
+        <img src="${pageContext.request.contextPath}/resources/img/404.png" width="330">
         <button onclick="history.back()">Назад</button>
         <form action="${pageContext.request.contextPath}/">
             <br>
