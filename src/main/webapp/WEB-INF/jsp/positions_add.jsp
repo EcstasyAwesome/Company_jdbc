@@ -7,31 +7,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/stylesheet/style.css">
 </head>
 <body>
-<header>
-    <img src="${pageContext.request.contextPath}/resources/img/ecstasy_logo.jpg" alt="Логотип" height="200" width="200">
-    <h1>Должностя</h1>
-    <p>Добавить новую должность</p>
-</header>
-<nav>
-    <form id="LOGOUT" action="/authorization" method="post">
-        <input type="hidden" name="method" value="LOGOUT">
-    </form>
-    <table class="nav-menu">
-        <tr>
-            <td class="nav-menu-left">
-                <a href="/">Главная</a> |
-                <a href="/positions">Должностя</a> |
-                <a href="/users">Пользователи</a> |
-                <a href="/about">О компании</a>
-            </td>
-            <td class="nav-menu-right">
-                <a href="/profile">Профиль</a> |
-                <a href="/edit">Редактировать</a> |
-                <input type="submit" form="LOGOUT" class="logout" value="Выход">
-            </td>
-        </tr>
-    </table>
-</nav>
+<jsp:include page="/WEB-INF/jsp/static/top.jsp"/>
 <main>
     <article>
         <br>
@@ -44,12 +20,12 @@
                 </tr>
                 <tr>
                     <td class="table-main">
-                        <input class="edit-input" type="text" name="position_name" placeholder="Введите название"
+                        <input class="edit-input" type="text" name="name" placeholder="Введите название"
                                required autofocus>
                     </td>
                     <td class="table-main">
-                        <input class="edit-input" type="text" name="position_description" placeholder="Ведите описание"
-                               value="${position_description}" required>
+                        <input class="edit-input" type="text" name="description" placeholder="Ведите описание"
+                               value="${description}" required>
                     </td>
                 </tr>
                 <tr>
@@ -70,13 +46,6 @@
         </menu>
     </aside>
 </main>
-<footer>
-    <address>
-        <a href="mailto:ecstasy.awesome@gmail.com">Написать письмо</a>
-    </address>
-    <p>
-        <small>Ecstasy © 2018</small>
-    </p>
-</footer>
+<jsp:include page="/WEB-INF/jsp/static/bottom.jsp"/>
 </body>
 </html>

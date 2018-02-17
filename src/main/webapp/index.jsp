@@ -7,11 +7,10 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/stylesheet/style.css">
 </head>
 <body>
-<jsp:include page="WEB-INF/jsp/static/header.jsp"/>
-<jsp:include page="WEB-INF/jsp/static/nav.jsp"/>
+<jsp:include page="/WEB-INF/jsp/static/top.jsp"/>
 <main>
     <h2 style="text-align: center">Добро пожаловать</h2>
 </main>
-<jsp:include page="WEB-INF/jsp/static/footer.jsp"/>
+<jsp:include page="/WEB-INF/jsp/static/bottom.jsp"/>
 </body>
 </html>

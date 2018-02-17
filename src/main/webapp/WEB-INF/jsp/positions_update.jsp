@@ -7,36 +7,12 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/stylesheet/style.css">
 </head>
 <body>
-<header>
-    <img src="${pageContext.request.contextPath}/resources/img/ecstasy_logo.jpg" alt="Логотип" height="200" width="200">
-    <h1>Должностя</h1>
-    <p>Изменить существующую должность</p>
-</header>
-<nav>
-    <form id="LOGOUT" action="/authorization" method="post">
-        <input type="hidden" name="method" value="LOGOUT">
-    </form>
-    <table class="nav-menu">
-        <tr>
-            <td class="nav-menu-left">
-                <a href="/">Главная</a> |
-                <a href="/positions">Должностя</a> |
-                <a href="/users">Пользователи</a> |
-                <a href="/about">О компании</a>
-            </td>
-            <td class="nav-menu-right">
-                <a href="/profile">Профиль</a> |
-                <a href="/edit">Редактировать</a> |
-                <input type="submit" form="LOGOUT" class="logout" value="Выход">
-            </td>
-        </tr>
-    </table>
-</nav>
+<jsp:include page="/WEB-INF/jsp/static/top.jsp"/>
 <main>
     <article>
         <form id="update" method="post">
             <input type="hidden" name="method" value="UPDATE">
-            <input type="hidden" name="position_id" value="${position.getPositionId()}">
+            <input type="hidden" name="id" value="${position.id}">
             <p>* - поля, доступные для изменения</p>
             <table align="center">
                 <tr>
@@ -46,15 +22,15 @@
                 </tr>
                 <c:if test="${position!=null}">
                     <tr>
-                        <td class="table-main">${position.getPositionId()}</td>
+                        <td class="table-main">${position.id}</td>
                         <td class="table-main">
-                            <input class="edit-input" value="${position.getPositionName()}" name="position_name"
+                            <input class="edit-input" value="${position.name}" name="name"
                                    autofocus
                                    required>
                         </td>
                         <td class="table-main">
-                            <input class="edit-input" type="text" value="${position.getPositionDescription()}"
-                                   name="position_description" required>
+                            <input class="edit-input" type="text" value="${position.description}"
+                                   name="description" required>
                         </td>
                     </tr>
                     <tr>
@@ -79,13 +55,6 @@
         </menu>
     </aside>
 </main>
-<footer>
-    <address>
-        <a href="mailto:ecstasy.awesome@gmail.com">Написать письмо</a>
-    </address>
-    <p>
-        <small>Ecstasy © 2018</small>
-    </p>
-</footer>
+<jsp:include page="/WEB-INF/jsp/static/bottom.jsp"/>
 </body>
 </html>

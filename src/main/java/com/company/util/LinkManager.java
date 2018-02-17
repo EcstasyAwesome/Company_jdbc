@@ -14,7 +14,7 @@ public class LinkManager {
     public static final String PAGE_REGISTER = "/WEB-INF/jsp/registration.jsp";
 
     private LinkManager() {
-        list.put(Authorization.AUTHORIZATION, new Page(null, Page.ACCESS_ALL));
+        list.put(Authorization.LINK_AUTHORIZATION, new Page(null, Page.ACCESS_ALL));
         list.put("/", new Page("/index.jsp", Page.ACCESS_ALL));
         list.put("/profile", new Page("/WEB-INF/jsp/profile.jsp", Page.ACCESS_USER));
         list.put("/edit", new Page("/WEB-INF/jsp/edit.jsp", Page.ACCESS_USER));

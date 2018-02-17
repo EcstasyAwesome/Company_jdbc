@@ -7,81 +7,51 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/stylesheet/style.css">
 </head>
 <body>
-<header>
-    <img src="${pageContext.request.contextPath}/resources/img/ecstasy_logo.jpg" alt="Логотип" height="200" width="200">
-    <h1>Профиль пользователя</h1>
-</header>
-<nav>
-    <form id="LOGOUT" action="/authorization" method="post">
-        <input type="hidden" name="method" value="LOGOUT">
-    </form>
-    <table class="nav-menu">
-        <tr>
-            <td class="nav-menu-left">
-                <a href="/">Главная</a> |
-                <a href="/positions">Должностя</a> |
-                <a href="/users">Пользователи</a> |
-                <a href="/about">О компании</a>
-            </td>
-            <td class="nav-menu-right">
-                <a href="/profile">Профиль</a> |
-                <a href="/edit">Редактировать</a> |
-                <input type="submit" form="LOGOUT" class="logout" value="Выход">
-            </td>
-        </tr>
-    </table>
-</nav>
+<jsp:include page="/WEB-INF/jsp/static/top.jsp"/>
 <main>
     <br>
     <table align="center">
         <tr>
             <td rowspan="8" width="250" align="center">
-                <img src="${pageContext.request.contextPath}${sessionUser.getUserAvatar()}" width="200">
+                <img src="${pageContext.request.contextPath}${sessionUser.avatar}" width="200">
             </td>
             <td width="110">Логин:</td>
-            <td>${sessionUser.getUserLogin()}</td>
+            <td>${sessionUser.login}</td>
         </tr>
         <tr>
             <td>Фамилия:</td>
-            <td>${sessionUser.getUserSurname()}</td>
+            <td>${sessionUser.surname}</td>
         </tr>
         <tr>
             <td>Имя:</td>
-            <td>${sessionUser.getUserFirstName()}</td>
+            <td>${sessionUser.firstName}</td>
         </tr>
         <tr>
             <td>Отчество:</td>
-            <td>${sessionUser.getUserSecondName()}</td>
+            <td>${sessionUser.middleName}</td>
         </tr>
         <tr>
             <td>Телефон:</td>
-            <td>${sessionUser.getUserPhoneNumber()}</td>
+            <td>${sessionUser.phone}</td>
         </tr>
         <tr>
             <td>Должность:</td>
-            <td>${sessionUser.getPositionByPositionId().getPositionName()}</td>
+            <td>${sessionUser.position.name}</td>
         </tr>
         <tr>
             <td>Регистрация:</td>
-            <td>${sessionUser.getUserRegisterDate()}</td>
+            <td>${sessionUser.registerDate}</td>
         </tr>
         <tr>
             <td>Статус:</td>
             <td>
-                <c:if test="${sessionUser.getUserStatus()==2}">Администратор</c:if>
-                <c:if test="${sessionUser.getUserStatus()==3}">Пользователь</c:if>
+                <c:if test="${sessionUser.status == 2}">Администратор</c:if>
+                <c:if test="${sessionUser.status == 1}">Пользователь</c:if>
             </td>
         </tr>
     </table>
     <br>
 </main>
-<footer>
-    <address>
-        <a href="mailto:ecstasy.awesome@gmail.com">Написать письмо</a>
-    </address>
-    <p>
-        <small>Ecstasy © 2018</small>
-    </p>
-</footer>
+<jsp:include page="/WEB-INF/jsp/static/bottom.jsp"/>
 </body>
 </html>

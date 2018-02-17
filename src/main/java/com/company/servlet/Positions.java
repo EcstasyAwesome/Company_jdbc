@@ -1,7 +1,7 @@
 package com.company.servlet;
 
 import com.company.filter.Dispatcher;
-import com.company.DAO.entity.Position;
+import com.company.dao.entity.Position;
 import com.company.util.HibernateUtil;
 import com.company.util.LinkManager;
 import org.hibernate.HibernateException;
@@ -29,10 +29,13 @@ public class Positions extends HttpServlet {
         if (req.getPathInfo() == null) {
             req.setAttribute("positions", getPositions());
             req.getRequestDispatcher(LinkManager.getInstance().getList().get(Dispatcher.getLink()).getPath()).forward(req, resp);
-        } else if (req.getQueryString() != null && req.getQueryString().matches("position_id=\\d+")) {
-            req.setAttribute("position", getPosition(req));
+        } else if (req.getQueryString() != null) {
+            if (req.getQueryString().matches("id=\\d+")) {
+                req.setAttribute("position", getPosition(req));
+                req.getRequestDispatcher(LinkManager.getInstance().getList().get(Dispatcher.getLink()).getPath()).forward(req, resp);
+            } else resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        } else
             req.getRequestDispatcher(LinkManager.getInstance().getList().get(Dispatcher.getLink()).getPath()).forward(req, resp);
-        } else resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
 
     @Override
@@ -55,8 +58,8 @@ public class Positions extends HttpServlet {
 
     private Position getPosition(HttpServletRequest request) {
         Session session = HibernateUtil.getSession();
-        Position result = null;
-        int id = Integer.parseInt(request.getParameter("position_id"));
+        Position result;
+        int id = Integer.parseInt(request.getParameter("id"));
         try {
             session.beginTransaction();
             result = session.get(Position.class, id);
@@ -70,7 +73,7 @@ public class Positions extends HttpServlet {
 
     private List getPositions() {
         Session session = HibernateUtil.getSession();
-        List result = null;
+        List result;
         try {
             session.beginTransaction();
             result = session.createQuery("from Position").getResultList();
@@ -83,15 +86,15 @@ public class Positions extends HttpServlet {
     }
 
     private void addPosition(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String name = request.getParameter("position_name");
-        String description = request.getParameter("position_description");
+        String name = request.getParameter("name");
+        String description = request.getParameter("description");
         Session session = HibernateUtil.getSession();
         try {
             session.beginTransaction();
-            Query query = session.createQuery("from Position where positionName = :name");
+            Query query = session.createQuery("from Position where name = :name");
             query.setParameter("name", name);
             if (!query.list().isEmpty()) throw new HibernateException("Duplicate entry");
-            Position position = new Position(name, description);
+            Position position = new Position();
             session.save(position);
             session.getTransaction().commit();
             response.sendRedirect("/position");
@@ -106,15 +109,15 @@ public class Positions extends HttpServlet {
     }
 
     private void updatePosition(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int id = Integer.parseInt(request.getParameter("position_id"));
-        String name = request.getParameter("position_name");
-        String description = request.getParameter("position_description");
+        int id = Integer.parseInt(request.getParameter("id"));
+        String name = request.getParameter("name");
+        String description = request.getParameter("description");
         Session session = HibernateUtil.getSession();
         try {
             session.beginTransaction();
             Position position = session.get(Position.class, id);
-            position.setPositionName(name);
-            position.setPositionDescription(description);
+            position.setName(name);
+            position.setDescription(description);
             session.update(position);
             session.getTransaction().commit();
         } finally {
@@ -125,7 +128,7 @@ public class Positions extends HttpServlet {
     }
 
     private void deletePosition(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int id = Integer.parseInt(request.getParameter("position_id"));
+        int id = Integer.parseInt(request.getParameter("id"));
         Session session = HibernateUtil.getSession();
         try {
             session.beginTransaction();
