@@ -10,7 +10,6 @@
 <jsp:include page="/WEB-INF/jsp/static/top.jsp"/>
 <main>
     <article>
-        <br>
         <form method="post">
             <input type="hidden" name="method" value="DELETE">
             <input type="hidden" name="id" value="${position.id}">

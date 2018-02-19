@@ -9,7 +9,6 @@
 <body>
 <jsp:include page="/WEB-INF/jsp/static/top.jsp"/>
 <main>
-    <br>
     <form id="avatar" method="post">
         <input type="hidden" name="method" value="DELETE">
     </form>

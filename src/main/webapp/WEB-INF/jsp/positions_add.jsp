@@ -10,7 +10,6 @@
 <jsp:include page="/WEB-INF/jsp/static/top.jsp"/>
 <main>
     <article>
-        <br>
         <form id="add" method="post">
             <input type="hidden" name="method" value="ADD">
             <table align="center">

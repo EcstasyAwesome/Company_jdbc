@@ -4,7 +4,5 @@
     <address>
         <a href="mailto:ecstasy.awesome@gmail.com">Написать письмо</a>
     </address>
-    <p>
-        <small>Ecstasy © 2018</small>
-    </p>
+    <small>Ecstasy © 2018</small>
 </footer>

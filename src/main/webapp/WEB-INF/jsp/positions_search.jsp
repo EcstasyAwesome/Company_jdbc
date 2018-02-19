@@ -10,7 +10,6 @@
 <jsp:include page="/WEB-INF/jsp/static/top.jsp"/>
 <main>
     <article>
-        <br>
         <table align="center">
             <tr>
                 <th width="40" class="table-top">ID</th>
@@ -36,7 +35,6 @@
                 </tr>
             </c:if>
         </table>
-        <br>
     </article>
     <aside>
         <h4>Меню:</h4>

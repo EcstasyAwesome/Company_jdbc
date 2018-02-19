@@ -9,7 +9,6 @@
 <body>
 <jsp:include page="/WEB-INF/jsp/static/top.jsp"/>
 <main>
-    <br>
     <table align="center">
         <tr>
             <td rowspan="8" width="250" align="center">
@@ -50,7 +49,6 @@
             </td>
         </tr>
     </table>
-    <br>
 </main>
 <jsp:include page="/WEB-INF/jsp/static/bottom.jsp"/>
 </body>

@@ -10,7 +10,6 @@
 <jsp:include page="/WEB-INF/jsp/static/top.jsp"/>
 <main>
     <article>
-        <br>
         <c:if test="${button eq false}">
             <form>
                 <input type="hidden" name="key" value="user_id">

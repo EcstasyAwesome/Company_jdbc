@@ -1,7 +1,7 @@
 package com.company.servlet;
 
 import com.company.filter.Dispatcher;
-import com.company.DAO.entity.User;
+import com.company.dao.entity.User;
 import com.company.util.AvatarUtil;
 import com.company.util.HibernateUtil;
 import com.company.util.LinkManager;
@@ -47,23 +47,23 @@ public class Main extends HttpServlet {
     }
 
     private void updateProfile(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        String surname = req.getParameter("user_surname");
-        String firstName = req.getParameter("user_firstName");
-        String secondName = req.getParameter("user_secondName");
-        long phoneNumber = Long.parseLong(req.getParameter("user_phoneNumber"));
-        String password = req.getParameter("user_password");
+        String surname = req.getParameter("surname");
+        String firstName = req.getParameter("firstName");
+        String secondName = req.getParameter("middleName");
+        long phoneNumber = Long.parseLong(req.getParameter("phone"));
+        String password = req.getParameter("password");
         AvatarUtil avatarUtil = new AvatarUtil(req);
         HttpSession httpSession = req.getSession(false);
         Session session = HibernateUtil.getSession();
         try {
             User sessionUser = (User) httpSession.getAttribute("sessionUser");
             String avatar = avatarUtil.save();
-            sessionUser.setUserSurname(surname);
-            sessionUser.setUserFirstName(firstName);
-            sessionUser.setUserSecondName(secondName);
-            sessionUser.setUserPhoneNumber(phoneNumber);
-            sessionUser.setUserPassword(password);
-            sessionUser.setUserAvatar(avatar);
+            sessionUser.setSurname(surname);
+            sessionUser.setFirstName(firstName);
+            sessionUser.setMiddleName(secondName);
+            sessionUser.setPhone(phoneNumber);
+            sessionUser.setPassword(password);
+            sessionUser.setAvatar(avatar);
             session.beginTransaction();
             session.update(sessionUser);
             session.getTransaction().commit();
