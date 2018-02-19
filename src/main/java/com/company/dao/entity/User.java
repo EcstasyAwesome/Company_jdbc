@@ -163,7 +163,7 @@ public class User {
         return result;
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "position", referencedColumnName = "id", nullable = false)
     public Position getPosition() {
         return position;
