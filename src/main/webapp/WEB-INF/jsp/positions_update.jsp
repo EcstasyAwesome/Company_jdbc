@@ -24,12 +24,12 @@
                     <tr>
                         <td class="table-main">${position.id}</td>
                         <td class="table-main">
-                            <input class="edit-input" value="${position.name}" name="name"
+                            <input class="transparent-input" value="${position.name}" name="name"
                                    autofocus
                                    required>
                         </td>
                         <td class="table-main">
-                            <input class="edit-input" type="text" value="${position.description}"
+                            <input class="transparent-input" type="text" value="${position.description}"
                                    name="description" required>
                         </td>
                     </tr>

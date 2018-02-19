@@ -46,15 +46,6 @@ nav li:hover {
     padding: 0 10px;
 }
 
-nav input{
-    padding: 13px;
-}
-
-nav input:hover{
-    padding: 13px;
-    background: rosybrown;
-}
-
 div.nav-menu-left {
     float: left;
     text-align: left;
@@ -146,43 +137,15 @@ form {
     text-align: center;
 }
 
-/*Стили таблици главного меню*/
-/*.nav-menu {*/
-/*margin: auto;*/
-/*border: 0;*/
-/*width: 100%;*/
-/*height: 100%;*/
-/*}*/
-
-/*.nav-menu-left {*/
-/*text-align: left;*/
-/*padding-left: 10px;*/
-/*}*/
-
-/*.nav-menu-right {*/
-/*text-align: right;*/
-/*padding-right: 10px;*/
-/*}*/
-
 /*Прозрачное поле ввода*/
-input.edit-input {
+input.transparent-input {
     border: 0;
     width: 100%;
     text-align: center;
     font-size: 16px
 }
 
-/*Стиль кнопки выхода*/
-input.link-button {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    background: none;
-    text-decoration: none;
-    cursor: pointer;
-    font-size: 16px;
-}
-
+/*Сообщение от сервера*/
 .server-answer {
     margin: 15px 0 0;
     color: #EF3B3A;

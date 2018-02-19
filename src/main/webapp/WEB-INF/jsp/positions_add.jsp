@@ -19,11 +19,11 @@
                 </tr>
                 <tr>
                     <td class="table-main">
-                        <input class="edit-input" type="text" name="name" placeholder="Введите название"
+                        <input class="transparent-input" type="text" name="name" placeholder="Введите название"
                                required autofocus>
                     </td>
                     <td class="table-main">
-                        <input class="edit-input" type="text" name="description" placeholder="Ведите описание"
+                        <input class="transparent-input" type="text" name="description" placeholder="Ведите описание"
                                value="${description}" required>
                     </td>
                 </tr>
