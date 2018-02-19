@@ -23,8 +23,8 @@
                         <td class="table-main">${position.name}</td>
                         <td class="table-main">${position.description}</td>
                         <td class="table-main">
-                            <a href="/positions/update?id=${position.id}"><img src="${pageContext.request.contextPath}/resources/img/edit_icon.png"></a>
-                            <a href="/positions/delete?id=${position.id}"><img src="${pageContext.request.contextPath}/resources/img/delete_icon.png"></a>
+                            <a href="${pageContext.request.contextPath}/positions/update?id=${position.id}"><img src="${pageContext.request.contextPath}/resources/img/edit_icon.png"></a>
+                            <a href="${pageContext.request.contextPath}/positions/delete?id=${position.id}"><img src="${pageContext.request.contextPath}/resources/img/delete_icon.png"></a>
                         </td>
                     </tr>
                 </c:forEach>
@@ -39,8 +39,8 @@
     <aside>
         <h4>Меню:</h4>
         <menu>
-            <li><a href="/positions">Список</a></li>
-            <li><a href="/positions/add">Добавить</a></li>
+            <li><a href="${pageContext.request.contextPath}/positions">Список</a></li>
+            <li><a href="${pageContext.request.contextPath}/positions/add">Добавить</a></li>
         </menu>
     </aside>
 </main>

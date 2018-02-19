@@ -50,8 +50,8 @@
     <aside>
         <h4>Меню:</h4>
         <menu>
-            <li><a href="/users">Список/Поиск</a></li>
-            <li><a href="/users/add">Добавить</a></li>
+            <li><a href="${pageContext.request.contextPath}/users">Список/Поиск</a></li>
+            <li><a href="${pageContext.request.contextPath}/users/add">Добавить</a></li>
         </menu>
         <form name="search">
             <h4>Поиск пользователей:</h4>
@@ -80,7 +80,7 @@
         <c:if test="${button}">
             <hr>
             <p align="center">
-                <button><a href="/company/users">Сбросить фильтр/показать всех</a></button>
+                <button><a href="${pageContext.request.contextPath}/users">Сбросить фильтр/показать всех</a></button>
             </p>
         </c:if>
     </aside>

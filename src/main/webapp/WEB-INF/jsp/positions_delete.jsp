@@ -45,8 +45,8 @@
     <aside>
         <h4>Меню:</h4>
         <menu>
-            <li><a href="/positions">Список</a></li>
-            <li><a href="/positions/add">Добавить</a></li>
+            <li><a href="${pageContext.request.contextPath}/positions">Список</a></li>
+            <li><a href="${pageContext.request.contextPath}/positions/add">Добавить</a></li>
         </menu>
     </aside>
 </main>

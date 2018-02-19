@@ -104,7 +104,7 @@ menu a:link, a:visited {
 
 menu a:hover {
     padding-left: 16px;
-    background: url("http://portal-cs16.ucoz.ua/shablon/9.gif") no-repeat left center;
+    background: url("/resources/img/pointer.gif") no-repeat left center;
     text-align: left;
 }
 
