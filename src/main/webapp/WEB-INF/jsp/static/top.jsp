@@ -16,7 +16,7 @@
     <div class="nav-menu-right">
         <ul>
             <c:if test="${pageContext.session.getAttribute('sessionUser')!=null}">
-                <form id="logout" action="${pageContext.request.contextPath}${Authorization.LINK_AUTHORIZATION}"
+                <form id="logout" action="${pageContext.request.contextPath}${Authorization.AUTHORIZATION}"
                       method="post">
                     <input type="hidden" name="method" value="LOGOUT">
                 </form>
@@ -25,11 +25,11 @@
                 <li><a onclick="document.getElementById('logout').submit()" href="#">Выход</a></li>
             </c:if>
             <c:if test="${pageContext.session.getAttribute('sessionUser')==null}">
-                <form id="login" action="${pageContext.request.contextPath}${Authorization.LINK_AUTHORIZATION}"
+                <form id="login" action="${pageContext.request.contextPath}${Authorization.AUTHORIZATION}"
                       class="login-page" method="post">
                     <input type="hidden" name="method" value="GO_LOGIN">
                 </form>
-                <form id="register" action="${pageContext.request.contextPath}${Authorization.LINK_AUTHORIZATION}"
+                <form id="register" action="${pageContext.request.contextPath}${Authorization.AUTHORIZATION}"
                       class="register-page" method="post">
                     <input type="hidden" name="method" value="GO_REGISTER">
                 </form>

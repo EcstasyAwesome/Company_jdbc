@@ -15,11 +15,11 @@ import javax.servlet.http.*;
 import java.io.*;
 import java.util.Date;
 
-@WebServlet(name = "Authorization", urlPatterns = Authorization.LINK_AUTHORIZATION)
+@WebServlet(name = "Authorization", urlPatterns = Authorization.AUTHORIZATION)
 @MultipartConfig
 public class Authorization extends HttpServlet {
 
-    public static final String LINK_AUTHORIZATION = "/authorization";
+    public static final String AUTHORIZATION = "/authorization";
 
     private final String userLogin = "login";
     private final String userPassword = "password";

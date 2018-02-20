@@ -1,7 +1,8 @@
 package com.company.util;
 
 import com.company.dao.entity.User;
-import org.hibernate.Session;
+import com.company.dao.factory.DaoFactory;
+import com.company.dao.model.UserDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -13,19 +14,24 @@ import java.util.Date;
 
 public class AvatarUtil {
 
+    private DaoFactory daoFactory = DaoFactory.getInstance();
+    private UserDao userDao = daoFactory.getUserDao();
     private final String defaultAvatar = "/resources/img/avatar.png";
+    private final String sessionUser = "sessionUser";
     private String saveAvatar;
+    private String oldAvatar;
     private String storagePath;
     private HttpServletRequest request;
     private HttpSession httpSession;
-    private User sessionUser;
+    private User user;
     private boolean isSaved;
 
     public AvatarUtil(HttpServletRequest request) {
         String tmp = request.getServletContext().getRealPath("");
         storagePath = tmp.substring(0, tmp.indexOf("target"));
         httpSession = request.getSession(false);
-        sessionUser = (User) httpSession.getAttribute("sessionUser");
+        user = (User) httpSession.getAttribute(sessionUser);
+        if (user != null) oldAvatar = user.getAvatar();
         this.request = request;
     }
 
@@ -50,32 +56,24 @@ public class AvatarUtil {
             isSaved = true;
             return saveAvatar.substring(storagePath.length() - 1).replaceAll(File.separator + File.separator, "/");
         }
-        return sessionUser != null ? sessionUser.getAvatar() : defaultAvatar;
+        return user != null ? user.getAvatar() : defaultAvatar;
     }
 
     /**
-     * @param update false - delete from storage avatar of the current user
-     *               true - delete from storage avatar and update current user in session and database
-     * @see #delete(boolean)
+     * delete avatar from storage and update current user in session and database
+     *
+     * @see #delete()
      */
 
-    public void delete(boolean update) {
-        if (sessionUser != null && !sessionUser.getAvatar().equals(defaultAvatar)) {
-            String path = sessionUser.getAvatar().replaceAll("[/]", File.separator + File.separator);
+    public void delete() {
+        if (user != null && !user.getAvatar().equals(defaultAvatar)) {
+            String path = user.getAvatar().replaceAll("[/]", File.separator + File.separator);
             File file = new File(storagePath + path);
             if (file.exists())
-                if (file.delete() && update) {
-                    Session session = HibernateUtil.getSession();
-                    try {
-                        session.beginTransaction();
-                        sessionUser.setAvatar(defaultAvatar);
-                        session.update(sessionUser);
-                        session.getTransaction().commit();
-                        httpSession.setAttribute("sessionUser", sessionUser);
-                    } finally {
-                        if (session.getTransaction() != null) session.getTransaction().rollback();
-                        session.close();
-                    }
+                if (file.delete()) {
+                    user.setAvatar(defaultAvatar);
+                    userDao.update(user);
+                    httpSession.setAttribute(sessionUser, user);
                 }
         }
     }
@@ -88,9 +86,11 @@ public class AvatarUtil {
      */
 
     public void clean() {
-        if (isSaved) {
-            delete(false);
-            isSaved = false;
+        if (isSaved && !oldAvatar.equals(defaultAvatar)) {
+            File avatar = new File(storagePath + oldAvatar);
+            if (avatar.exists())
+                if (avatar.delete())
+                    isSaved = false;
         }
     }
 
