@@ -14,7 +14,7 @@ import java.util.List;
 
 public class PositionImpl implements PositionDao {
 
-    private final String duplicate = "Должность %s уже существует";
+    private final String duplicate = "Должность '%s' уже существует";
 
     @Override
     public List<Position> getAll() {
@@ -70,8 +70,13 @@ public class PositionImpl implements PositionDao {
             Root<Position> root = query.from(Position.class);
             query.select(root).where(builder.equal(root.get("name"), name));
             Query<Position> positionQuery = session.createQuery(query);
-            if (!positionQuery.list().isEmpty())
-                throw new ConstraintViolationException(String.format(duplicate, name), null, name);
+            if (!positionQuery.list().isEmpty()) {
+                Position position = positionQuery.getSingleResult();
+                if (position.getName().equalsIgnoreCase(instance.getName()))
+                    if (position.getId() != instance.getId())
+                        throw new ConstraintViolationException(String.format(duplicate, name), null, name);
+            }
+            session.clear();
             session.beginTransaction();
             session.update(instance);
             session.getTransaction().commit();
@@ -83,10 +88,15 @@ public class PositionImpl implements PositionDao {
 
     @Override
     public void delete(Integer id) {
-        try (Session session = HibernateUtil.getSession()) {
-            Position position = new Position();
-            position.setId(id);
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            Position position = session.load(Position.class, id);
             session.delete(position);
+            session.getTransaction().commit();
+        } finally {
+            if (session.getTransaction() != null) session.getTransaction().rollback();
+            session.close();
         }
     }
 }

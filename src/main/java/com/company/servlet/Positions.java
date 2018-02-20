@@ -1,12 +1,10 @@
 package com.company.servlet;
 
+import com.company.dao.factory.DaoFactory;
+import com.company.dao.model.PositionDao;
 import com.company.filter.Dispatcher;
 import com.company.dao.entity.Position;
-import com.company.util.HibernateUtil;
 import com.company.util.LinkManager;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,28 +12,45 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 
 @WebServlet(
         name = "Positions",
         description = "Positions servlet",
-        urlPatterns = "/positions/*"
+        urlPatterns = {Positions.MAIN, Positions.ADD, Positions.UPDATE, Positions.DELETE}
 )
 
 public class Positions extends HttpServlet {
 
+    public static final String MAIN = "/positions";
+    public static final String ADD = "/positions/add";
+    public static final String UPDATE = "/positions/update";
+    public static final String DELETE = "/positions/delete";
+
+    private final String positionId = "id";
+    private final String positionName = "name";
+    private final String positionDescription = "description";
+    private final String positionAttribute = "position";
+    private final String message = "positionError";
+
+    private LinkManager linkManager = LinkManager.getInstance();
+    private Map<String, LinkManager.Page> list = linkManager.getList();
+    private DaoFactory daoFactory = DaoFactory.getInstance();
+    private PositionDao positionDao = daoFactory.getPositionDao();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getPathInfo() == null) {
-            req.setAttribute("positions", getPositions());
-            req.getRequestDispatcher(LinkManager.getInstance().getList().get(Dispatcher.getLink()).getPath()).forward(req, resp);
-        } else if (req.getQueryString() != null) {
+        String link = Dispatcher.getLink();
+        if (link.equals(MAIN)) {
+            req.setAttribute("positions", positionDao.getAll());
+            req.getRequestDispatcher(list.get(link).getPath()).forward(req, resp);
+        } else if (link.equals(UPDATE) | link.equals(DELETE)) {
             if (req.getQueryString().matches("id=\\d+")) {
-                req.setAttribute("position", getPosition(req));
-                req.getRequestDispatcher(LinkManager.getInstance().getList().get(Dispatcher.getLink()).getPath()).forward(req, resp);
+                int id = Integer.parseInt(req.getParameter("id"));
+                req.setAttribute(positionAttribute, positionDao.get(id));
+                req.getRequestDispatcher(list.get(link).getPath()).forward(req, resp);
             } else resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
-        } else
-            req.getRequestDispatcher(LinkManager.getInstance().getList().get(Dispatcher.getLink()).getPath()).forward(req, resp);
+        } else req.getRequestDispatcher(list.get(link).getPath()).forward(req, resp);
     }
 
     @Override
@@ -56,89 +71,52 @@ public class Positions extends HttpServlet {
         }
     }
 
-    private Position getPosition(HttpServletRequest request) {
-        Session session = HibernateUtil.getSession();
-        Position result;
-        int id = Integer.parseInt(request.getParameter("id"));
-        try {
-            session.beginTransaction();
-            result = session.get(Position.class, id);
-            session.getTransaction().commit();
-        } finally {
-            if (session.getTransaction() != null) session.getTransaction().rollback();
-            session.close();
-        }
-        return result;
-    }
-
-    private List getPositions() {
-        Session session = HibernateUtil.getSession();
-        List result;
-        try {
-            session.beginTransaction();
-            result = session.createQuery("from Position").getResultList();
-            session.getTransaction().commit();
-        } finally {
-            if (session.getTransaction() != null) session.getTransaction().rollback();
-            session.close();
-        }
-        return result;
-    }
-
     private void addPosition(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String name = request.getParameter("name");
-        String description = request.getParameter("description");
-        Session session = HibernateUtil.getSession();
+        String description = null;
+        Position position = new Position();
         try {
-            session.beginTransaction();
-            Query query = session.createQuery("from Position where name = :name");
-            query.setParameter("name", name);
-            if (!query.list().isEmpty()) throw new HibernateException("Duplicate entry");
-            Position position = new Position();
-            session.save(position);
-            session.getTransaction().commit();
-            response.sendRedirect("/position");
-        } catch (HibernateException e) {
-            request.setAttribute("positionError", "Должность '" + name + "' уже существует");
-            request.setAttribute("position_description", description);
-            request.getRequestDispatcher(LinkManager.getInstance().getList().get("/position/add").getPath()).forward(request, response);
-        } finally {
-            if (session.getTransaction() != null) session.getTransaction().rollback();
-            session.close();
-        }
-    }
-
-    private void updatePosition(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        String name = request.getParameter("name");
-        String description = request.getParameter("description");
-        Session session = HibernateUtil.getSession();
-        try {
-            session.beginTransaction();
-            Position position = session.get(Position.class, id);
+            String name = request.getParameter(positionName);
+            description = request.getParameter(positionDescription);
             position.setName(name);
             position.setDescription(description);
-            session.update(position);
-            session.getTransaction().commit();
-        } finally {
-            if (session.getTransaction() != null) session.getTransaction().rollback();
-            session.close();
+            positionDao.create(position);
+            response.sendRedirect(MAIN);
+        } catch (Exception e) {
+            request.setAttribute(message, e.getLocalizedMessage());
+            request.setAttribute(positionDescription, description);
+            request.getRequestDispatcher(list.get(ADD).getPath()).forward(request, response);
         }
-        response.sendRedirect("/position");
     }
 
-    private void deletePosition(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        Session session = HibernateUtil.getSession();
+    private void updatePosition(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        Position position = new Position();
+        int id = 0;
         try {
-            session.beginTransaction();
-            Position position = session.get(Position.class, id);
-            session.delete(position);
-            session.getTransaction().commit();
-        } finally {
-            if (session.getTransaction() != null) session.getTransaction().rollback();
-            session.close();
+            id = Integer.parseInt(request.getParameter(positionId));
+            String name = request.getParameter(positionName);
+            String description = request.getParameter(positionDescription);
+            position.setId(id);
+            position.setName(name);
+            position.setDescription(description);
+            positionDao.update(position);
+            response.sendRedirect(MAIN);
+        } catch (Exception e) {
+            request.setAttribute(message, e.getLocalizedMessage());
+            request.setAttribute(positionAttribute, positionDao.get(id));
+            request.getRequestDispatcher(list.get(UPDATE).getPath()).forward(request, response);
         }
-        response.sendRedirect("/position");
+    }
+
+    private void deletePosition(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int id = 0;
+        try {
+            id = Integer.parseInt(request.getParameter(positionId));
+            positionDao.delete(id);
+            response.sendRedirect(MAIN);
+        } catch (Exception e) {
+            request.setAttribute(message, e.getMessage());
+            request.setAttribute(positionAttribute, positionDao.get(id));
+            request.getRequestDispatcher(list.get(DELETE).getPath()).forward(request, response);
+        }
     }
 }

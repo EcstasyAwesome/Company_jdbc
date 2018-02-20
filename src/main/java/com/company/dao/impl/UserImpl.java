@@ -93,10 +93,15 @@ public class UserImpl implements UserDao {
 
     @Override
     public void delete(Integer id) {
-        try (Session session = HibernateUtil.getSession()) {
-            User user = new User();
-            user.setId(id);
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            User user = session.load(User.class,id);
             session.delete(user);
+            session.getTransaction().commit();
+        } finally {
+            if (session.getTransaction() != null) session.getTransaction().rollback();
+            session.close();
         }
     }
 }

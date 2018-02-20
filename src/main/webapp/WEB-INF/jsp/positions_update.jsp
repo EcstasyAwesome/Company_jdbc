@@ -35,6 +35,9 @@
                     </tr>
                     <tr>
                         <td colspan="3" align="center">
+                            <c:if test="${positionError!=null}">
+                                <p class="server-answer">${positionError}</p>
+                            </c:if>
                             <br><input type="submit" value="Сохранить изменения">
                         </td>
                     </tr>
