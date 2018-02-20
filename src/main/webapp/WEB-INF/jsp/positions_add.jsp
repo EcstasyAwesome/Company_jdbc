@@ -38,11 +38,7 @@
         </form>
     </article>
     <aside>
-        <h4>Меню:</h4>
-        <menu>
-            <li><a href="${pageContext.request.contextPath}/positions">Список</a></li>
-            <li><a href="${pageContext.request.contextPath}/positions/add">Добавить</a></li>
-        </menu>
+        <jsp:include page="/WEB-INF/jsp/static/positions_menu.jsp"/>
     </aside>
 </main>
 <jsp:include page="/WEB-INF/jsp/static/bottom.jsp"/>
