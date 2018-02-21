@@ -12,8 +12,8 @@ body {
 
 header {
     /*text-align: center;*/
-    background-color: #000000;
-    border: 1px solid #000000;
+    background-color: black;
+    border: 1px solid black;
     height: 200px;
     width: 1200px;
     min-width: 1200px;
@@ -37,13 +37,17 @@ nav ul {
 
 nav li {
     display: inline-block;
-    padding: 0 10px;
     line-height: 45px;
 }
 
-nav li:hover {
+nav a {
+    padding: 14px 10px;
+    transition: background-color .3s;
+}
+
+nav a:hover {
     background: silver;
-    padding: 0 10px;
+    padding: 14px 10px;
 }
 
 div.nav-menu-left {

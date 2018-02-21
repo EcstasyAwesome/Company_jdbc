@@ -27,11 +27,11 @@ public class Positions extends HttpServlet {
     public static final String UPDATE = "/positions/update";
     public static final String DELETE = "/positions/delete";
 
-    private final String positionId = "id";
-    private final String positionName = "name";
-    private final String positionDescription = "description";
-    private final String positionAttribute = "position";
-    private final String message = "positionError";
+    private final String ID = "id";
+    private final String NAME = "name";
+    private final String DESCRIPTION = "description";
+    private final String ATTRIBUTE = "position";
+    private final String MESSAGE = "positionError";
 
     private LinkManager linkManager = LinkManager.getInstance();
     private Map<String, LinkManager.Page> list = linkManager.getList();
@@ -47,7 +47,7 @@ public class Positions extends HttpServlet {
         } else if (link.equals(UPDATE) | link.equals(DELETE)) {
             if (req.getQueryString().matches("id=\\d+")) {
                 int id = Integer.parseInt(req.getParameter("id"));
-                req.setAttribute(positionAttribute, positionDao.get(id));
+                req.setAttribute(ATTRIBUTE, positionDao.get(id));
                 req.getRequestDispatcher(list.get(link).getPath()).forward(req, resp);
             } else resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
         } else req.getRequestDispatcher(list.get(link).getPath()).forward(req, resp);
@@ -75,15 +75,15 @@ public class Positions extends HttpServlet {
         String description = null;
         Position position = new Position();
         try {
-            String name = request.getParameter(positionName);
-            description = request.getParameter(positionDescription);
+            String name = request.getParameter(NAME);
+            description = request.getParameter(DESCRIPTION);
             position.setName(name);
             position.setDescription(description);
             positionDao.create(position);
             response.sendRedirect(MAIN);
         } catch (Exception e) {
-            request.setAttribute(message, e.getLocalizedMessage());
-            request.setAttribute(positionDescription, description);
+            request.setAttribute(MESSAGE, e.getLocalizedMessage());
+            request.setAttribute(DESCRIPTION, description);
             request.getRequestDispatcher(list.get(ADD).getPath()).forward(request, response);
         }
     }
@@ -92,17 +92,17 @@ public class Positions extends HttpServlet {
         Position position = new Position();
         int id = 0;
         try {
-            id = Integer.parseInt(request.getParameter(positionId));
-            String name = request.getParameter(positionName);
-            String description = request.getParameter(positionDescription);
+            id = Integer.parseInt(request.getParameter(ID));
+            String name = request.getParameter(NAME);
+            String description = request.getParameter(DESCRIPTION);
             position.setId(id);
             position.setName(name);
             position.setDescription(description);
             positionDao.update(position);
             response.sendRedirect(MAIN);
         } catch (Exception e) {
-            request.setAttribute(message, e.getLocalizedMessage());
-            request.setAttribute(positionAttribute, positionDao.get(id));
+            request.setAttribute(MESSAGE, e.getLocalizedMessage());
+            request.setAttribute(ATTRIBUTE, positionDao.get(id));
             request.getRequestDispatcher(list.get(UPDATE).getPath()).forward(request, response);
         }
     }
@@ -110,12 +110,12 @@ public class Positions extends HttpServlet {
     private void deletePosition(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         int id = 0;
         try {
-            id = Integer.parseInt(request.getParameter(positionId));
+            id = Integer.parseInt(request.getParameter(ID));
             positionDao.delete(id);
             response.sendRedirect(MAIN);
         } catch (Exception e) {
-            request.setAttribute(message, e.getMessage());
-            request.setAttribute(positionAttribute, positionDao.get(id));
+            request.setAttribute(MESSAGE, e.getMessage());
+            request.setAttribute(ATTRIBUTE, positionDao.get(id));
             request.getRequestDispatcher(list.get(DELETE).getPath()).forward(request, response);
         }
     }
