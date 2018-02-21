@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page isErrorPage="true" %>
+<%@ page import="com.company.servlet.Authorization" %>
 <html lang="ru">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -11,11 +12,11 @@
 <div class="page">
     <div class="form">
         <img src="${pageContext.request.contextPath}/resources/img/401.png" width="330">
-        <form action="${pageContext.request.contextPath}/authorization" method="post">
+        <form action="${pageContext.request.contextPath}${Authorization.AUTHORIZATION}" method="post">
             <input type="hidden" name="method" value="GO_LOGIN">
             <br><button>вход</button>
         </form>
-        <form action="${pageContext.request.contextPath}/authorization" method="post">
+        <form action="${pageContext.request.contextPath}${Authorization.AUTHORIZATION}" method="post">
             <input type="hidden" name="method" value="GO_REGISTER">
             <button>регистрация</button>
         </form>
