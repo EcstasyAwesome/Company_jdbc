@@ -41,9 +41,9 @@ public class Dispatcher implements Filter {
         if (link.equals(req.getRequestURI())) { // if link valid
             if (linkManager.isResources(link)) chain.doFilter(request, response); // its resource, goes next
             else if (list.containsKey(link)) { // if link exist
-                int status = user != null ? user.getStatus() : LinkManager.Page.ACCESS_ALL; // get status
+                int status = user != null ? user.getStatus() : LinkManager.Page.GUEST; // get status
                 if (status >= list.get(link).getAccess()) chain.doFilter(request, response); // have access
-                else if (status != LinkManager.Page.ACCESS_ALL)
+                else if (status != LinkManager.Page.GUEST)
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN); //ERROR 403
                 else resp.sendError(HttpServletResponse.SC_UNAUTHORIZED); //ERROR 401
             } else resp.sendError(HttpServletResponse.SC_NOT_FOUND); //ERROR 404

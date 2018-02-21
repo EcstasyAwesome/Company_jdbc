@@ -101,7 +101,7 @@ public class Authorization extends HttpServlet {
             user.setMiddleName(middleName = request.getParameter(MIDDLE_NAME));
             user.setPhone(phone = Long.parseLong(request.getParameter(PHONE)));
             user.setRegisterDate(new Date());
-            user.setStatus(LinkManager.Page.ACCESS_USER);
+            user.setStatus(LinkManager.Page.USER);
             user.setAvatar(avatar.save());
             user.setPosition(position);
             userDao.create(user);
