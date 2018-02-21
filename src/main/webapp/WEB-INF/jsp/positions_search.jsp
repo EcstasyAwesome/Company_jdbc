@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="com.company.servlet.Positions" %>
 <html lang="ru">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -23,8 +24,12 @@
                         <td class="table-main">${position.name}</td>
                         <td class="table-main">${position.description}</td>
                         <td class="table-main">
-                            <a href="${pageContext.request.contextPath}/positions/update?id=${position.id}"><img src="${pageContext.request.contextPath}/resources/img/edit_icon.png"></a>
-                            <a href="${pageContext.request.contextPath}/positions/delete?id=${position.id}"><img src="${pageContext.request.contextPath}/resources/img/delete_icon.png"></a>
+                            <a href="${pageContext.request.contextPath}${Positions.UPDATE}?id=${position.id}">
+                                <img src="${pageContext.request.contextPath}/resources/img/edit_icon.png">
+                            </a>
+                            <a href="${pageContext.request.contextPath}${Positions.DELETE}?id=${position.id}">
+                                <img src="${pageContext.request.contextPath}/resources/img/delete_icon.png">
+                            </a>
                         </td>
                     </tr>
                 </c:forEach>

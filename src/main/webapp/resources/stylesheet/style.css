@@ -69,22 +69,29 @@ main {
     border: 1px solid #ddd;
     border-top-width: 0;
     border-bottom-width: 0;
-    width: 1200px;
-    min-width: 1200px;
-    padding: 10px 0;
+    width: 1180px;
+    min-width: 1180px;
+    padding: 10px 10px;
     margin: auto;
 }
 
 article {
     float: left;
-    width: 75%;
+    width: 880px;
+    padding-right: 10px;
     display: table-cell;
 }
 
 aside {
+    border-left: 2px solid #ddd;
     float: right;
-    width: 25%;
+    width: 278px;
+    padding-left: 10px;
     display: table-cell;
+}
+
+aside h4 {
+    margin: 0;
 }
 
 menu {
@@ -99,7 +106,7 @@ menu a:link, a:visited {
 
 menu a:hover {
     padding-left: 16px;
-    background: url("/resources/img/pointer.gif") no-repeat left center;
+    background: url("/resources/img/pointer.png") no-repeat left center;
     text-align: left;
 }
 
