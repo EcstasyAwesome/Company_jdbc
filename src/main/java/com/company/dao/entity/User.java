@@ -6,7 +6,7 @@ import java.util.Date;
 @Entity
 @Table(name = "users")
 public class User {
-    private int id;
+    private long id;
     private String surname;
     private String firstName;
     private String middleName;
@@ -21,11 +21,11 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -150,16 +150,17 @@ public class User {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = 1;
+        result = 31 * result + Long.hashCode(id);
         result = 31 * result + (surname != null ? surname.hashCode() : 0);
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (middleName != null ? middleName.hashCode() : 0);
         result = 31 * result + (avatar != null ? avatar.hashCode() : 0);
-        result = 31 * result + (int) (phone ^ (phone >>> 32));
+        result = 31 * result + Long.hashCode(phone);
         result = 31 * result + (login != null ? login.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (registerDate != null ? registerDate.hashCode() : 0);
-        result = 31 * result + status;
+        result = 31 * result + Integer.hashCode(status);
         return result;
     }
 

@@ -5,18 +5,18 @@ import javax.persistence.*;
 @Entity
 @Table(name = "positions")
 public class Position {
-    private int id;
+    private long id;
     private String name;
     private String description;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -60,7 +60,8 @@ public class Position {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = 1;
+        result = 31 * result + Long.hashCode(id);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;

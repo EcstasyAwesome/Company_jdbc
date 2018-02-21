@@ -17,16 +17,13 @@ public class UserImpl implements UserDao {
 
     @Override
     public List<User> getAll() {
-        List<User> result;
         try (Session session = HibernateUtil.getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<User> query = builder.createQuery(User.class);
-            Root<User> root = query.from(User.class);
-            query.select(root);
+            query.select(query.from(User.class));
             Query<User> userQuery = session.createQuery(query);
-            result = userQuery.getResultList();
+            return userQuery.getResultList();
         }
-        return result;
     }
 
     @Override
@@ -44,6 +41,18 @@ public class UserImpl implements UserDao {
             throw new PersistenceException(String.format(noResult, login));
         }
         return result;
+    }
+
+    @Override
+    public List<User> getByParam(String key, String value) {
+        try (Session session = HibernateUtil.getSession()) {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<User> query = builder.createQuery(User.class);
+            Root<User> root = query.from(User.class);
+            query.select(root).where(builder.equal(root.get(key), value)); // can throw exception
+            Query<User> userQuery = session.createQuery(query);
+            return userQuery.getResultList();
+        }
     }
 
     @Override
@@ -70,12 +79,10 @@ public class UserImpl implements UserDao {
     }
 
     @Override
-    public User get(Integer id) {
-        User user;
+    public User get(Long id) {
         try (Session session = HibernateUtil.getSession()) {
-            user = session.get(User.class, id);
+            return session.get(User.class, id);
         }
-        return user;
     }
 
     @Override
@@ -92,16 +99,41 @@ public class UserImpl implements UserDao {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Long id) {
         Session session = HibernateUtil.getSession();
         try {
             session.beginTransaction();
-            User user = session.load(User.class,id);
+            User user = session.load(User.class, id);
             session.delete(user);
             session.getTransaction().commit();
         } finally {
             if (session.getTransaction() != null) session.getTransaction().rollback();
             session.close();
+        }
+    }
+
+    @Override
+    public int countPages(int recordsOnPage) {
+        try (Session session = HibernateUtil.getSession()) {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Long> query = builder.createQuery(Long.class);
+            query.select(builder.count(query.from(User.class)));
+            Query<Long> longQuery = session.createQuery(query);
+            long records = longQuery.getSingleResult();
+            return (int) Math.ceil(records * 1.0 / recordsOnPage);
+        }
+    }
+
+    @Override
+    public List<User> getPage(int page, int recordsOnPage) {
+        try (Session session = HibernateUtil.getSession()) {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<User> query = builder.createQuery(User.class);
+            query.select(query.from(User.class));
+            Query<User> userQuery = session.createQuery(query);
+            userQuery.setFirstResult(page * recordsOnPage - recordsOnPage);
+            userQuery.setMaxResults(recordsOnPage);
+            return userQuery.getResultList();
         }
     }
 }

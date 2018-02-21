@@ -3,6 +3,7 @@ package com.company.util;
 import com.company.servlet.Authorization;
 import com.company.servlet.Main;
 import com.company.servlet.Positions;
+import com.company.servlet.Users;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,10 +22,10 @@ public class LinkManager {
         list.put(Main.PROFILE, new Page("/WEB-INF/jsp/profile.jsp", Page.ACCESS_USER));
         list.put(Main.EDIT, new Page("/WEB-INF/jsp/edit.jsp", Page.ACCESS_USER));
         list.put(Main.ABOUT, new Page("/WEB-INF/jsp/about.jsp", Page.ACCESS_ALL));
-//        list.put("/users", new Page("/WEB-INF/jsp/users_search.jsp", Page.ACCESS_USER));
-//        list.put("/users/add", new Page("/WEB-INF/jsp/users_add.jsp", Page.ACCESS_ADMIN));
-//        list.put("/users/update", new Page("/WEB-INF/jsp/users_update.jsp", Page.ACCESS_ADMIN));
-//        list.put("/users/delete", new Page("/WEB-INF/jsp/users_delete.jsp", Page.ACCESS_ADMIN));
+        list.put(Users.MAIN, new Page("/WEB-INF/jsp/users_search.jsp", Page.ACCESS_USER));
+        list.put(Users.ADD, new Page("/WEB-INF/jsp/users_add.jsp", Page.ACCESS_ADMIN));
+        list.put(Users.UPDATE, new Page("/WEB-INF/jsp/users_update.jsp", Page.ACCESS_ADMIN));
+        list.put(Users.DELETE, new Page("/WEB-INF/jsp/users_delete.jsp", Page.ACCESS_ADMIN));
         list.put(Positions.MAIN, new Page("/WEB-INF/jsp/positions_search.jsp", Page.ACCESS_USER));
         list.put(Positions.ADD, new Page("/WEB-INF/jsp/positions_add.jsp", Page.ACCESS_ADMIN));
         list.put(Positions.UPDATE, new Page("/WEB-INF/jsp/positions_update.jsp", Page.ACCESS_ADMIN));

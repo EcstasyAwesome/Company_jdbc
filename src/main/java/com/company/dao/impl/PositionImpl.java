@@ -18,16 +18,13 @@ public class PositionImpl implements PositionDao {
 
     @Override
     public List<Position> getAll() {
-        List<Position> result;
         try (Session session = HibernateUtil.getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Position> query = builder.createQuery(Position.class);
-            Root<Position> root = query.from(Position.class);
-            query.select(root);
+            query.select(query.from(Position.class));
             Query<Position> positionQuery = session.createQuery(query);
-            result = positionQuery.getResultList();
+            return positionQuery.getResultList();
         }
-        return result;
     }
 
     @Override
@@ -52,12 +49,10 @@ public class PositionImpl implements PositionDao {
     }
 
     @Override
-    public Position get(Integer id) {
-        Position position;
+    public Position get(Long id) {
         try (Session session = HibernateUtil.getSession()) {
-            position = session.get(Position.class, id);
+            return session.get(Position.class, id);
         }
-        return position;
     }
 
     @Override
@@ -87,7 +82,7 @@ public class PositionImpl implements PositionDao {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Long id) {
         Session session = HibernateUtil.getSession();
         try {
             session.beginTransaction();
