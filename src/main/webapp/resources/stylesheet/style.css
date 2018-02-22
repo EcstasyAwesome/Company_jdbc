@@ -50,14 +50,14 @@ nav a:hover {
     padding: 14px 10px;
 }
 
-div.nav-menu-left {
+.nav-menu-left {
     float: left;
     text-align: left;
     width: 50%;
     display: table-cell;
 }
 
-div.nav-menu-right {
+.nav-menu-right {
     float: right;
     text-align: right;
     width: 50%;
@@ -80,6 +80,12 @@ article {
     width: 880px;
     padding-right: 10px;
     display: table-cell;
+}
+
+.pagination{
+    margin: auto;
+    border: 1px solid black;
+    text-align: center;
 }
 
 aside {
@@ -149,7 +155,7 @@ form {
 }
 
 /*Прозрачное поле ввода*/
-input.transparent-input {
+.transparent-input {
     border: 0;
     width: 100%;
     text-align: center;

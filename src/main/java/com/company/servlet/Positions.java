@@ -30,7 +30,7 @@ public class Positions extends HttpServlet {
     private final String ID = "id";
     private final String NAME = "name";
     private final String DESCRIPTION = "description";
-    private final String ATTRIBUTE = "position";
+    private final String POSITION = "position";
     private final String MESSAGE = "positionError";
 
     private LinkManager linkManager = LinkManager.getInstance();
@@ -48,7 +48,7 @@ public class Positions extends HttpServlet {
             String query = req.getQueryString();
             if (query != null && query.matches("id=\\d+")) {
                 long id = Integer.parseInt(req.getParameter("id"));
-                req.setAttribute(ATTRIBUTE, positionDao.get(id));
+                req.setAttribute(POSITION, positionDao.get(id));
                 req.getRequestDispatcher(list.get(link).getPath()).forward(req, resp);
             } else resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
         } else req.getRequestDispatcher(list.get(link).getPath()).forward(req, resp);
@@ -103,7 +103,7 @@ public class Positions extends HttpServlet {
             response.sendRedirect(MAIN);
         } catch (Exception e) {
             request.setAttribute(MESSAGE, e.getLocalizedMessage());
-            request.setAttribute(ATTRIBUTE, positionDao.get(id));
+            request.setAttribute(POSITION, positionDao.get(id));
             request.getRequestDispatcher(list.get(UPDATE).getPath()).forward(request, response);
         }
     }
@@ -116,7 +116,7 @@ public class Positions extends HttpServlet {
             response.sendRedirect(MAIN);
         } catch (Exception e) {
             request.setAttribute(MESSAGE, e.getMessage());
-            request.setAttribute(ATTRIBUTE, positionDao.get(id));
+            request.setAttribute(POSITION, positionDao.get(id));
             request.getRequestDispatcher(list.get(DELETE).getPath()).forward(request, response);
         }
     }

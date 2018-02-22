@@ -28,15 +28,50 @@ public class Users extends HttpServlet {
     public static final String UPDATE = "/users/update";
     public static final String DELETE = "/users/delete";
 
+    private final String ID = "id";
+    private final String NAME = "name";
+    private final String USER = "user";
+    private final String MESSAGE = "userError";
+
     private LinkManager linkManager = LinkManager.getInstance();
-    private Map<String,LinkManager.Page> list = linkManager.getList();
+    private Map<String, LinkManager.Page> list = linkManager.getList();
     private DaoFactory daoFactory = DaoFactory.getInstance();
     private UserDao userDao = daoFactory.getUserDao();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        req.setAttribute("users",userDao.getPage(3,2));
-        req.getRequestDispatcher(list.get(Dispatcher.getLink()).getPath()).forward(req, resp);
+        String link = Dispatcher.getLink();
+        String query;
+        if (link.equals(MAIN)) {
+            int currentPage = 1;
+            int recordsOnPage = 10;
+            query = req.getQueryString();
+            if (query != null) {
+                if (query.matches("page=\\d+")) {
+                    currentPage = Integer.parseInt(req.getParameter("page"));
+                    int availablePages = userDao.countPages(recordsOnPage);
+                    if (currentPage <= availablePages) {
+                        req.setAttribute("availablePages", availablePages);
+                        req.setAttribute("currentPage", currentPage);
+                        req.setAttribute("users", userDao.getPage(currentPage, recordsOnPage));
+                        req.getRequestDispatcher(list.get(Dispatcher.getLink()).getPath()).forward(req, resp);
+                    } else resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                } else if (query.matches("key=\\w+&value=\\w+")) {
+                    // in developing
+                }
+            } else {
+                req.setAttribute("availablePages", userDao.countPages(recordsOnPage));
+                req.setAttribute("currentPage", currentPage);
+                req.setAttribute("users", userDao.getPage(currentPage, recordsOnPage));
+                req.getRequestDispatcher(list.get(Dispatcher.getLink()).getPath()).forward(req, resp);
+            }
+        } else if (link.equals(UPDATE) | link.equals(DELETE)) {
+            query = req.getQueryString();
+            if (query != null && query.matches("id=\\d+")) {
+                long id = Integer.parseInt(req.getParameter("id"));
+                req.setAttribute(USER, userDao.get(id));
+                req.getRequestDispatcher(list.get(link).getPath()).forward(req, resp);
+            } else resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        } else req.getRequestDispatcher(list.get(link).getPath()).forward(req, resp);
     }
-
 }
