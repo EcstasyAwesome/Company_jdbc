@@ -82,10 +82,24 @@ article {
     display: table-cell;
 }
 
-.pagination{
-    margin: auto;
-    border: 1px solid black;
+.pagination {
+    padding-top: 10px;
     text-align: center;
+    width: 100%;
+    display: inline-block;
+}
+
+.pagination a {
+    padding: 5px 10px;
+}
+
+.pagination a.current-link {
+    padding: 5px 10px;
+    background: silver;
+}
+
+.pagination a:hover:not(.current-link) {
+    background-color: #ddd;
 }
 
 aside {
