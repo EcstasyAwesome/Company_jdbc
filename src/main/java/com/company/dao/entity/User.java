@@ -15,7 +15,7 @@ public class User {
     private String login;
     private String password;
     private Date registerDate;
-    private int status;
+    private Group group;
     private Position position;
 
     @Id
@@ -110,14 +110,24 @@ public class User {
         this.registerDate = registerDate;
     }
 
-    @Basic
-    @Column(name = "status", nullable = false)
-    public int getStatus() {
-        return status;
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "group", referencedColumnName = "id", nullable = false)
+    public Group getGroup() {
+        return group;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "position", referencedColumnName = "id", nullable = false)
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
     public User() {
@@ -126,10 +136,9 @@ public class User {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof User)) return false;
 
         User that = (User) o;
-
         if (id != that.id) return false;
         if (phone != that.phone) return false;
         if (surname != null ? !surname.equals(that.surname) : that.surname != null) return false;
@@ -143,8 +152,8 @@ public class User {
         if (password != null ? !password.equals(that.password) : that.password != null) return false;
         if (registerDate != null ? !registerDate.equals(that.registerDate) : that.registerDate != null)
             return false;
-        if (status != that.status) return false;
-
+        if (group != null ? !group.equals(that.group) : that.group != null) return false;
+        if (position != null ? !position.equals(that.position) : that.position != null) return false;
         return true;
     }
 
@@ -160,18 +169,9 @@ public class User {
         result = 31 * result + (login != null ? login.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (registerDate != null ? registerDate.hashCode() : 0);
-        result = 31 * result + Integer.hashCode(status);
+        result = 31 * result + (group != null ? group.hashCode() : 0);
+        result = 31 * result + (position != null ? position.hashCode() : 0);
         return result;
-    }
-
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "position", referencedColumnName = "id", nullable = false)
-    public Position getPosition() {
-        return position;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
     }
 
     public String basicInfo() {
@@ -191,7 +191,7 @@ public class User {
                 login + ", " +
                 password + ", " +
                 registerDate + ", " +
-                status + ", " +
+                group + ", " +
                 position;
     }
 }

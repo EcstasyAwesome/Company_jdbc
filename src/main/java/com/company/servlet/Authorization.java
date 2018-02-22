@@ -1,5 +1,6 @@
 package com.company.servlet;
 
+import com.company.dao.entity.Group;
 import com.company.dao.entity.Position;
 import com.company.dao.entity.User;
 import com.company.dao.factory.DaoFactory;
@@ -88,6 +89,8 @@ public class Authorization extends HttpServlet {
         User user = new User();
         Position position = new Position();
         position.setId(5); // default
+        Group group = new Group();
+        group.setId(LinkManager.Page.USER);
         String login = null;
         String surname = null;
         String firstName = null;
@@ -101,7 +104,7 @@ public class Authorization extends HttpServlet {
             user.setMiddleName(middleName = request.getParameter(MIDDLE_NAME));
             user.setPhone(phone = Long.parseLong(request.getParameter(PHONE)));
             user.setRegisterDate(new Date());
-            user.setStatus(LinkManager.Page.USER);
+            user.setGroup(group);
             user.setAvatar(avatar.save());
             user.setPosition(position);
             userDao.create(user);

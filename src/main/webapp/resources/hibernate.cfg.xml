@@ -15,5 +15,6 @@
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <mapping class="com.company.dao.entity.User"/>
         <mapping class="com.company.dao.entity.Position"/>
+        <mapping class="com.company.dao.entity.Group"/>
     </session-factory>
 </hibernate-configuration>

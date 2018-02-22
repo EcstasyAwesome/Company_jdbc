@@ -42,11 +42,8 @@
             <td>${sessionUser.registerDate}</td>
         </tr>
         <tr>
-            <td>Статус:</td>
-            <td>
-                <c:if test="${sessionUser.status == 2}">Администратор</c:if>
-                <c:if test="${sessionUser.status == 1}">Пользователь</c:if>
-            </td>
+            <td>Группа:</td>
+            <td>${sessionUser.group.name}</td>
         </tr>
     </table>
 </main>

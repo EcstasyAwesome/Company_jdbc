@@ -41,10 +41,10 @@ public class Dispatcher implements Filter {
         if (link.equals(req.getRequestURI())) { // if link valid
             if (linkManager.isResources(link)) chain.doFilter(request, response); // its resource, goes next
             else if (list.containsKey(link)) { // if link exist
-                int status = user != null ? user.getStatus() : LinkManager.Page.GUEST; // get status
-                if (status >= list.get(link).getAccess()) chain.doFilter(request, response); // have access
-                else if (status != LinkManager.Page.GUEST)
-                    resp.sendError(HttpServletResponse.SC_FORBIDDEN); //ERROR 403
+                int group = user != null ? (int) user.getGroup().getId() : LinkManager.Page.GUEST; // get group
+                int pageAccess = list.get(link).getAccess();
+                if (group >= pageAccess) chain.doFilter(request, response); // have access
+                else if (group > LinkManager.Page.GUEST) resp.sendError(HttpServletResponse.SC_FORBIDDEN); //ERROR 403
                 else resp.sendError(HttpServletResponse.SC_UNAUTHORIZED); //ERROR 401
             } else resp.sendError(HttpServletResponse.SC_NOT_FOUND); //ERROR 404
         } else resp.sendRedirect(link); // goes on correct link

@@ -46,7 +46,7 @@ public class Positions extends HttpServlet {
             req.getRequestDispatcher(list.get(link).getPath()).forward(req, resp);
         } else if (link.equals(UPDATE) | link.equals(DELETE)) {
             if (req.getQueryString().matches("id=\\d+")) {
-                int id = Integer.parseInt(req.getParameter("id"));
+                long id = Integer.parseInt(req.getParameter("id"));
                 req.setAttribute(ATTRIBUTE, positionDao.get(id));
                 req.getRequestDispatcher(list.get(link).getPath()).forward(req, resp);
             } else resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -90,7 +90,7 @@ public class Positions extends HttpServlet {
 
     private void updatePosition(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         Position position = new Position();
-        int id = 0;
+        long id = 0;
         try {
             id = Integer.parseInt(request.getParameter(ID));
             String name = request.getParameter(NAME);
@@ -108,7 +108,7 @@ public class Positions extends HttpServlet {
     }
 
     private void deletePosition(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        int id = 0;
+        long id = 0;
         try {
             id = Integer.parseInt(request.getParameter(ID));
             positionDao.delete(id);
