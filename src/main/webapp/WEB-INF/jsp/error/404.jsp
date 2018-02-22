@@ -12,6 +12,8 @@
 <div class="page">
     <div class="form">
         <img src="${pageContext.request.contextPath}/resources/img/404.png" width="330">
+        <br>
+        <br>
         <button onclick="history.back()">Назад</button>
         <form action="${pageContext.request.contextPath}${Main.MAIN}">
             <br>
