@@ -45,7 +45,8 @@ public class Positions extends HttpServlet {
             req.setAttribute("positions", positionDao.getAll());
             req.getRequestDispatcher(list.get(link).getPath()).forward(req, resp);
         } else if (link.equals(UPDATE) | link.equals(DELETE)) {
-            if (req.getQueryString().matches("id=\\d+")) {
+            String query = req.getQueryString();
+            if (query != null && query.matches("id=\\d+")) {
                 long id = Integer.parseInt(req.getParameter("id"));
                 req.setAttribute(ATTRIBUTE, positionDao.get(id));
                 req.getRequestDispatcher(list.get(link).getPath()).forward(req, resp);
