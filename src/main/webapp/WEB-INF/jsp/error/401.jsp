@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page isErrorPage="true" %>
 <%@ page import="com.company.servlet.Authorization" %>
+<%@ page import="com.company.servlet.Main" %>
 <html lang="ru">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -19,6 +20,9 @@
         <form action="${pageContext.request.contextPath}${Authorization.AUTHORIZATION}" method="post">
             <input type="hidden" name="method" value="GO_REGISTER">
             <button>регистрация</button>
+        </form>
+        <form action="${pageContext.request.contextPath}${Main.MAIN}">
+            <button>главная</button>
         </form>
     </div>
 </div>
