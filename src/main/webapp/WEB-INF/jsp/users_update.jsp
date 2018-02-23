@@ -40,7 +40,7 @@
                             <input class="transparent-input" value="${user.phone}" name="phone" required>
                         </td>
                         <td class="table-main">
-                            <select class="transparent-input" name="position">
+                            <select class="transparent-input" name="position" required>
                                 <c:forEach items="${positions}" var="that">
                                     <c:if test="${user.position.id==that.id}">
                                         <option selected value="${that.id}">${that.name}</option>
@@ -52,7 +52,7 @@
                             </select>
                         </td>
                         <td class="table-main">
-                            <select class="transparent-input" name="group">
+                            <select class="transparent-input" name="group" required>
                                 <c:forEach items="${groups}" var="that">
                                     <c:if test="${user.group.id==that.id}">
                                         <option selected value="${that.id}">${that.name}</option>

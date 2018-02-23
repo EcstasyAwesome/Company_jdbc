@@ -67,9 +67,8 @@ public class PositionImpl implements PositionDao {
             Query<Position> positionQuery = session.createQuery(query);
             if (!positionQuery.list().isEmpty()) {
                 Position position = positionQuery.getSingleResult();
-                if (position.getName().equalsIgnoreCase(instance.getName()))
-                    if (position.getId() != instance.getId())
-                        throw new ConstraintViolationException(String.format(DUPLICATE, name), null, name);
+                if (position.getId() != instance.getId())
+                    throw new ConstraintViolationException(String.format(DUPLICATE, name), null, name);
             }
             session.clear();
             session.beginTransaction();
@@ -92,6 +91,31 @@ public class PositionImpl implements PositionDao {
         } finally {
             if (session.getTransaction() != null) session.getTransaction().rollback();
             session.close();
+        }
+    }
+
+    @Override
+    public int countPages(int recordsOnPage) {
+        try (Session session = HibernateUtil.getSession()) {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Long> query = builder.createQuery(Long.class);
+            query.select(builder.count(query.from(Position.class)));
+            Query<Long> longQuery = session.createQuery(query);
+            long records = longQuery.getSingleResult();
+            return (int) Math.ceil(records * 1.0 / recordsOnPage);
+        }
+    }
+
+    @Override
+    public List<Position> getPage(int page, int recordsOnPage) {
+        try (Session session = HibernateUtil.getSession()) {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Position> query = builder.createQuery(Position.class);
+            query.select(query.from(Position.class));
+            Query<Position> positionQuery = session.createQuery(query);
+            positionQuery.setFirstResult(page * recordsOnPage - recordsOnPage);
+            positionQuery.setMaxResults(recordsOnPage);
+            return positionQuery.getResultList();
         }
     }
 }

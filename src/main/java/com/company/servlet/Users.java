@@ -1,6 +1,8 @@
 package com.company.servlet;
 
 import com.company.dao.factory.DaoFactory;
+import com.company.dao.model.GroupDao;
+import com.company.dao.model.PositionDao;
 import com.company.dao.model.UserDao;
 import com.company.filter.Dispatcher;
 import com.company.util.LinkManager;
@@ -37,6 +39,8 @@ public class Users extends HttpServlet {
     private Map<String, LinkManager.Page> list = linkManager.getList();
     private DaoFactory daoFactory = DaoFactory.getInstance();
     private UserDao userDao = daoFactory.getUserDao();
+    private PositionDao positionDao = daoFactory.getPositionDao();
+    private GroupDao groupDao = daoFactory.getGroupDao();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -65,6 +69,10 @@ public class Users extends HttpServlet {
             query = req.getQueryString();
             if (query != null && query.matches("^id=\\d+$")) {
                 long id = Integer.parseInt(req.getParameter("id"));
+                if (link.equals(UPDATE)) {
+                    req.setAttribute("positions", positionDao.getAll());
+                    req.setAttribute("groups", groupDao.getAll());
+                }
                 req.setAttribute(USER, userDao.get(id));
                 req.getRequestDispatcher(list.get(link).getPath()).forward(req, resp);
             } else resp.sendError(HttpServletResponse.SC_BAD_REQUEST);

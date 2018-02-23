@@ -1,5 +1,7 @@
 package com.company.dao.factory;
 
+import com.company.dao.impl.GroupImpl;
+import com.company.dao.model.GroupDao;
 import com.company.dao.model.PositionDao;
 import com.company.dao.model.UserDao;
 import com.company.dao.impl.PositionImpl;
@@ -22,5 +24,9 @@ public class DaoFactory {
 
     public PositionDao getPositionDao() {
         return new PositionImpl();
+    }
+
+    public GroupDao getGroupDao() {
+        return new GroupImpl();
     }
 }

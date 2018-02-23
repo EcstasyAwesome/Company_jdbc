@@ -31,6 +31,14 @@
                         <td class="table-main">${user.phone}</td>
                         <td class="table-main">${user.position.name}</td>
                         <td class="table-main">${user.group.name}</td>
+                        <td class="table-main">
+                            <a href="${pageContext.request.contextPath}${Users.UPDATE}?id=${user.id}">
+                                <img src="${pageContext.request.contextPath}/resources/img/edit_icon.png">
+                            </a>
+                            <a href="${pageContext.request.contextPath}${Users.DELETE}?id=${user.id}">
+                                <img src="${pageContext.request.contextPath}/resources/img/delete_icon.png">
+                            </a>
+                        </td>
                     </tr>
                 </c:forEach>
             </c:if>
