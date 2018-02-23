@@ -8,6 +8,4 @@ public interface UserDao extends GenericDao<User, Long>, Pagination<User> {
     List<User> getAll();
 
     User getByLogin(String login);
-
-    List<User> getByParam(String key, String value);
 }

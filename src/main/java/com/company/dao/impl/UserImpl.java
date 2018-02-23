@@ -44,18 +44,6 @@ public class UserImpl implements UserDao {
     }
 
     @Override
-    public List<User> getByParam(String key, String value) {
-        try (Session session = HibernateUtil.getSession()) {
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<User> query = builder.createQuery(User.class);
-            Root<User> root = query.from(User.class);
-            query.select(root).where(builder.equal(root.get(key), value)); // can throw exception
-            Query<User> userQuery = session.createQuery(query);
-            return userQuery.getResultList();
-        }
-    }
-
-    @Override
     public void create(User newInstance) throws ConstraintViolationException {
         Session session = HibernateUtil.getSession();
         String login = newInstance.getLogin();

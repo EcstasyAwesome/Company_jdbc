@@ -46,19 +46,15 @@ public class Users extends HttpServlet {
             int currentPage = 1;
             int recordsOnPage = 10;
             query = req.getQueryString();
-            if (query != null) {
-                if (query.matches("page=\\d+")) {
-                    currentPage = Integer.parseInt(req.getParameter("page"));
-                    int availablePages = userDao.countPages(recordsOnPage);
-                    if (currentPage <= availablePages) {
-                        req.setAttribute("availablePages", availablePages);
-                        req.setAttribute("currentPage", currentPage);
-                        req.setAttribute("users", userDao.getPage(currentPage, recordsOnPage));
-                        req.getRequestDispatcher(list.get(Dispatcher.getLink()).getPath()).forward(req, resp);
-                    } else resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
-                } else if (query.matches("key=\\w+&value=\\w+")) {
-                    // in developing
-                }
+            if (query != null && query.matches("^page=\\d+$")) {
+                currentPage = Integer.parseInt(req.getParameter("page"));
+                int availablePages = userDao.countPages(recordsOnPage);
+                if (currentPage <= availablePages) {
+                    req.setAttribute("availablePages", availablePages);
+                    req.setAttribute("currentPage", currentPage);
+                    req.setAttribute("users", userDao.getPage(currentPage, recordsOnPage));
+                    req.getRequestDispatcher(list.get(Dispatcher.getLink()).getPath()).forward(req, resp);
+                } else resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
             } else {
                 req.setAttribute("availablePages", userDao.countPages(recordsOnPage));
                 req.setAttribute("currentPage", currentPage);
@@ -67,7 +63,7 @@ public class Users extends HttpServlet {
             }
         } else if (link.equals(UPDATE) | link.equals(DELETE)) {
             query = req.getQueryString();
-            if (query != null && query.matches("id=\\d+")) {
+            if (query != null && query.matches("^id=\\d+$")) {
                 long id = Integer.parseInt(req.getParameter("id"));
                 req.setAttribute(USER, userDao.get(id));
                 req.getRequestDispatcher(list.get(link).getPath()).forward(req, resp);
