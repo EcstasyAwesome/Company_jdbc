@@ -39,10 +39,10 @@
                 </tr>
                 <tr>
                     <td>Телефон:</td>
-                    <td><input style="" type="text" name="phone" pattern="380[0-9]{9}"
+                    <td><input type="text" name="phone" pattern="380[0-9]{9}"
                                <c:if test="${phone==null}">value="380"</c:if>
                                <c:if test="${phone!=null}">value="${phone}"</c:if>
-                               size="20" required></td>
+                               required></td>
                 </tr>
                 <tr>
                     <td>Фото:</td>
