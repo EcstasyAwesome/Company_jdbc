@@ -11,7 +11,6 @@ body {
 }
 
 header {
-    /*text-align: center;*/
     background-color: black;
     border: 1px solid black;
     height: 200px;
@@ -30,18 +29,9 @@ nav {
     margin: auto;
 }
 
-nav ul {
-    margin: 0;
-    padding: 0;
-}
-
-nav li {
-    display: inline-block;
-    line-height: 45px;
-}
-
 nav a {
     padding: 14px 10px;
+    line-height: 45px;
     transition: background-color .3s;
 }
 
@@ -53,6 +43,7 @@ nav a:hover {
 .nav-menu-left {
     float: left;
     text-align: left;
+    height: 100%;
     width: 50%;
     display: table-cell;
 }
@@ -60,6 +51,7 @@ nav a:hover {
 .nav-menu-right {
     float: right;
     text-align: right;
+    height: 100%;
     width: 50%;
     display: table-cell;
 }

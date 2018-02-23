@@ -37,7 +37,8 @@
                             <input class="transparent-input" value="${user.middleName}" name="middleName" required>
                         </td>
                         <td class="table-main">
-                            <input class="transparent-input" value="${user.phone}" name="phone" required>
+                            <input class="transparent-input" value="${user.phone}" pattern="380[0-9]{9}" name="phone"
+                                   required>
                         </td>
                         <td class="table-main">
                             <select class="transparent-input" name="position" required>
