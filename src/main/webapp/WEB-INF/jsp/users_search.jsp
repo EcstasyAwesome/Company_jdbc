@@ -19,6 +19,7 @@
                 <th width="130" class="table-top">Отчество</th>
                 <th width="130" class="table-top">Телефон</th>
                 <th width="130" class="table-top">Должность</th>
+                <th width="130" class="table-top">Группа</th>
             </tr>
             <c:if test="${users!=null}">
                 <c:forEach items="${users}" var="user">
@@ -29,12 +30,13 @@
                         <td class="table-main">${user.middleName}</td>
                         <td class="table-main">${user.phone}</td>
                         <td class="table-main">${user.position.name}</td>
+                        <td class="table-main">${user.group.name}</td>
                     </tr>
                 </c:forEach>
             </c:if>
             <c:if test="${users==null || users.isEmpty()}">
                 <tr>
-                    <td class="table-main" colspan="6">Данные отсуствуют</td>
+                    <td class="table-main" colspan="7">Данные отсуствуют</td>
                 </tr>
             </c:if>
         </table>
