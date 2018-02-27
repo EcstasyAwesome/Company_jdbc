@@ -74,8 +74,7 @@ public class UserImpl implements UserDao {
     }
 
     @Override
-    public void update(User instance) throws NullPointerException {
-        if (instance.getId() == 0) throw new NullPointerException();
+    public void update(User instance) {
         Session session = HibernateUtil.getSession();
         try {
             session.beginTransaction();
