@@ -40,6 +40,17 @@
                 </tr>
             </c:if>
         </table>
+        <c:if test="${positions!=null}">
+            <div class="pagination">
+                <c:if test="${currentPage != 1}">
+                    <a href="${pageContext.request.contextPath}${Positions.MAIN}?page=${currentPage - 1}">${currentPage - 1}</a>
+                </c:if>
+                <a class="current-link">${currentPage}</a>
+                <c:if test="${currentPage lt availablePages}">
+                    <a href="${pageContext.request.contextPath}${Positions.MAIN}?page=${currentPage + 1}">${currentPage + 1}</a>
+                </c:if>
+            </div>
+        </c:if>
     </article>
     <aside>
         <jsp:include page="/WEB-INF/jsp/static/positions_menu.jsp"/>

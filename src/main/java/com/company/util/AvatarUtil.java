@@ -14,10 +14,11 @@ import java.util.Date;
 
 public class AvatarUtil {
 
+    public static final String DEFAULT_AVATAR = "/resources/img/avatar.png";
+
     private DaoFactory daoFactory = DaoFactory.getInstance();
     private UserDao userDao = daoFactory.getUserDao();
-    private final String defaultAvatar = "/resources/img/avatar.png";
-    private final String sessionUser = "sessionUser";
+    private final String SESSION_USER = "sessionUser";
     private String saveAvatar;
     private String oldAvatar;
     private String storagePath;
@@ -30,7 +31,7 @@ public class AvatarUtil {
         String tmp = request.getServletContext().getRealPath("");
         storagePath = tmp.substring(0, tmp.indexOf("target"));
         httpSession = request.getSession(false);
-        user = (User) httpSession.getAttribute(sessionUser);
+        user = (User) httpSession.getAttribute(SESSION_USER);
         if (user != null) oldAvatar = user.getAvatar();
         this.request = request;
     }
@@ -56,7 +57,7 @@ public class AvatarUtil {
             isSaved = true;
             return saveAvatar.substring(storagePath.length() - 1).replaceAll(File.separator + File.separator, "/");
         }
-        return user != null ? user.getAvatar() : defaultAvatar;
+        return user != null ? user.getAvatar() : DEFAULT_AVATAR;
     }
 
     /**
@@ -66,15 +67,29 @@ public class AvatarUtil {
      */
 
     public void delete() {
-        if (user != null && !user.getAvatar().equals(defaultAvatar)) {
+        if (user != null && !user.getAvatar().equals(DEFAULT_AVATAR)) {
             String path = user.getAvatar().replaceAll("[/]", File.separator + File.separator);
             File file = new File(storagePath + path);
             if (file.exists())
                 if (file.delete()) {
-                    user.setAvatar(defaultAvatar);
+                    user.setAvatar(DEFAULT_AVATAR);
                     userDao.update(user);
-                    httpSession.setAttribute(sessionUser, user);
+                    httpSession.setAttribute(SESSION_USER, user);
                 }
+        }
+    }
+
+    /**
+     * delete from storage avatar by absolute path
+     *
+     * @param path - absolute path to avatar
+     * @see #deleteFromStorage(String)
+     */
+
+    public void deleteFromStorage(String path) {
+        if (!path.equals(DEFAULT_AVATAR)) {
+            File avatar = new File(storagePath + path);
+            if (avatar.exists()) avatar.delete();
         }
     }
 
@@ -86,7 +101,7 @@ public class AvatarUtil {
      */
 
     public void clean() {
-        if (isSaved && !oldAvatar.equals(defaultAvatar)) {
+        if (isSaved && !oldAvatar.equals(DEFAULT_AVATAR)) {
             File avatar = new File(storagePath + oldAvatar);
             if (avatar.exists())
                 if (avatar.delete())

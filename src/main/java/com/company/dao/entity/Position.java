@@ -1,6 +1,7 @@
 package com.company.dao.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "positions")
@@ -8,6 +9,7 @@ public class Position {
     private long id;
     private String name;
     private String description;
+    private List<User> users;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +40,16 @@ public class Position {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @OneToMany(orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "position")
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
     public Position() {

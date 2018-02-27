@@ -42,8 +42,24 @@ public class Positions extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String link = Dispatcher.getLink();
         if (link.equals(MAIN)) {
-            req.setAttribute("positions", positionDao.getAll());
-            req.getRequestDispatcher(list.get(link).getPath()).forward(req, resp);
+            int currentPage = 1;
+            int recordsOnPage = 5;
+            String query = req.getQueryString();
+            if (query != null && query.matches("^page=\\d+$")) {
+                currentPage = Integer.parseInt(req.getParameter("page"));
+                int availablePages = positionDao.countPages(recordsOnPage);
+                if (currentPage <= availablePages) {
+                    req.setAttribute("availablePages", availablePages);
+                    req.setAttribute("currentPage", currentPage);
+                    req.setAttribute("positions", positionDao.getPage(currentPage, recordsOnPage));
+                    req.getRequestDispatcher(list.get(Dispatcher.getLink()).getPath()).forward(req, resp);
+                } else resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            } else {
+                req.setAttribute("availablePages", positionDao.countPages(recordsOnPage));
+                req.setAttribute("currentPage", currentPage);
+                req.setAttribute("positions", positionDao.getPage(currentPage, recordsOnPage));
+                req.getRequestDispatcher(list.get(Dispatcher.getLink()).getPath()).forward(req, resp);
+            }
         } else if (link.equals(UPDATE) | link.equals(DELETE)) {
             String query = req.getQueryString();
             if (query != null && query.matches("^id=\\d+$")) {
@@ -93,7 +109,7 @@ public class Positions extends HttpServlet {
         Position position = new Position();
         long id = 0;
         try {
-            id = Integer.parseInt(request.getParameter(ID));
+            id = Long.parseLong(request.getParameter(ID));
             String name = request.getParameter(NAME);
             String description = request.getParameter(DESCRIPTION);
             position.setId(id);
@@ -108,16 +124,12 @@ public class Positions extends HttpServlet {
         }
     }
 
-    private void deletePosition(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        long id = 0;
+    private void deletePosition(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            id = Integer.parseInt(request.getParameter(ID));
-            positionDao.delete(id);
+            positionDao.delete(Long.parseLong(request.getParameter(ID)));
             response.sendRedirect(MAIN);
         } catch (Exception e) {
-            request.setAttribute(MESSAGE, e.getMessage());
-            request.setAttribute(POSITION, positionDao.get(id));
-            request.getRequestDispatcher(list.get(DELETE).getPath()).forward(request, response);
+            response.sendRedirect(Dispatcher.getLink() + "?" + request.getQueryString());
         }
     }
 }

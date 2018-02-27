@@ -74,11 +74,22 @@ public class UserImpl implements UserDao {
     }
 
     @Override
-    public void update(User instance) {
+    public void update(User instance) throws NullPointerException {
+        if (instance.getId() == 0) throw new NullPointerException();
         Session session = HibernateUtil.getSession();
         try {
             session.beginTransaction();
-            session.update(instance);
+            User user = session.load(User.class, instance.getId());
+            if (instance.getSurname() != null) user.setSurname(instance.getSurname());
+            if (instance.getFirstName() != null) user.setFirstName(instance.getFirstName());
+            if (instance.getMiddleName() != null) user.setMiddleName(instance.getMiddleName());
+            if (instance.getAvatar() != null) user.setAvatar(instance.getAvatar());
+            if (instance.getPhone() != 0) user.setPhone(instance.getPhone());
+            if (instance.getLogin() != null) user.setLogin(instance.getLogin());
+            if (instance.getPassword() != null) user.setPassword(instance.getPassword());
+            if (instance.getRegisterDate() != null) user.setRegisterDate(instance.getRegisterDate());
+            if (instance.getGroup() != null) user.setGroup(instance.getGroup());
+            if (instance.getPosition() != null) user.setPosition(instance.getPosition());
             session.getTransaction().commit();
         } finally {
             if (session.getTransaction() != null) session.getTransaction().rollback();

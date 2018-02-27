@@ -49,7 +49,12 @@
                         <select class="transparent-input" name="position" required>
                             <option disabled>Выберите должность</option>
                             <c:forEach items="${positions}" var="that">
+                                <c:if test="${position==that.id}">
+                                    <option selected value="${that.id}">${that.name}</option>
+                                </c:if>
+                                <c:if test="${position!=that.id}">
                                     <option value="${that.id}">${that.name}</option>
+                                </c:if>
                             </c:forEach>
                         </select>
                     </td>
@@ -57,7 +62,12 @@
                         <select class="transparent-input" name="group" required>
                             <option disabled>Выберите группу</option>
                             <c:forEach items="${groups}" var="that">
+                                <c:if test="${group==that.id}">
+                                    <option selected value="${that.id}">${that.name}</option>
+                                </c:if>
+                                <c:if test="${group!=that.id}">
                                     <option value="${that.id}">${that.name}</option>
+                                </c:if>
                             </c:forEach>
                         </select>
                     </td>

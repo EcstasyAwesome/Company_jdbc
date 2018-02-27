@@ -1037,7 +1037,7 @@
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="254" parent="233" name="group">
+    <column id="254" parent="233" name="groups">
       <Position>10</Position>
       <DataType>bigint(20)|0</DataType>
       <NotNull>1</NotNull>

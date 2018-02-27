@@ -90,7 +90,7 @@ public class Authorization extends HttpServlet {
         Position position = new Position();
         position.setId(5); // default
         Group group = new Group();
-        group.setId(LinkManager.Page.USER);
+        group.setId(LinkManager.Page.USER); // default
         String login = null;
         String surname = null;
         String firstName = null;

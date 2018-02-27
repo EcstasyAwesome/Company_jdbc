@@ -9,7 +9,7 @@
   <url>http://maven.apache.org</url>
   <!--change hibernate version here-->
   <properties>
-    <hibernate-version>5.2.12.Final</hibernate-version>
+    <hibernate-version>5.2.13.Final</hibernate-version>
   </properties>
   <!--basic-->
   <dependencies>
@@ -46,7 +46,7 @@
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
-      <version>5.1.43</version>
+      <version>6.0.6</version>
     </dependency>
     <!--hibernate-->
     <dependency>

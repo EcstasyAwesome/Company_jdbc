@@ -110,8 +110,8 @@ public class User {
         this.registerDate = registerDate;
     }
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "group", referencedColumnName = "id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "groups", nullable = false)
     public Group getGroup() {
         return group;
     }
@@ -120,8 +120,8 @@ public class User {
         this.group = group;
     }
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "position", referencedColumnName = "id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "position")
     public Position getPosition() {
         return position;
     }

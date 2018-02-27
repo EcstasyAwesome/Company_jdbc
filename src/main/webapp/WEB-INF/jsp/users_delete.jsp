@@ -13,6 +13,7 @@
         <form method="post">
             <input type="hidden" name="method" value="DELETE">
             <input type="hidden" name="id" value="${user.id}">
+            <input type="hidden" name="avatar" value="${user.avatar}">
             <table align="center">
                 <tr>
                     <th width="40" class="table-top">ID</th>
@@ -40,9 +41,6 @@
                     </tr>
                     <tr>
                         <td colspan="7" align="center">
-                            <c:if test="${userError!=null}">
-                                <p class="server-answer">${userError}</p>
-                            </c:if>
                             <br><input type="submit" value="Удалить"></td>
                     </tr>
                 </c:if>
