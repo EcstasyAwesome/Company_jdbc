@@ -18,6 +18,21 @@ USE `lists`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `groups`
+--
+
+DROP TABLE IF EXISTS `groups`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `groups` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name_UNIQUE` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `positions`
 --
 
@@ -25,12 +40,12 @@ DROP TABLE IF EXISTS `positions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `positions` (
-  `position_id` int(2) NOT NULL AUTO_INCREMENT,
-  `position_name` varchar(20) NOT NULL,
-  `position_description` varchar(30) NOT NULL,
-  PRIMARY KEY (`position_id`),
-  UNIQUE KEY `position_name_UNIQUE` (`position_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `description` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `position_name_UNIQUE` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,21 +56,20 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_surname` varchar(20) NOT NULL,
-  `user_firstName` varchar(20) NOT NULL,
-  `user_secondName` varchar(20) NOT NULL,
-  `user_avatar` varchar(50) NOT NULL,
-  `user_phoneNumber` bigint(12) NOT NULL,
-  `user_login` varchar(20) NOT NULL,
-  `user_password` varchar(20) NOT NULL,
-  `user_registerDate` date NOT NULL,
-  `user_isAdmin` tinyint(1) NOT NULL,
-  `position_id` int(11) NOT NULL,
-  PRIMARY KEY (`user_id`),
-  UNIQUE KEY `user_login_UNIQUE` (`user_login`),
-  KEY `position_id_idx` (`position_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `surname` varchar(20) NOT NULL,
+  `firstName` varchar(20) NOT NULL,
+  `middleName` varchar(20) NOT NULL,
+  `avatar` varchar(50) NOT NULL,
+  `phone` bigint(12) NOT NULL,
+  `login` varchar(20) NOT NULL,
+  `password` varchar(20) NOT NULL,
+  `registerDate` date NOT NULL,
+  `groups` bigint(20) NOT NULL,
+  `position` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_login_UNIQUE` (`login`)
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -67,4 +81,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-02-09 15:53:30
+-- Dump completed on 2018-02-27 13:59:31
