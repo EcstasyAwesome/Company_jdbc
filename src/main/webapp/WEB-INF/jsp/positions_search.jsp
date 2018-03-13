@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="com.company.servlet.Positions" %>
+<%@ page import="com.company.servlet.positions.PositionSearch" %>
+<%@ page import="com.company.servlet.positions.PositionUpdate" %>
+<%@ page import="com.company.servlet.positions.PositionDelete" %>
 <html lang="ru">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -24,10 +26,10 @@
                         <td class="table-main">${position.name}</td>
                         <td class="table-main">${position.description}</td>
                         <td class="table-main">
-                            <a href="${pageContext.request.contextPath}${Positions.UPDATE}?id=${position.id}">
+                            <a href="${pageContext.request.contextPath}${PositionUpdate.UPDATE}?id=${position.id}">
                                 <img src="${pageContext.request.contextPath}/resources/img/edit_icon.png">
                             </a>
-                            <a href="${pageContext.request.contextPath}${Positions.DELETE}?id=${position.id}">
+                            <a href="${pageContext.request.contextPath}${PositionDelete.DELETE}?id=${position.id}">
                                 <img src="${pageContext.request.contextPath}/resources/img/delete_icon.png">
                             </a>
                         </td>
@@ -43,11 +45,11 @@
         <c:if test="${positions!=null}">
             <div class="pagination">
                 <c:if test="${currentPage != 1}">
-                    <a href="${pageContext.request.contextPath}${Positions.MAIN}?page=${currentPage - 1}">${currentPage - 1}</a>
+                    <a href="${pageContext.request.contextPath}${PositionSearch.MAIN}?page=${currentPage - 1}">${currentPage - 1}</a>
                 </c:if>
                 <a class="current-link">${currentPage}</a>
                 <c:if test="${currentPage lt availablePages}">
-                    <a href="${pageContext.request.contextPath}${Positions.MAIN}?page=${currentPage + 1}">${currentPage + 1}</a>
+                    <a href="${pageContext.request.contextPath}${PositionSearch.MAIN}?page=${currentPage + 1}">${currentPage + 1}</a>
                 </c:if>
             </div>
         </c:if>

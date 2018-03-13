@@ -1,32 +1,32 @@
 package com.company.filter;
 
+import com.company.util.SettingsXmlReader;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.annotation.WebInitParam;
 import java.io.IOException;
 
 @WebFilter(
         filterName = "Encoder",
-        initParams = @WebInitParam(name = "ENCODING_TYPE", value = "UTF-8"), // change the type here
         urlPatterns = "/*"
 )
 public class Encoder implements Filter {
-    private String encoding = "UTF-8"; // default
+    private static final String ENCODING;
 
-    @Override
-    public void init(FilterConfig filterConfig) {
-        String encoding = filterConfig.getInitParameter("ENCODING_TYPE");
-        if (encoding != null) {
-            this.encoding = encoding;
+    static {
+        try {
+            ENCODING = SettingsXmlReader.getValue("encoding");
+        } catch (Throwable ex) {
+            throw new ExceptionInInitializerError(ex);
         }
-        System.out.println(String.format("-> [%s] encoding = %s", getClass().getSimpleName(), this.encoding));
+        System.out.println(String.format("-> [%s] ENCODING = %s", Encoder.class.getSimpleName(), ENCODING));
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        request.setCharacterEncoding(encoding);
-        response.setCharacterEncoding(encoding);
-        response.setContentType("text/html; charset=" + encoding);
+        request.setCharacterEncoding(ENCODING);
+        response.setCharacterEncoding(ENCODING);
+        response.setContentType("text/html; charset=" + ENCODING);
         chain.doFilter(request, response);
     }
 }

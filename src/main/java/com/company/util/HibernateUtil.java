@@ -13,7 +13,6 @@ public class HibernateUtil {
         try {
             SESSION_FACTORY = new Configuration().configure().buildSessionFactory();
         } catch (Throwable ex) {
-            ex.printStackTrace();
             throw new ExceptionInInitializerError(ex);
         }
     }

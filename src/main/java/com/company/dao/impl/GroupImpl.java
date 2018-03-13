@@ -14,7 +14,17 @@ import java.util.List;
 
 public class GroupImpl implements GroupDao {
 
-    private final String DUPLICATE = "Группа '%s' уже существует";
+    private static GroupImpl instance;
+
+    private GroupImpl() {
+    }
+
+    public static GroupImpl getInstance() {
+        if (instance == null) return instance = new GroupImpl();
+        return instance;
+    }
+
+    private final String duplicate = "Группа '%s' уже существует";
 
     @Override
     public List<Group> getAll() {
@@ -38,7 +48,7 @@ public class GroupImpl implements GroupDao {
             query.select(root).where(builder.equal(root.get("name"), name));
             Query<Group> groupQuery = session.createQuery(query);
             if (!groupQuery.list().isEmpty())
-                throw new ConstraintViolationException(String.format(DUPLICATE, name), null, name);
+                throw new ConstraintViolationException(String.format(duplicate, name), null, name);
             session.beginTransaction();
             session.save(newInstance);
             session.getTransaction().commit();
@@ -68,7 +78,7 @@ public class GroupImpl implements GroupDao {
             if (!groupQuery.list().isEmpty()) {
                 Group group = groupQuery.getSingleResult();
                 if (group.getId() != instance.getId())
-                    throw new ConstraintViolationException(String.format(DUPLICATE, name), null, name);
+                    throw new ConstraintViolationException(String.format(duplicate, name), null, name);
             }
             session.clear();
             session.beginTransaction();

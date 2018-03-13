@@ -2,9 +2,16 @@ package com.company.util;
 
 import com.company.servlet.Authorization;
 import com.company.servlet.Main;
-import com.company.servlet.Positions;
-import com.company.servlet.Users;
+import com.company.servlet.positions.PositionCreate;
+import com.company.servlet.positions.PositionDelete;
+import com.company.servlet.positions.PositionSearch;
+import com.company.servlet.positions.PositionUpdate;
+import com.company.servlet.users.UserCreate;
+import com.company.servlet.users.UserDelete;
+import com.company.servlet.users.UserSearch;
+import com.company.servlet.users.UserUpdate;
 
+import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,25 +29,20 @@ public class LinkManager {
         list.put(Main.PROFILE, new Page("/WEB-INF/jsp/profile.jsp", Page.USER));
         list.put(Main.EDIT, new Page("/WEB-INF/jsp/edit.jsp", Page.USER));
         list.put(Main.ABOUT, new Page("/WEB-INF/jsp/about.jsp", Page.GUEST));
-        list.put(Users.MAIN, new Page("/WEB-INF/jsp/users_search.jsp", Page.USER));
-        list.put(Users.ADD, new Page("/WEB-INF/jsp/users_add.jsp", Page.ADMIN));
-        list.put(Users.UPDATE, new Page("/WEB-INF/jsp/users_update.jsp", Page.ADMIN));
-        list.put(Users.DELETE, new Page("/WEB-INF/jsp/users_delete.jsp", Page.ADMIN));
-        list.put(Positions.MAIN, new Page("/WEB-INF/jsp/positions_search.jsp", Page.USER));
-        list.put(Positions.ADD, new Page("/WEB-INF/jsp/positions_add.jsp", Page.ADMIN));
-        list.put(Positions.UPDATE, new Page("/WEB-INF/jsp/positions_update.jsp", Page.ADMIN));
-        list.put(Positions.DELETE, new Page("/WEB-INF/jsp/positions_delete.jsp", Page.ADMIN));
+        list.put(UserSearch.MAIN, new Page("/WEB-INF/jsp/users_search.jsp", Page.USER));
+        list.put(UserCreate.ADD, new Page("/WEB-INF/jsp/users_add.jsp", Page.ADMIN));
+        list.put(UserUpdate.UPDATE, new Page("/WEB-INF/jsp/users_update.jsp", Page.ADMIN));
+        list.put(UserDelete.DELETE, new Page("/WEB-INF/jsp/users_delete.jsp", Page.ADMIN));
+        list.put(PositionSearch.MAIN, new Page("/WEB-INF/jsp/positions_search.jsp", Page.USER));
+        list.put(PositionCreate.ADD, new Page("/WEB-INF/jsp/positions_add.jsp", Page.ADMIN));
+        list.put(PositionUpdate.UPDATE, new Page("/WEB-INF/jsp/positions_update.jsp", Page.ADMIN));
+        list.put(PositionDelete.DELETE, new Page("/WEB-INF/jsp/positions_delete.jsp", Page.ADMIN));
     }
 
     public static LinkManager getInstance() {
         if (instance == null) return instance = new LinkManager();
         return instance;
     }
-
-    /**
-     * @return returns map of available links
-     * @see #getList()
-     */
 
     public Map<String, Page> getList() {
         return list;
@@ -52,7 +54,7 @@ public class LinkManager {
      * @see #isResources(String)
      */
 
-    public boolean isResources(String link) {
+    public boolean isResources(@NotNull String link) {
         String path1 = "/resources/";
         String path2 = "/storage/";
         return link.startsWith(path1) | link.startsWith(path2);
@@ -66,14 +68,6 @@ public class LinkManager {
 
         private String path;
         private int access;
-
-        /**
-         * available codes is here {{@link #GUEST}{@link #USER}{@link #ADMIN}}
-         *
-         * @param path   path to jsp file
-         * @param access access code
-         * @see #Page(String, int)
-         */
 
         private Page(String path, int access) {
             this.path = path;

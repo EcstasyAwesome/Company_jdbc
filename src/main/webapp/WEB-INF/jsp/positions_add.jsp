@@ -11,7 +11,6 @@
 <main>
     <article>
         <form id="add" method="post">
-            <input type="hidden" name="method" value="ADD">
             <table align="center">
                 <tr>
                     <th width="200" class="table-top">Должность</th>

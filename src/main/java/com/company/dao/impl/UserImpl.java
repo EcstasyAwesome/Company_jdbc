@@ -15,6 +15,16 @@ import java.util.List;
 
 public class UserImpl implements UserDao {
 
+    private static UserImpl instance;
+
+    private UserImpl() {
+    }
+
+    public static UserImpl getInstance() {
+        if (instance == null) return instance = new UserImpl();
+        return instance;
+    }
+
     @Override
     public List<User> getAll() {
         try (Session session = HibernateUtil.getSession()) {

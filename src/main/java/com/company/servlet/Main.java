@@ -1,6 +1,6 @@
 package com.company.servlet;
 
-import com.company.dao.factory.DaoFactory;
+import com.company.dao.DaoService;
 import com.company.dao.model.UserDao;
 import com.company.filter.Dispatcher;
 import com.company.dao.entity.User;
@@ -30,10 +30,8 @@ public class Main extends HttpServlet {
     public static final String EDIT = "/edit";
     public static final String ABOUT = "/about";
 
-    private LinkManager linkManager = LinkManager.getInstance();
-    private Map<String, LinkManager.Page> list = linkManager.getList();
-    private DaoFactory daoFactory = DaoFactory.getInstance();
-    private UserDao userDao = daoFactory.getUserDao();
+    private Map<String, LinkManager.Page> list = LinkManager.getInstance().getList();
+    private UserDao userDao = DaoService.getInstance().getUserDao();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -49,7 +47,7 @@ public class Main extends HttpServlet {
                     updateProfile(req, resp);
                     break;
                 case "DELETE":
-                    new AvatarUtil(req).delete();
+                    new AvatarUtil().delete(req);
                     resp.sendRedirect(Dispatcher.getLink());
                     break;
             }
@@ -57,7 +55,7 @@ public class Main extends HttpServlet {
     }
 
     private void updateProfile(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        AvatarUtil avatarUtil = new AvatarUtil(req);
+        AvatarUtil avatarUtil = new AvatarUtil();
         HttpSession httpSession = req.getSession(false);
         String sessionUser = "sessionUser";
         String message = "profileError";
@@ -73,7 +71,7 @@ public class Main extends HttpServlet {
             user.setMiddleName(middleName);
             user.setPhone(phone);
             user.setPassword(password);
-            user.setAvatar(avatarUtil.save());
+            user.setAvatar(avatarUtil.save(req));
             userDao.update(user);
             httpSession.setAttribute(sessionUser, user);
             avatarUtil.clean();

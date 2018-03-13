@@ -14,7 +14,17 @@ import java.util.List;
 
 public class PositionImpl implements PositionDao {
 
-    private final String DUPLICATE = "Должность '%s' уже существует";
+    private static PositionImpl instance;
+
+    private PositionImpl() {
+    }
+
+    public static PositionImpl getInstance() {
+        if (instance == null) return instance = new PositionImpl();
+        return instance;
+    }
+
+    private final String duplicate = "Должность '%s' уже существует";
 
     @Override
     public List<Position> getAll() {
@@ -38,7 +48,7 @@ public class PositionImpl implements PositionDao {
             query.select(root).where(builder.equal(root.get("name"), name));
             Query<Position> positionQuery = session.createQuery(query);
             if (!positionQuery.list().isEmpty())
-                throw new ConstraintViolationException(String.format(DUPLICATE, name), null, name);
+                throw new ConstraintViolationException(String.format(duplicate, name), null, name);
             session.beginTransaction();
             session.save(newInstance);
             session.getTransaction().commit();
@@ -68,7 +78,7 @@ public class PositionImpl implements PositionDao {
             if (!positionQuery.list().isEmpty()) {
                 Position position = positionQuery.getSingleResult();
                 if (position.getId() != instance.getId())
-                    throw new ConstraintViolationException(String.format(DUPLICATE, name), null, name);
+                    throw new ConstraintViolationException(String.format(duplicate, name), null, name);
             }
             session.clear();
             session.beginTransaction();

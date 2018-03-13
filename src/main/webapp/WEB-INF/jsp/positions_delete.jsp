@@ -11,7 +11,6 @@
 <main>
     <article>
         <form method="post">
-            <input type="hidden" name="method" value="DELETE">
             <input type="hidden" name="id" value="${position.id}">
             <table align="center">
                 <tr>

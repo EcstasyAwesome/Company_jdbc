@@ -11,7 +11,6 @@
 <main>
     <article>
         <form method="post">
-            <input type="hidden" name="method" value="DELETE">
             <input type="hidden" name="id" value="${user.id}">
             <input type="hidden" name="avatar" value="${user.avatar}">
             <table align="center">

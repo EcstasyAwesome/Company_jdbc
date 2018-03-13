@@ -1,61 +1,61 @@
 package com.company.util;
 
+import com.company.dao.DaoService;
 import com.company.dao.entity.User;
-import com.company.dao.factory.DaoFactory;
 import com.company.dao.model.UserDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
+import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
 public class AvatarUtil {
 
-    public static final String DEFAULT_AVATAR = "/resources/img/avatar.png";
+    public static final String DEFAULT_AVATAR;
+    private static final String STORAGE_PATH;
 
-    private DaoFactory daoFactory = DaoFactory.getInstance();
-    private UserDao userDao = daoFactory.getUserDao();
-    private final String SESSION_USER = "sessionUser";
+    static {
+        try {
+            DEFAULT_AVATAR = SettingsXmlReader.getValue("avatar");
+            STORAGE_PATH = SettingsXmlReader.getValue("storage");
+        } catch (Throwable ex) {
+            throw new ExceptionInInitializerError(ex);
+        }
+    }
+
+    private DaoService daoService = DaoService.getInstance();
+    private UserDao userDao = daoService.getUserDao();
     private String saveAvatar;
     private String oldAvatar;
-    private String storagePath;
-    private HttpServletRequest request;
-    private HttpSession httpSession;
-    private User user;
     private boolean isSaved;
-
-    public AvatarUtil(HttpServletRequest request) {
-        String tmp = request.getServletContext().getRealPath("");
-        storagePath = tmp.substring(0, tmp.indexOf("target"));
-        httpSession = request.getSession(false);
-        user = (User) httpSession.getAttribute(SESSION_USER);
-        if (user != null) oldAvatar = user.getAvatar();
-        this.request = request;
-    }
 
     /**
      * @return returns link for which avatars are available
      * @throws IllegalStateException if upload file size > maxFileSize
      * @throws IOException           if can't write file
-     * @see #save()
+     * @see #save(HttpServletRequest)
      */
 
-    public String save() throws IllegalStateException, IOException, ServletException {
+    public String save(@NotNull HttpServletRequest request) throws IllegalStateException, IOException, ServletException {
+        HttpSession httpSession = request.getSession(false);
+        User user = (User) httpSession.getAttribute("sessionUser");
+        if (user != null) oldAvatar = user.getAvatar();
         Part file = request.getPart("avatar");
         int maxFileSize = 1024 * 1024;
         if (file.getSize() > maxFileSize) throw new IllegalStateException("Загружаемый файл слишком большой");
         else if (file.getSize() > 0) {
             String pathToFile = "storage" + File.separator + "avatar";
-            File folder = new File(storagePath + pathToFile);
+            File folder = new File(STORAGE_PATH + pathToFile);
             if (!folder.exists()) folder.mkdir();
             String fileType = file.getSubmittedFileName().substring(file.getSubmittedFileName().lastIndexOf("."));
-            saveAvatar = storagePath + pathToFile + File.separator + new Date().getTime() + fileType;
+            saveAvatar = STORAGE_PATH + pathToFile + File.separator + new Date().getTime() + fileType;
             file.write(saveAvatar);
             isSaved = true;
-            return saveAvatar.substring(storagePath.length() - 1).replaceAll(File.separator + File.separator, "/");
+            return saveAvatar.substring(STORAGE_PATH.length() - 1).replaceAll(File.separator + File.separator, "/");
         }
         return user != null ? user.getAvatar() : DEFAULT_AVATAR;
     }
@@ -63,18 +63,20 @@ public class AvatarUtil {
     /**
      * delete avatar from storage and update current user in session and database
      *
-     * @see #delete()
+     * @see #delete(HttpServletRequest)
      */
 
-    public void delete() {
+    public void delete(@NotNull HttpServletRequest request) {
+        HttpSession httpSession = request.getSession(false);
+        User user = (User) httpSession.getAttribute("sessionUser");
         if (user != null && !user.getAvatar().equals(DEFAULT_AVATAR)) {
             String path = user.getAvatar().replaceAll("[/]", File.separator + File.separator);
-            File file = new File(storagePath + path);
+            File file = new File(STORAGE_PATH + path);
             if (file.exists())
                 if (file.delete()) {
                     user.setAvatar(DEFAULT_AVATAR);
                     userDao.update(user);
-                    httpSession.setAttribute(SESSION_USER, user);
+                    httpSession.setAttribute("sessionUser", user);
                 }
         }
     }
@@ -86,9 +88,9 @@ public class AvatarUtil {
      * @see #deleteFromStorage(String)
      */
 
-    public void deleteFromStorage(String path) {
+    public static void deleteFromStorage(@NotNull String path) {
         if (!path.equals(DEFAULT_AVATAR)) {
-            File avatar = new File(storagePath + path);
+            File avatar = new File(STORAGE_PATH + path);
             if (avatar.exists()) avatar.delete();
         }
     }
@@ -102,7 +104,7 @@ public class AvatarUtil {
 
     public void clean() {
         if (isSaved && !oldAvatar.equals(DEFAULT_AVATAR)) {
-            File avatar = new File(storagePath + oldAvatar);
+            File avatar = new File(STORAGE_PATH + oldAvatar);
             if (avatar.exists())
                 if (avatar.delete())
                     isSaved = false;
@@ -123,14 +125,5 @@ public class AvatarUtil {
                 if (avatar.delete())
                     isSaved = false;
         }
-    }
-
-    /**
-     * @return returns the current state of the saved object
-     * @see #isSaved()
-     */
-
-    public boolean isSaved() {
-        return isSaved;
     }
 }

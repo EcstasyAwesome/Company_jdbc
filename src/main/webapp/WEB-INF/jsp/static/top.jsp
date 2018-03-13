@@ -2,16 +2,16 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="com.company.servlet.Authorization" %>
 <%@ page import="com.company.servlet.Main" %>
-<%@ page import="com.company.servlet.Positions" %>
-<%@ page import="com.company.servlet.Users" %>
+<%@ page import="com.company.servlet.positions.PositionSearch" %>
+<%@ page import="com.company.servlet.users.UserSearch" %>
 <header>
     <img src="${pageContext.request.contextPath}/resources/img/ecstasy_logo.jpg" alt="Логотип">
 </header>
 <nav>
     <div class="nav-menu-left">
         <a href="${pageContext.request.contextPath}${Main.MAIN}">Главная</a>
-        <a href="${pageContext.request.contextPath}${Positions.MAIN}">Должностя</a>
-        <a href="${pageContext.request.contextPath}${Users.MAIN}">Пользователи</a>
+        <a href="${pageContext.request.contextPath}${PositionSearch.MAIN}">Должностя</a>
+        <a href="${pageContext.request.contextPath}${UserSearch.MAIN}">Пользователи</a>
         <a href="${pageContext.request.contextPath}${Main.ABOUT}">О компании</a>
     </div>
     <div class="nav-menu-right">

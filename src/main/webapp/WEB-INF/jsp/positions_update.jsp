@@ -11,7 +11,6 @@
 <main>
     <article>
         <form id="update" method="post">
-            <input type="hidden" name="method" value="UPDATE">
             <input type="hidden" name="id" value="${position.id}">
             <p>* - поля, доступные для изменения</p>
             <table align="center">

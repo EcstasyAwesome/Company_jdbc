@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.Map;
 
@@ -57,7 +58,8 @@ public class Dispatcher implements Filter {
      * @return a String containing the value of the correct request link
      * @see #processLink(HttpServletRequest)
      */
-    private String processLink(HttpServletRequest request) {
+
+    private String processLink(@NotNull HttpServletRequest request) {
         StringBuilder link;
         String[] temp;
         String tempLink = request.getRequestURI();
