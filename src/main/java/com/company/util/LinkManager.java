@@ -11,7 +11,6 @@ import com.company.servlet.users.UserDelete;
 import com.company.servlet.users.UserSearch;
 import com.company.servlet.users.UserUpdate;
 
-import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,18 +45,6 @@ public class LinkManager {
 
     public Map<String, Page> getList() {
         return list;
-    }
-
-    /**
-     * @param link RequestURI
-     * @return returns true if requestURI is a resource link
-     * @see #isResources(String)
-     */
-
-    public boolean isResources(@NotNull String link) {
-        String path1 = "/resources/";
-        String path2 = "/storage/";
-        return link.startsWith(path1) | link.startsWith(path2);
     }
 
     public class Page {

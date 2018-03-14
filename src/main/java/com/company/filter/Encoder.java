@@ -11,6 +11,7 @@ import java.io.IOException;
         urlPatterns = "/*"
 )
 public class Encoder implements Filter {
+
     private static final String ENCODING;
 
     static {

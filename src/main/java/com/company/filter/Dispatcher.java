@@ -18,14 +18,8 @@ import java.util.Map;
 )
 public class Dispatcher implements Filter {
 
-    private LinkManager linkManager = LinkManager.getInstance();
-    private Map<String, LinkManager.Page> list = linkManager.getList();
+    private Map<String, LinkManager.Page> list = LinkManager.getInstance().getList();
     private static String link;
-
-    /**
-     * @return a String containing the value of the request link
-     * @see #getLink()
-     */
 
     public static String getLink() {
         return link;
@@ -40,15 +34,27 @@ public class Dispatcher implements Filter {
         User user = (User) httpSession.getAttribute("sessionUser");
         link = processLink(req);
         if (link.equals(req.getRequestURI())) { // if link valid
-            if (linkManager.isResources(link)) chain.doFilter(request, response); // its resource, goes next
-            else if (list.containsKey(link)) { // if link exist
-                int group = user != null ? (int) user.getGroup().getId() : LinkManager.Page.GUEST; // get group
+            if (isResources(link)) chain.doFilter(request, response); // its resource, goes next
+            else {
+                int group = user != null ? (int) user.getGroup().getId() : LinkManager.Page.GUEST;
                 int pageAccess = list.get(link).getAccess();
                 if (group >= pageAccess) chain.doFilter(request, response); // have access
                 else if (group > LinkManager.Page.GUEST) resp.sendError(HttpServletResponse.SC_FORBIDDEN); //ERROR 403
                 else resp.sendError(HttpServletResponse.SC_UNAUTHORIZED); //ERROR 401
-            } else resp.sendError(HttpServletResponse.SC_NOT_FOUND); //ERROR 404
+            }
         } else resp.sendRedirect(link); // goes on correct link
+    }
+
+    /**
+     * @param link RequestURI
+     * @return returns true if requestURI is a resource link
+     * @see #isResources(String)
+     */
+
+    private boolean isResources(@NotNull String link) {
+        String path1 = "/resources/";
+        String path2 = "/storage/";
+        return link.startsWith(path1) | link.startsWith(path2);
     }
 
     /**
@@ -68,7 +74,7 @@ public class Dispatcher implements Filter {
             temp = tempLink.split("[/]+");
             for (String x : temp) {
                 if (!x.isEmpty()) {
-                    link.append("/").append(x.replaceAll("[/]", ""));
+                    link.append("/").append(x.replaceAll("/", ""));
                 }
             }
             return link.toString().isEmpty() ? "/" : link.toString();
