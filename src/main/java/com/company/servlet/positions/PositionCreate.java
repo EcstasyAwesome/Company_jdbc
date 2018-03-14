@@ -14,11 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-@WebServlet(
-        name = "Positions create",
-        urlPatterns = PositionCreate.ADD
-)
-
+@WebServlet(name = "Positions create", urlPatterns = PositionCreate.ADD)
 public class PositionCreate extends HttpServlet {
 
     public static final String ADD = "/positions/add";

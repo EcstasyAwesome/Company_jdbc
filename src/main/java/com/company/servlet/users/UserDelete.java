@@ -14,10 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-@WebServlet(
-        name = "Users delete",
-        urlPatterns = UserDelete.DELETE
-)
+@WebServlet(name = "Users delete", urlPatterns = UserDelete.DELETE)
 public class UserDelete extends HttpServlet {
 
     public static final String DELETE = "/users/delete";

@@ -17,11 +17,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Map;
 
-@WebServlet(
-        name = "Main",
-        description = "main servlet",
-        urlPatterns = {Main.PROFILE, Main.EDIT, Main.ABOUT}
-)
+@WebServlet(name = "Main", urlPatterns = {Main.PROFILE, Main.EDIT, Main.ABOUT})
 @MultipartConfig
 public class Main extends HttpServlet {
 

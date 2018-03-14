@@ -13,11 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-@WebServlet(
-        name = "Positions delete",
-        urlPatterns = PositionDelete.DELETE
-)
-
+@WebServlet(name = "Positions delete", urlPatterns = PositionDelete.DELETE)
 public class PositionDelete extends HttpServlet {
 
     public static final String DELETE = "/positions/delete";

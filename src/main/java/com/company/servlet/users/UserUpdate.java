@@ -18,10 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-@WebServlet(
-        name = "Users update",
-        urlPatterns = UserUpdate.UPDATE
-)
+@WebServlet(name = "Users update", urlPatterns = UserUpdate.UPDATE)
 public class UserUpdate extends HttpServlet {
 
     public static final String UPDATE = "/users/update";

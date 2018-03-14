@@ -20,10 +20,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
 
-@WebServlet(
-        name = "Users create",
-        urlPatterns = UserCreate.ADD
-)
+@WebServlet(name = "Users create", urlPatterns = UserCreate.ADD)
 public class UserCreate extends HttpServlet {
 
     public static final String ADD = "/users/add";

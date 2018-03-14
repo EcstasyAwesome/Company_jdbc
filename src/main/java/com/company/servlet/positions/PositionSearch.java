@@ -13,11 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-@WebServlet(
-        name = "Positions search",
-        urlPatterns = PositionSearch.MAIN
-)
-
+@WebServlet(name = "Positions search", urlPatterns = PositionSearch.MAIN)
 public class PositionSearch extends HttpServlet {
 
     public static final String MAIN = "/positions";

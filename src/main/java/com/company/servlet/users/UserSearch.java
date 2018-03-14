@@ -1,8 +1,6 @@
 package com.company.servlet.users;
 
 import com.company.dao.DaoService;
-import com.company.dao.model.GroupDao;
-import com.company.dao.model.PositionDao;
 import com.company.dao.model.UserDao;
 import com.company.filter.Dispatcher;
 import com.company.util.LinkManager;
@@ -15,10 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-@WebServlet(
-        name = "Users search",
-        urlPatterns = UserSearch.MAIN
-)
+@WebServlet(name = "Users search", urlPatterns = UserSearch.MAIN)
 public class UserSearch extends HttpServlet {
 
     public static final String MAIN = "/users";

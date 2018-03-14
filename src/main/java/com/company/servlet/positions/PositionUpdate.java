@@ -14,10 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-@WebServlet(
-        name = "Positions update",
-        urlPatterns = PositionUpdate.UPDATE
-)
+@WebServlet(name = "Positions update", urlPatterns = PositionUpdate.UPDATE)
 
 public class PositionUpdate extends HttpServlet {
 
