@@ -10,7 +10,7 @@
 <nav>
     <div class="nav-menu-left">
         <a href="${pageContext.request.contextPath}${Main.MAIN}">Главная</a>
-        <a href="${pageContext.request.contextPath}${PositionSearch.MAIN}">Должностя</a>
+        <a href="${pageContext.request.contextPath}${PositionSearch.MAIN}">Должности</a>
         <a href="${pageContext.request.contextPath}${UserSearch.MAIN}">Пользователи</a>
         <a href="${pageContext.request.contextPath}${Main.ABOUT}">О компании</a>
     </div>
