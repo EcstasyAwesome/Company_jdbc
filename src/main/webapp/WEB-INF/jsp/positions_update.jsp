@@ -10,7 +10,7 @@
 <jsp:include page="/WEB-INF/jsp/static/top.jsp"/>
 <main>
     <article>
-        <form id="update" method="post">
+        <form method="post">
             <input type="hidden" name="id" value="${position.id}">
             <p>* - поля, доступные для изменения</p>
             <table align="center">

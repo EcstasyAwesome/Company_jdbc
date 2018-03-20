@@ -10,7 +10,7 @@
 <jsp:include page="/WEB-INF/jsp/static/top.jsp"/>
 <main>
     <article>
-        <form id="add" method="post">
+        <form method="post">
             <table align="center">
                 <tr>
                     <th width="130" class="table-top">Логин</th>
