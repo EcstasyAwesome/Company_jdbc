@@ -46,27 +46,17 @@
                     </td>
                     <td class="table-main">
                         <select class="transparent-input" name="position" required>
-                            <option disabled>Выберите должность</option>
+                            <option disabled>Должность</option>
                             <c:forEach items="${positions}" var="that">
-                                <c:if test="${position==that.id}">
-                                    <option selected value="${that.id}">${that.name}</option>
-                                </c:if>
-                                <c:if test="${position!=that.id}">
                                     <option value="${that.id}">${that.name}</option>
-                                </c:if>
                             </c:forEach>
                         </select>
                     </td>
                     <td class="table-main">
                         <select class="transparent-input" name="group" required>
-                            <option disabled>Выберите группу</option>
+                            <option selected disabled>Группа</option>
                             <c:forEach items="${groups}" var="that">
-                                <c:if test="${group==that.id}">
-                                    <option selected value="${that.id}">${that.name}</option>
-                                </c:if>
-                                <c:if test="${group!=that.id}">
                                     <option value="${that.id}">${that.name}</option>
-                                </c:if>
                             </c:forEach>
                         </select>
                     </td>

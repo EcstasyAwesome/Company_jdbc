@@ -6,6 +6,7 @@ import com.company.dao.entity.Position;
 import com.company.dao.entity.User;
 import com.company.dao.model.UserDao;
 import com.company.util.AvatarUtil;
+import com.company.util.Info;
 import com.company.util.LinkManager;
 
 import javax.persistence.PersistenceException;
@@ -65,8 +66,7 @@ public class Authorization extends HttpServlet {
             User user = userDao.getByLogin(login);
             if (user.getPassword().equals(password)) {
                 httpSession.setAttribute(USER, user);
-                String info = "-> [%s] Выполнен вход: %s\n";
-                System.out.printf(info, getClass().getSimpleName(), user.basicInfo());
+                Info.print(Authorization.class, "Выполнен вход: ".concat(user.basicInfo()));
                 response.sendRedirect("/");
             } else {
                 request.setAttribute(MESSAGE, "Ошибка доступа. Не правильный пароль");
@@ -120,8 +120,7 @@ public class Authorization extends HttpServlet {
     private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute(USER);
-        String info = "-> [%s] Выполнен выход: %s\n";
-        System.out.printf(info, getClass().getSimpleName(), user.basicInfo());
+        Info.print(Authorization.class, "Выполнен выход: ".concat(user.basicInfo()));
         session.invalidate();
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
     }

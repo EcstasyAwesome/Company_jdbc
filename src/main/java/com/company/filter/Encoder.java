@@ -1,5 +1,6 @@
 package com.company.filter;
 
+import com.company.util.Info;
 import com.company.util.SettingsXmlReader;
 
 import javax.servlet.*;
@@ -20,7 +21,7 @@ public class Encoder implements Filter {
         } catch (Throwable ex) {
             throw new ExceptionInInitializerError(ex);
         }
-        System.out.println(String.format("-> [%s] ENCODING = %s", Encoder.class.getSimpleName(), ENCODING));
+        Info.print(Encoder.class, ENCODING);
     }
 
     @Override

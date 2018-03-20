@@ -53,9 +53,7 @@ public class Main extends HttpServlet {
     private void updateProfile(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         AvatarUtil avatarUtil = new AvatarUtil();
         HttpSession httpSession = req.getSession(false);
-        String sessionUser = "sessionUser";
-        String message = "profileError";
-        User user = (User) httpSession.getAttribute(sessionUser);
+        User user = (User) httpSession.getAttribute("sessionUser");
         try {
             String surname = req.getParameter("surname");
             String firstName = req.getParameter("firstName");
@@ -69,12 +67,12 @@ public class Main extends HttpServlet {
             user.setPassword(password);
             user.setAvatar(avatarUtil.save(req));
             userDao.update(user);
-            httpSession.setAttribute(sessionUser, user);
+            httpSession.setAttribute("sessionUser", user);
             avatarUtil.clean();
             resp.sendRedirect(PROFILE);
         } catch (Exception e) {
             avatarUtil.rollBack();
-            req.setAttribute(message, e.getMessage());
+            req.setAttribute("profileError", e.getMessage());
             req.getRequestDispatcher(list.get(Dispatcher.getLink()).getPath()).forward(req, resp);
         }
     }
