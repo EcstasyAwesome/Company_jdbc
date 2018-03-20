@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <property name="connection.datasource">java:comp/env/MySQL</property>
+        <property name="connection.datasource">java:comp/env/jdbc/mydb</property>
         <property name="hibernate.show_sql">false</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.hbm2ddl.auto">update</property>
