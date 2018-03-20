@@ -46,7 +46,7 @@
                     </td>
                     <td class="table-main">
                         <select class="transparent-input" name="position" required>
-                            <option disabled>Должность</option>
+                            <option selected disabled>Должность</option>
                             <c:forEach items="${positions}" var="that">
                                     <option value="${that.id}">${that.name}</option>
                             </c:forEach>
