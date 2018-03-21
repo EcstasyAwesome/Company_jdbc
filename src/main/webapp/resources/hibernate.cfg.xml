@@ -8,8 +8,8 @@
         <property name="hibernate.show_sql">false</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.hbm2ddl.auto">update</property>
-        <mapping class="com.company.dao.entity.User"/>
-        <mapping class="com.company.dao.entity.Position"/>
-        <mapping class="com.company.dao.entity.Group"/>
+        <mapping class="com.github.company.dao.entity.User"/>
+        <mapping class="com.github.company.dao.entity.Position"/>
+        <mapping class="com.github.company.dao.entity.Group"/>
     </session-factory>
 </hibernate-configuration>

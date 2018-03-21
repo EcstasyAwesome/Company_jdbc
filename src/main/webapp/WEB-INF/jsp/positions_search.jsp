@@ -1,8 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="com.company.servlet.positions.PositionSearch" %>
-<%@ page import="com.company.servlet.positions.PositionUpdate" %>
-<%@ page import="com.company.servlet.positions.PositionDelete" %>
+<%@ page import="com.github.company.servlet.positions.PositionSearch" %>
+<%@ page import="com.github.company.servlet.positions.PositionUpdate" %>
+<%@ page import="com.github.company.servlet.positions.PositionDelete" %>
 <html lang="ru">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">

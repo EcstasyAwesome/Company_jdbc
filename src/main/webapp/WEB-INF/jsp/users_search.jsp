@@ -1,8 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="com.company.servlet.users.UserSearch" %>
-<%@ page import="com.company.servlet.users.UserUpdate" %>
-<%@ page import="com.company.servlet.users.UserDelete" %>
+<%@ page import="com.github.company.servlet.users.UserSearch" %>
+<%@ page import="com.github.company.servlet.users.UserUpdate" %>
+<%@ page import="com.github.company.servlet.users.UserDelete" %>
 <html lang="ru">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">

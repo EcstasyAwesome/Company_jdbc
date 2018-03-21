@@ -1,9 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="com.company.servlet.Authorization" %>
-<%@ page import="com.company.servlet.Main" %>
-<%@ page import="com.company.servlet.positions.PositionSearch" %>
-<%@ page import="com.company.servlet.users.UserSearch" %>
+<%@ page import="com.github.company.servlet.Authorization" %>
+<%@ page import="com.github.company.servlet.Main" %>
+<%@ page import="com.github.company.servlet.positions.PositionSearch" %>
+<%@ page import="com.github.company.servlet.users.UserSearch" %>
 <header>
     <img src="${pageContext.request.contextPath}/resources/img/ecstasy_logo.jpg" alt="Логотип">
 </header>
