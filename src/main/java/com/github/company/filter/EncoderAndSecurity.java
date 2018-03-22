@@ -2,6 +2,8 @@ package com.github.company.filter;
 
 import com.github.company.dao.entity.User;
 import com.github.company.security.Security;
+import com.github.company.util.PropertiesReader;
+import org.apache.log4j.Logger;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -15,10 +17,18 @@ import static com.github.company.security.Security.FORBIDDEN;
 import static com.github.company.security.Security.SUCCESS;
 import static com.github.company.security.Security.UNAUTHORIZED;
 
-@WebFilter(filterName = "Watcher", urlPatterns = "/*")
-public class Watcher implements Filter {
+@WebFilter(filterName = "Encoder and Security", urlPatterns = "/*")
+public class EncoderAndSecurity implements Filter {
+
+    private static final Logger LOGGER = Logger.getLogger(EncoderAndSecurity.class);
 
     private Security security = Security.getInstance();
+    private final String encoding = PropertiesReader.getProperty("encoding");
+
+    @Override
+    public void init(FilterConfig filterConfig) {
+        LOGGER.info("Set encoding - '" + encoding + "'");
+    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -31,6 +41,8 @@ public class Watcher implements Filter {
         if (link.equals(req.getRequestURI())) {
             switch (security.check(user, link)) {
                 case SUCCESS:
+                    request.setCharacterEncoding(encoding);
+                    response.setCharacterEncoding(encoding);
                     chain.doFilter(req, resp);
                     break;
                 case FORBIDDEN:
