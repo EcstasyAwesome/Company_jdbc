@@ -1,12 +1,12 @@
-package com.github.company.servlet;
+package com.github.company.servlet.root;
 
 import com.github.company.dao.DaoService;
 import com.github.company.dao.entity.Group;
 import com.github.company.dao.entity.Position;
 import com.github.company.dao.entity.User;
 import com.github.company.dao.model.UserDao;
-import com.github.company.util.AvatarUtil;
-import com.github.company.util.LinkManager;
+import com.github.company.util.Avatar;
+import com.github.company.util.Dispatcher;
 import org.apache.log4j.Logger;
 
 import javax.persistence.PersistenceException;
@@ -17,11 +17,12 @@ import javax.servlet.http.*;
 import java.io.*;
 import java.util.Date;
 
-@WebServlet(name = "Authorization", urlPatterns = Authorization.AUTHORIZATION)
+import static com.github.company.security.Security.USER;
+
+@WebServlet(name = "Authorization", urlPatterns = "/authorization")
 @MultipartConfig
 public class Authorization extends HttpServlet {
 
-    public static final String AUTHORIZATION = "/authorization";
     private static final Logger LOGGER = Logger.getLogger(Authorization.class);
 
     private final String login = "login";
@@ -32,7 +33,7 @@ public class Authorization extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher(LinkManager.PAGE_LOGIN).forward(req, resp);
+        Dispatcher.dispatch(req, resp, "login");
     }
 
     @Override
@@ -41,16 +42,16 @@ public class Authorization extends HttpServlet {
         if (method != null) {
             switch (method) {
                 case "GO_REGISTER":
-                    req.getRequestDispatcher(LinkManager.PAGE_REGISTER).forward(req, resp);
+                    Dispatcher.dispatch(req, resp, "registration");
                     break;
                 case "GO_LOGIN":
-                    req.getRequestDispatcher(LinkManager.PAGE_LOGIN).forward(req, resp);
+                    Dispatcher.dispatch(req, resp, "login");
                     break;
-                case "login":
+                case "LOGIN":
                     login(req, resp);
                     break;
                 case "REGISTER":
-                    register(req, resp);
+                    registration(req, resp);
                     break;
                 case "LOGOUT":
                     logout(req, resp);
@@ -73,21 +74,21 @@ public class Authorization extends HttpServlet {
                 LOGGER.info(login + " - incorrect password");
                 request.setAttribute(message, "Ошибка доступа. Не правильный пароль");
                 request.setAttribute(this.login, login);
-                request.getRequestDispatcher(LinkManager.PAGE_LOGIN).forward(request, response);
+                Dispatcher.dispatch(request, response, "login");
             }
         } catch (PersistenceException e) {
             request.setAttribute(message, e.getMessage());
-            request.getRequestDispatcher(LinkManager.PAGE_LOGIN).forward(request, response);
+            Dispatcher.dispatch(request, response, "login");
         }
     }
 
-    private void register(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        AvatarUtil avatar = new AvatarUtil();
+    private void registration(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        Avatar avatar = new Avatar();
         User user = new User();
         Position position = new Position();
         position.setId(5); // default
         Group group = new Group();
-        group.setId(LinkManager.Page.USER); // default
+        group.setId(USER); // default
         String login = null;
         String surname = null;
         String firstName = null;
@@ -106,7 +107,7 @@ public class Authorization extends HttpServlet {
             user.setPosition(position);
             userDao.create(user);
             request.setAttribute(message, "Регистрация успешно завершена");
-            request.getRequestDispatcher(LinkManager.PAGE_LOGIN).forward(request, response);
+            Dispatcher.dispatch(request,response,"login");
         } catch (Exception e) {
             avatar.rollBack();
             request.setAttribute("surname", surname);
@@ -115,7 +116,7 @@ public class Authorization extends HttpServlet {
             request.setAttribute("phone", phone);
             if (e instanceof IllegalStateException) request.setAttribute(this.login, login);
             request.setAttribute(message, e.getMessage());
-            request.getRequestDispatcher(LinkManager.PAGE_REGISTER).forward(request, response);
+            Dispatcher.dispatch(request,response,"registration");
         }
     }
 
@@ -124,6 +125,6 @@ public class Authorization extends HttpServlet {
         User user = (User) session.getAttribute(this.user);
         LOGGER.info("Logout - " + user.basicInfo());
         session.invalidate();
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+        response.sendRedirect("/");
     }
 }

@@ -13,10 +13,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
-import static com.github.company.listener.Initializer.DEFAULT_AVATAR;
-import static com.github.company.listener.Initializer.STORAGE_PATH;
+public class Avatar {
 
-public class AvatarUtil {
+    public static final String DEFAULT_AVATAR = PropertiesReader.getProperty("avatar");
+    private static final String STORAGE_PATH = PropertiesReader.getProperty("storage");
 
     private DaoService daoService = DaoService.getInstance();
     private UserDao userDao = daoService.getUserDao();

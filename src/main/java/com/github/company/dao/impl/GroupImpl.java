@@ -14,13 +14,12 @@ import java.util.List;
 
 public class GroupImpl implements GroupDao {
 
-    private static GroupImpl instance;
+    private static GroupImpl instance = new GroupImpl();
 
     private GroupImpl() {
     }
 
     public static GroupImpl getInstance() {
-        if (instance == null) return instance = new GroupImpl();
         return instance;
     }
 

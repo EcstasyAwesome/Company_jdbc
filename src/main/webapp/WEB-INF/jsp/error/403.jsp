@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page isErrorPage="true" %>
-<%@ page import="com.github.company.servlet.Main" %>
 <html lang="ru">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -15,7 +14,7 @@
         <br>
         <br>
         <button onclick="history.back()">Назад</button>
-        <form action="${pageContext.request.contextPath}${Main.MAIN}">
+        <form action="${pageContext.request.contextPath}/">
             <br>
             <button>главная</button>
         </form>

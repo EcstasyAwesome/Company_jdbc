@@ -48,7 +48,7 @@
                         <select class="transparent-input" name="position" required>
                             <option selected disabled>Должность</option>
                             <c:forEach items="${positions}" var="that">
-                                    <option value="${that.id}">${that.name}</option>
+                                <option value="${that.id}">${that.name}</option>
                             </c:forEach>
                         </select>
                     </td>
@@ -56,7 +56,7 @@
                         <select class="transparent-input" name="group" required>
                             <option selected disabled>Группа</option>
                             <c:forEach items="${groups}" var="that">
-                                    <option value="${that.id}">${that.name}</option>
+                                <option value="${that.id}">${that.name}</option>
                             </c:forEach>
                         </select>
                     </td>

@@ -22,8 +22,11 @@ public class PropertiesReader {
 
     public static String getProperty(String property) {
         String result;
-        if ((result = PROPERTIES.getProperty(property)) == null)
-            throw new NullPointerException("not found '" + property + "' in config.properties");
+        if ((result = PROPERTIES.getProperty(property)) == null) {
+            String error = "not found '" + property + "' in config.properties";
+            LOGGER.fatal(error);
+            throw new ExceptionInInitializerError(error);
+        }
         return result;
     }
 }

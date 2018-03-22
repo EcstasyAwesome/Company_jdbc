@@ -15,13 +15,12 @@ import java.util.List;
 
 public class UserImpl implements UserDao {
 
-    private static UserImpl instance;
+    private static UserImpl instance = new UserImpl();
 
     private UserImpl() {
     }
 
     public static UserImpl getInstance() {
-        if (instance == null) return instance = new UserImpl();
         return instance;
     }
 

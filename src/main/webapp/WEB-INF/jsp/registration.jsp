@@ -9,7 +9,7 @@
 <body>
 <div class="page">
     <div class="form">
-        <form id="add" method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data">
             <input type="hidden" name="method" value="REGISTER">
             <table align="center">
                 <tr>

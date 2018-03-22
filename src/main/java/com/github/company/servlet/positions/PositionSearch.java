@@ -2,8 +2,7 @@ package com.github.company.servlet.positions;
 
 import com.github.company.dao.DaoService;
 import com.github.company.dao.model.PositionDao;
-import com.github.company.filter.Dispatcher;
-import com.github.company.util.LinkManager;
+import com.github.company.util.Dispatcher;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,14 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Map;
 
-@WebServlet(name = "Positions search", urlPatterns = PositionSearch.MAIN)
+@WebServlet(name = "Positions search", urlPatterns = "/positions")
 public class PositionSearch extends HttpServlet {
 
-    public static final String MAIN = "/positions";
-
-    private Map<String, LinkManager.Page> list = LinkManager.getInstance().getList();
     private PositionDao positionDao = DaoService.getInstance().getPositionDao();
 
     @Override
@@ -33,13 +28,13 @@ public class PositionSearch extends HttpServlet {
                 req.setAttribute("availablePages", availablePages);
                 req.setAttribute("currentPage", currentPage);
                 req.setAttribute("positions", positionDao.getPage(currentPage, recordsOnPage));
-                req.getRequestDispatcher(list.get(Dispatcher.getLink()).getPath()).forward(req, resp);
+                Dispatcher.dispatch(req, resp, "positions_search");
             } else resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
         } else {
             req.setAttribute("availablePages", positionDao.countPages(recordsOnPage));
             req.setAttribute("currentPage", currentPage);
             req.setAttribute("positions", positionDao.getPage(currentPage, recordsOnPage));
-            req.getRequestDispatcher(list.get(Dispatcher.getLink()).getPath()).forward(req, resp);
+            Dispatcher.dispatch(req, resp, "positions_search");
         }
     }
 }

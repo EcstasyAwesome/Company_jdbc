@@ -1,11 +1,10 @@
-package com.github.company.servlet;
+package com.github.company.servlet.root;
 
 import com.github.company.dao.DaoService;
-import com.github.company.dao.model.UserDao;
-import com.github.company.filter.Dispatcher;
 import com.github.company.dao.entity.User;
-import com.github.company.util.AvatarUtil;
-import com.github.company.util.LinkManager;
+import com.github.company.dao.model.UserDao;
+import com.github.company.util.Avatar;
+import com.github.company.util.Dispatcher;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -15,23 +14,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Map;
 
-@WebServlet(name = "Main", urlPatterns = {Main.PROFILE, Main.EDIT, Main.ABOUT})
+@WebServlet(name = "Edit profile", urlPatterns = "/edit")
 @MultipartConfig
-public class Main extends HttpServlet {
+public class EditProfile extends HttpServlet {
 
-    public static final String MAIN = "/";
-    public static final String PROFILE = "/profile";
-    public static final String EDIT = "/edit";
-    public static final String ABOUT = "/about";
-
-    private Map<String, LinkManager.Page> list = LinkManager.getInstance().getList();
     private UserDao userDao = DaoService.getInstance().getUserDao();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher(list.get(Dispatcher.getLink()).getPath()).forward(req, resp);
+        Dispatcher.dispatch(req, resp, "edit");
     }
 
     @Override
@@ -43,15 +35,15 @@ public class Main extends HttpServlet {
                     updateProfile(req, resp);
                     break;
                 case "DELETE":
-                    new AvatarUtil().delete(req);
-                    resp.sendRedirect(Dispatcher.getLink());
+                    new Avatar().delete(req);
+                    resp.sendRedirect("/edit");
                     break;
             }
         }
     }
 
     private void updateProfile(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        AvatarUtil avatarUtil = new AvatarUtil();
+        Avatar avatar = new Avatar();
         HttpSession httpSession = req.getSession(false);
         User user = (User) httpSession.getAttribute("sessionUser");
         try {
@@ -65,15 +57,15 @@ public class Main extends HttpServlet {
             user.setMiddleName(middleName);
             user.setPhone(phone);
             user.setPassword(password);
-            user.setAvatar(avatarUtil.save(req));
+            user.setAvatar(avatar.save(req));
             userDao.update(user);
             httpSession.setAttribute("sessionUser", user);
-            avatarUtil.clean();
-            resp.sendRedirect(PROFILE);
+            avatar.clean();
+            resp.sendRedirect("/profile");
         } catch (Exception e) {
-            avatarUtil.rollBack();
+            avatar.rollBack();
             req.setAttribute("profileError", e.getMessage());
-            req.getRequestDispatcher(list.get(Dispatcher.getLink()).getPath()).forward(req, resp);
+            Dispatcher.dispatch(req, resp, "edit");
         }
     }
 }

@@ -1,8 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="com.github.company.servlet.users.UserSearch" %>
-<%@ page import="com.github.company.servlet.users.UserUpdate" %>
-<%@ page import="com.github.company.servlet.users.UserDelete" %>
 <html lang="ru">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -34,10 +31,10 @@
                         <td class="table-main">${user.position.name}</td>
                         <td class="table-main">${user.group.name}</td>
                         <td class="table-main">
-                            <a href="${pageContext.request.contextPath}${UserUpdate.UPDATE}?id=${user.id}">
+                            <a href="${pageContext.request.contextPath}/users/update?id=${user.id}">
                                 <img src="${pageContext.request.contextPath}/resources/img/edit_icon.png">
                             </a>
-                            <a href="${pageContext.request.contextPath}${UserDelete.DELETE}?id=${user.id}">
+                            <a href="${pageContext.request.contextPath}/users/delete?id=${user.id}">
                                 <img src="${pageContext.request.contextPath}/resources/img/delete_icon.png">
                             </a>
                         </td>
@@ -53,11 +50,11 @@
         <c:if test="${users!=null}">
             <div class="pagination">
                 <c:if test="${currentPage != 1}">
-                    <a href="${pageContext.request.contextPath}${UserSearch.MAIN}?page=${currentPage - 1}">${currentPage - 1}</a>
+                    <a href="${pageContext.request.contextPath}/users?page=${currentPage - 1}">${currentPage - 1}</a>
                 </c:if>
                 <a class="current-link">${currentPage}</a>
                 <c:if test="${currentPage lt availablePages}">
-                    <a href="${pageContext.request.contextPath}${UserSearch.MAIN}?page=${currentPage + 1}">${currentPage + 1}</a>
+                    <a href="${pageContext.request.contextPath}/users?page=${currentPage + 1}">${currentPage + 1}</a>
                 </c:if>
             </div>
         </c:if>

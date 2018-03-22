@@ -7,8 +7,7 @@ import com.github.company.dao.entity.User;
 import com.github.company.dao.model.GroupDao;
 import com.github.company.dao.model.PositionDao;
 import com.github.company.dao.model.UserDao;
-import com.github.company.filter.Dispatcher;
-import com.github.company.util.LinkManager;
+import com.github.company.util.Dispatcher;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,16 +16,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
-import java.util.Map;
 
-import static com.github.company.listener.Initializer.DEFAULT_AVATAR;
+import static com.github.company.util.Avatar.DEFAULT_AVATAR;
 
-@WebServlet(name = "Users create", urlPatterns = UserCreate.ADD)
+@WebServlet(name = "Users create", urlPatterns = "/users/add")
 public class UserCreate extends HttpServlet {
 
-    public static final String ADD = "/users/add";
-
-    private Map<String, LinkManager.Page> list = LinkManager.getInstance().getList();
     private UserDao userDao = DaoService.getInstance().getUserDao();
     private PositionDao positionDao = DaoService.getInstance().getPositionDao();
     private GroupDao groupDao = DaoService.getInstance().getGroupDao();
@@ -35,7 +30,7 @@ public class UserCreate extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("positions", positionDao.getAll());
         req.setAttribute("groups", groupDao.getAll());
-        req.getRequestDispatcher(list.get(Dispatcher.getLink()).getPath()).forward(req, resp);
+        Dispatcher.dispatch(req, resp, "users_add");
     }
 
     @Override
@@ -65,7 +60,7 @@ public class UserCreate extends HttpServlet {
             user.setGroup(group);
             user.setPosition(position);
             userDao.create(user);
-            resp.sendRedirect(UserSearch.MAIN);
+            resp.sendRedirect("/users");
         } catch (Exception e) {
             req.setAttribute("surname", surname);
             req.setAttribute("firstName", firstName);
@@ -74,7 +69,7 @@ public class UserCreate extends HttpServlet {
             req.setAttribute("position", positionId);
             req.setAttribute("group", groupId);
             req.setAttribute("userError", e.getMessage());
-            req.getRequestDispatcher(list.get(ADD).getPath()).forward(req, resp);
+            Dispatcher.dispatch(req, resp, "users_add");
         }
     }
 }

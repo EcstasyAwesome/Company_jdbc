@@ -14,13 +14,12 @@ import java.util.List;
 
 public class PositionImpl implements PositionDao {
 
-    private static PositionImpl instance;
+    private static PositionImpl instance = new PositionImpl();
 
     private PositionImpl() {
     }
 
     public static PositionImpl getInstance() {
-        if (instance == null) return instance = new PositionImpl();
         return instance;
     }
 

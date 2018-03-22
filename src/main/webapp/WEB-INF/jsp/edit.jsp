@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="com.github.company.util.Avatar" %>
 <html lang="ru">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -50,10 +51,10 @@
             </tr>
             <tr>
                 <td align="center">
-                    <c:if test="${sessionUser.avatar.endsWith('avatar.png')}">
+                    <c:if test="${sessionUser.avatar.equals(Avatar.DEFAULT_AVATAR)}">
                         <input form="avatar" type="submit" value="Удалить фото" disabled>
                     </c:if>
-                    <c:if test="${!sessionUser.avatar.endsWith('avatar.png')}">
+                    <c:if test="${!sessionUser.avatar.equals(Avatar.DEFAULT_AVATAR)}">
                         <input form="avatar" type="submit" value="Удалить фото">
                     </c:if>
                 </td>

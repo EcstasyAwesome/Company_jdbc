@@ -9,7 +9,7 @@ import com.github.company.dao.impl.UserImpl;
 
 public class DaoService {
 
-    private static DaoService instance;
+    private static DaoService instance = new DaoService();
 
     private UserDao userDao = UserImpl.getInstance();
     private PositionDao positionDao = PositionImpl.getInstance();
@@ -19,7 +19,6 @@ public class DaoService {
     }
 
     public static DaoService getInstance() {
-        if (instance == null) return instance = new DaoService();
         return instance;
     }
 

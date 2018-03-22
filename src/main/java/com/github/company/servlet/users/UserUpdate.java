@@ -7,8 +7,7 @@ import com.github.company.dao.entity.User;
 import com.github.company.dao.model.GroupDao;
 import com.github.company.dao.model.PositionDao;
 import com.github.company.dao.model.UserDao;
-import com.github.company.filter.Dispatcher;
-import com.github.company.util.LinkManager;
+import com.github.company.util.Dispatcher;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,14 +15,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Map;
 
-@WebServlet(name = "Users update", urlPatterns = UserUpdate.UPDATE)
+@WebServlet(name = "Users update", urlPatterns = "/users/update")
 public class UserUpdate extends HttpServlet {
 
-    public static final String UPDATE = "/users/update";
-
-    private Map<String, LinkManager.Page> list = LinkManager.getInstance().getList();
     private UserDao userDao = DaoService.getInstance().getUserDao();
     private PositionDao positionDao = DaoService.getInstance().getPositionDao();
     private GroupDao groupDao = DaoService.getInstance().getGroupDao();
@@ -36,7 +31,7 @@ public class UserUpdate extends HttpServlet {
             req.setAttribute("positions", positionDao.getAll());
             req.setAttribute("groups", groupDao.getAll());
             req.setAttribute("user", userDao.get(id));
-            req.getRequestDispatcher(list.get(Dispatcher.getLink()).getPath()).forward(req, resp);
+            Dispatcher.dispatch(req, resp, "users_update");
         } else resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
 
@@ -59,13 +54,13 @@ public class UserUpdate extends HttpServlet {
             user.setPosition(position);
             user.setGroup(group);
             userDao.update(user);
-            resp.sendRedirect(UserSearch.MAIN);
+            resp.sendRedirect("/users");
         } catch (Exception e) {
             req.setAttribute("userError", e.getLocalizedMessage());
             req.setAttribute("user", userDao.get(userId));
             req.setAttribute("position", positionDao.get(positionId));
             req.setAttribute("group", groupDao.get(groupId));
-            req.getRequestDispatcher(list.get(UPDATE).getPath()).forward(req, resp);
+            Dispatcher.dispatch(req, resp, "users_update");
         }
     }
 }

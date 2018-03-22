@@ -2,9 +2,8 @@ package com.github.company.servlet.positions;
 
 import com.github.company.dao.DaoService;
 import com.github.company.dao.model.PositionDao;
-import com.github.company.filter.Dispatcher;
 import com.github.company.dao.entity.Position;
-import com.github.company.util.LinkManager;
+import com.github.company.util.Dispatcher;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,15 +11,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Map;
 
-@WebServlet(name = "Positions update", urlPatterns = PositionUpdate.UPDATE)
+@WebServlet(name = "Positions update", urlPatterns = "/positions/update")
 
 public class PositionUpdate extends HttpServlet {
 
-    public static final String UPDATE = "/positions/update";
-
-    private Map<String, LinkManager.Page> list = LinkManager.getInstance().getList();
     private PositionDao positionDao = DaoService.getInstance().getPositionDao();
 
     @Override
@@ -29,7 +24,7 @@ public class PositionUpdate extends HttpServlet {
         if (query != null && query.matches("^id=\\d+$")) {
             long id = Integer.parseInt(req.getParameter("id"));
             req.setAttribute("position", positionDao.get(id));
-            req.getRequestDispatcher(list.get(Dispatcher.getLink()).getPath()).forward(req, resp);
+            Dispatcher.dispatch(req, resp, "positions_update");
         } else resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
 
@@ -45,11 +40,11 @@ public class PositionUpdate extends HttpServlet {
             position.setName(name);
             position.setDescription(description);
             positionDao.update(position);
-            resp.sendRedirect(PositionSearch.MAIN);
+            resp.sendRedirect("/positions");
         } catch (Exception e) {
             req.setAttribute("positionError", e.getLocalizedMessage());
             req.setAttribute("position", positionDao.get(id));
-            req.getRequestDispatcher(list.get(UPDATE).getPath()).forward(req, resp);
+            Dispatcher.dispatch(req, resp, "positions_update");
         }
     }
 }
