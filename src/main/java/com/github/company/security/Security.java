@@ -17,7 +17,7 @@ public class Security {
     public static final int USER = 2;
     public static final int ADMIN = 3;
 
-    private Map<String, Integer> linkContainer = new HashMap<>();
+    private Map<String, Integer> container = new HashMap<>();
 
     private static Security instance = new Security();
 
@@ -30,14 +30,14 @@ public class Security {
 
     public void add(@NotNull Class<?> servlet, @NotNull int access) {
         for (String url : servlet.getAnnotation(WebServlet.class).urlPatterns()) {
-            linkContainer.put(url, access);
+            container.put(url, access);
         }
     }
 
     public int check(@Nullable User user, @NotNull String link) {
-        if (linkContainer.containsKey(link)) {
+        if (container.containsKey(link)) {
             if (user == null) return UNAUTHORIZED;
-            else if (user.getGroup().getId() >= linkContainer.get(link)) return SUCCESS;
+            else if (user.getGroup().getId() >= container.get(link)) return SUCCESS;
             else return FORBIDDEN;
         }
         return SUCCESS;
