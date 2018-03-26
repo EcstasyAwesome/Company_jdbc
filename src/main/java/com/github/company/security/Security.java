@@ -28,13 +28,13 @@ public class Security {
         return instance;
     }
 
-    public void add(@NotNull Class<?> servlet, @NotNull int access) {
-        for (String url : servlet.getAnnotation(WebServlet.class).urlPatterns()) {
+    public void addServlet(@NotNull Class<?> annotatedClass, @NotNull int access) {
+        for (String url : annotatedClass.getAnnotation(WebServlet.class).urlPatterns()) {
             container.put(url, access);
         }
     }
 
-    public int check(@Nullable User user, @NotNull String link) {
+    public int verify(@Nullable User user, @NotNull String link) {
         if (container.containsKey(link)) {
             if (user == null) return UNAUTHORIZED;
             else if (user.getGroup().getId() >= container.get(link)) return SUCCESS;

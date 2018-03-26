@@ -39,7 +39,7 @@ public class EncoderAndSecurity implements Filter {
         User user = (User) httpSession.getAttribute("sessionUser");
         String link = processLink(req);
         if (link.equals(req.getRequestURI())) {
-            switch (security.check(user, link)) {
+            switch (security.verify(user, link)) {
                 case SUCCESS:
                     request.setCharacterEncoding(encoding);
                     response.setCharacterEncoding(encoding);

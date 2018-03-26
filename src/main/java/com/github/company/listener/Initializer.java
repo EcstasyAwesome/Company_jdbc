@@ -28,16 +28,16 @@ public class Initializer implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        security.add(PositionCreate.class, ADMIN);
-        security.add(PositionSearch.class, USER);
-        security.add(PositionUpdate.class, ADMIN);
-        security.add(PositionDelete.class, ADMIN);
-        security.add(UserCreate.class, ADMIN);
-        security.add(UserSearch.class, USER);
-        security.add(UserUpdate.class, ADMIN);
-        security.add(UserDelete.class, ADMIN);
-        security.add(Profile.class, USER);
-        security.add(EditProfile.class, USER);
+        security.addServlet(PositionCreate.class, ADMIN);
+        security.addServlet(PositionSearch.class, USER);
+        security.addServlet(PositionUpdate.class, ADMIN);
+        security.addServlet(PositionDelete.class, ADMIN);
+        security.addServlet(UserCreate.class, ADMIN);
+        security.addServlet(UserSearch.class, USER);
+        security.addServlet(UserUpdate.class, ADMIN);
+        security.addServlet(UserDelete.class, ADMIN);
+        security.addServlet(Profile.class, USER);
+        security.addServlet(EditProfile.class, USER);
         LOGGER.info("Start server");
     }
 
