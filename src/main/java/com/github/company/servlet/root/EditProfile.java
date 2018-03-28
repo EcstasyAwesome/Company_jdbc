@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+import static com.github.company.util.Avatar.DEFAULT_AVATAR;
+
 @WebServlet(name = "Edit profile", urlPatterns = "/edit")
 @MultipartConfig
 public class EditProfile extends HttpServlet {
@@ -35,8 +37,7 @@ public class EditProfile extends HttpServlet {
                     updateProfile(req, resp);
                     break;
                 case "DELETE":
-                    new Avatar().delete(req);
-                    resp.sendRedirect("/edit");
+                    deleteAvatar(req, resp);
                     break;
             }
         }
@@ -57,15 +58,30 @@ public class EditProfile extends HttpServlet {
             user.setMiddleName(middleName);
             user.setPhone(phone);
             user.setPassword(password);
-            user.setAvatar(avatar.save(req));
+            String img = avatar.upload(req.getPart("avatar"));
+            if (img != null) {
+                Avatar.delete(user.getAvatar());
+                user.setAvatar(img);
+            }
             userDao.update(user);
             httpSession.setAttribute("sessionUser", user);
-            avatar.clean();
             resp.sendRedirect("/profile");
         } catch (Exception e) {
             avatar.rollBack();
             req.setAttribute("profileError", e.getMessage());
             Dispatcher.dispatch(req, resp, "edit");
         }
+    }
+
+    private void deleteAvatar(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        HttpSession httpSession = req.getSession(false);
+        User user = (User) httpSession.getAttribute("sessionUser");
+        if (!user.getAvatar().equals(DEFAULT_AVATAR)) {
+            Avatar.delete(user.getAvatar());
+            user.setAvatar(DEFAULT_AVATAR);
+            httpSession.setAttribute("sessionUser", user);
+            userDao.update(user);
+        }
+        resp.sendRedirect("/edit");
     }
 }

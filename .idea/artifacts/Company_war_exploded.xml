@@ -7,10 +7,11 @@
           <element id="module-output" name="Company" />
         </element>
         <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: org.jetbrains:annotations:16.0.1" />
           <element id="library" level="project" name="Maven: javax.servlet:jstl:1.2" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:6.0.6" />
           <element id="library" level="project" name="Maven: log4j:log4j:1.2.17" />
-          <element id="library" level="project" name="Maven: org.hibernate:hibernate-core:5.2.14.Final" />
+          <element id="library" level="project" name="Maven: org.hibernate:hibernate-core:5.2.15.Final" />
           <element id="library" level="project" name="Maven: org.jboss.logging:jboss-logging:3.3.1.Final" />
           <element id="library" level="project" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final" />
           <element id="library" level="project" name="Maven: org.javassist:javassist:3.22.0-GA" />

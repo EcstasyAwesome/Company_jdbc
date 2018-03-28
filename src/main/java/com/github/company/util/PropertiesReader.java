@@ -1,6 +1,7 @@
 package com.github.company.util;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.FileInputStream;
 import java.util.Properties;
@@ -20,7 +21,7 @@ public class PropertiesReader {
         }
     }
 
-    public static String getProperty(String property) {
+    public static String getProperty(@NotNull String property) {
         String result;
         if ((result = PROPERTIES.getProperty(property)) == null) {
             String error = "not found '" + property + "' in config.properties";

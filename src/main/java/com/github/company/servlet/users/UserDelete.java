@@ -30,7 +30,7 @@ public class UserDelete extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         userDao.delete(Long.parseLong(req.getParameter("id")));
-        Avatar.deleteFromStorage(req.getParameter("avatar"));
+        Avatar.delete(req.getParameter("avatar"));
         resp.sendRedirect("/users");
     }
 }

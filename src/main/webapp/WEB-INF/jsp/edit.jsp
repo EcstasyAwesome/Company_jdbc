@@ -41,7 +41,7 @@
             </tr>
             <tr>
                 <td>Пароль:</td>
-                <td><input type="text" size="15" value="${sessionUser.password}"
+                <td><input type="password" size="15" value="${sessionUser.password}"
                            name="password" required></td>
             </tr>
             <tr>

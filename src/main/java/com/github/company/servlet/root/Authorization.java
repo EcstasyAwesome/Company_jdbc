@@ -18,6 +18,7 @@ import java.io.*;
 import java.util.Date;
 
 import static com.github.company.security.Security.USER;
+import static com.github.company.util.Avatar.DEFAULT_AVATAR;
 
 @WebServlet(name = "Authorization", urlPatterns = "/authorization")
 @MultipartConfig
@@ -103,11 +104,12 @@ public class Authorization extends HttpServlet {
             user.setPhone(phone = Long.parseLong(request.getParameter("phone")));
             user.setRegisterDate(new Date());
             user.setGroup(group);
-            user.setAvatar(avatar.save(request));
+            String img = avatar.upload(request.getPart("avatar"));
+            user.setAvatar(img != null ? img : DEFAULT_AVATAR);
             user.setPosition(position);
             userDao.create(user);
             request.setAttribute(message, "Регистрация успешно завершена");
-            Dispatcher.dispatch(request,response,"login");
+            Dispatcher.dispatch(request, response, "login");
         } catch (Exception e) {
             avatar.rollBack();
             request.setAttribute("surname", surname);
@@ -116,7 +118,7 @@ public class Authorization extends HttpServlet {
             request.setAttribute("phone", phone);
             if (e instanceof IllegalStateException) request.setAttribute(this.login, login);
             request.setAttribute(message, e.getMessage());
-            Dispatcher.dispatch(request,response,"registration");
+            Dispatcher.dispatch(request, response, "registration");
         }
     }
 

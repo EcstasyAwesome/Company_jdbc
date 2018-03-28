@@ -1,12 +1,14 @@
 package com.github.company.security;
 
 import com.github.company.dao.entity.User;
-import com.sun.istack.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.servlet.annotation.WebServlet;
-import javax.validation.constraints.NotNull;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class Security {
 
@@ -14,10 +16,12 @@ public class Security {
     public static final int UNAUTHORIZED = 2;
     public static final int FORBIDDEN = 3;
 
+    public static final int GUEST = 1;
     public static final int USER = 2;
     public static final int ADMIN = 3;
 
-    private Map<String, Integer> container = new HashMap<>();
+    private Map<String, Integer> links = new HashMap<>();
+    private Set<String> resources = new HashSet<>();
 
     private static Security instance = new Security();
 
@@ -28,18 +32,29 @@ public class Security {
         return instance;
     }
 
-    public void addServlet(@NotNull Class<?> annotatedClass, @NotNull int access) {
-        for (String url : annotatedClass.getAnnotation(WebServlet.class).urlPatterns()) {
-            container.put(url, access);
+    public void configureIndexPage(int access) {
+        links.put("/", access);
+    }
+
+    public void configureServlet(@NotNull Class<?> annotatedClass, int access) {
+        if (annotatedClass.isAnnotationPresent(WebServlet.class)) {
+            for (String url : annotatedClass.getAnnotation(WebServlet.class).urlPatterns()) {
+                links.put(url, access);
+            }
         }
     }
 
+    public void configureResource(@NotNull String resourceRootFolder) {
+        if (resourceRootFolder.matches("^/\\w+/$")) resources.add(resourceRootFolder);
+    }
+
     public int verify(@Nullable User user, @NotNull String link) {
-        if (container.containsKey(link)) {
-            if (user == null) return UNAUTHORIZED;
-            else if (user.getGroup().getId() >= container.get(link)) return SUCCESS;
+        if (links.containsKey(link)) {
+            if (links.get(link) == GUEST) return SUCCESS;
+            else if (user == null) return UNAUTHORIZED;
+            else if (user.getGroup().getId() >= links.get(link)) return SUCCESS;
             else return FORBIDDEN;
-        }
-        return SUCCESS;
+        } else if (resources.contains(link.substring(0, link.substring(1).indexOf("/") + 2))) return SUCCESS;
+        return FORBIDDEN;
     }
 }
