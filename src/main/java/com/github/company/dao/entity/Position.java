@@ -22,7 +22,6 @@ public class Position {
         this.id = id;
     }
 
-    @Basic
     @Column(name = "name", unique = true, nullable = false, length = 20)
     public String getName() {
         return name;
@@ -32,7 +31,6 @@ public class Position {
         this.name = name;
     }
 
-    @Basic
     @Column(name = "description", nullable = false, length = 30)
     public String getDescription() {
         return description;
@@ -58,10 +56,8 @@ public class Position {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Position)) return false;
-
+        if (o == null || getClass() != o.getClass()) return false;
         Position that = (Position) o;
-
         if (id != that.id) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null)

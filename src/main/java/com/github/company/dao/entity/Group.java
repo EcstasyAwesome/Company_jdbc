@@ -19,7 +19,6 @@ public class Group {
         this.id = id;
     }
 
-    @Basic
     @Column(name = "name", nullable = false, unique = true, length = 20)
     public String getName() {
         return name;
@@ -32,10 +31,8 @@ public class Group {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Group)) return false;
-
+        if (o == null || getClass() != o.getClass()) return false;
         Group that = (Group) o;
-
         if (id != that.id) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         return true;

@@ -29,7 +29,6 @@ public class User {
         this.id = id;
     }
 
-    @Basic
     @Column(name = "surname", nullable = false, length = 20)
     public String getSurname() {
         return surname;
@@ -39,7 +38,6 @@ public class User {
         this.surname = surname;
     }
 
-    @Basic
     @Column(name = "firstName", nullable = false, length = 20)
     public String getFirstName() {
         return firstName;
@@ -49,7 +47,6 @@ public class User {
         this.firstName = firstName;
     }
 
-    @Basic
     @Column(name = "middleName", nullable = false, length = 20)
     public String getMiddleName() {
         return middleName;
@@ -59,7 +56,6 @@ public class User {
         this.middleName = middleName;
     }
 
-    @Basic
     @Column(name = "avatar", nullable = false, length = 50)
     public String getAvatar() {
         return avatar;
@@ -69,7 +65,6 @@ public class User {
         this.avatar = avatar;
     }
 
-    @Basic
     @Column(name = "phone", nullable = false, length = 12)
     public long getPhone() {
         return phone;
@@ -79,7 +74,6 @@ public class User {
         this.phone = phone;
     }
 
-    @Basic
     @Column(name = "login", unique = true, nullable = false, length = 20, updatable = false)
     public String getLogin() {
         return login;
@@ -89,7 +83,6 @@ public class User {
         this.login = login;
     }
 
-    @Basic
     @Column(name = "password", nullable = false, length = 20)
     public String getPassword() {
         return password;
@@ -99,7 +92,6 @@ public class User {
         this.password = password;
     }
 
-    @Basic
     @Temporal(TemporalType.DATE)
     @Column(name = "registerDate", nullable = false)
     public Date getRegisterDate() {
@@ -136,8 +128,7 @@ public class User {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User)) return false;
-
+        if (o == null || getClass() != o.getClass()) return false;
         User that = (User) o;
         if (id != that.id) return false;
         if (phone != that.phone) return false;
