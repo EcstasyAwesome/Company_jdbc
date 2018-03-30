@@ -15,7 +15,6 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.*;
-import java.util.Date;
 
 import static com.github.company.security.Security.USER;
 import static com.github.company.util.Avatar.DEFAULT_AVATAR;
@@ -102,7 +101,6 @@ public class Authorization extends HttpServlet {
             user.setFirstName(firstName = request.getParameter("firstName"));
             user.setMiddleName(middleName = request.getParameter("middleName"));
             user.setPhone(phone = Long.parseLong(request.getParameter("phone")));
-            user.setRegisterDate(new Date());
             user.setGroup(group);
             String img = avatar.upload(request.getPart("avatar"));
             user.setAvatar(img != null ? img : DEFAULT_AVATAR);

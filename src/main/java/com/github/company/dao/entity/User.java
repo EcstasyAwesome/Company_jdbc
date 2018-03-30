@@ -14,7 +14,7 @@ public class User {
     private long phone;
     private String login;
     private String password;
-    private Date registerDate;
+    private Date registerDate = new Date();
     private Group group;
     private Position position;
 

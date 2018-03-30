@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
 
 import static com.github.company.util.Avatar.DEFAULT_AVATAR;
 
@@ -55,7 +54,6 @@ public class UserCreate extends HttpServlet {
             user.setFirstName(firstName = req.getParameter("firstName"));
             user.setMiddleName(middleName = req.getParameter("middleName"));
             user.setPhone(phone = Long.parseLong(req.getParameter("phone")));
-            user.setRegisterDate(new Date());
             user.setAvatar(DEFAULT_AVATAR);
             user.setGroup(group);
             user.setPosition(position);
