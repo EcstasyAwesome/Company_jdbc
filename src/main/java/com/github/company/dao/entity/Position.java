@@ -40,8 +40,7 @@ public class Position {
         this.description = description;
     }
 
-    @OneToMany(orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "position")
+    @OneToMany(orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "position")
     public List<User> getUsers() {
         return users;
     }
