@@ -22,7 +22,7 @@ public class PropUtil {
     public static String getProperty(@NotNull String property) {
         String result;
         if ((result = PROPERTIES.getProperty(property)) == null) {
-            String error = "not found '" + property + "' in config.properties";
+            String error = String.format("not found property '%s'", property);
             LOGGER.fatal(error);
             throw new ExceptionInInitializerError(error);
         }

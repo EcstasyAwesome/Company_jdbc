@@ -1,5 +1,8 @@
 package com.github.company.util;
 
+import com.github.company.dao.entity.Group;
+import com.github.company.dao.entity.Position;
+import com.github.company.dao.entity.User;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -13,7 +16,15 @@ public class HibernateUtil {
 
     static {
         try {
-            SESSION_FACTORY = new Configuration().configure().buildSessionFactory();
+            SESSION_FACTORY = new Configuration()
+                    .setProperty(Environment.DATASOURCE, PropUtil.getProperty("hibernate.datasource"))
+                    .setProperty(Environment.SHOW_SQL, PropUtil.getProperty("hibernate.show_sql"))
+                    .setProperty(Environment.DIALECT, PropUtil.getProperty("hibernate.dialect"))
+                    .setProperty(Environment.HBM2DDL_AUTO, PropUtil.getProperty("hibernate.hbm2ddl.auto"))
+                    .addAnnotatedClass(Group.class)
+                    .addAnnotatedClass(Position.class)
+                    .addAnnotatedClass(User.class)
+                    .buildSessionFactory();
         } catch (Throwable ex) {
             LOGGER.fatal(ex.toString());
             throw new ExceptionInInitializerError(ex);

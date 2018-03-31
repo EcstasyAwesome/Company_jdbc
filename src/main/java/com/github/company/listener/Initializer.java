@@ -31,21 +31,21 @@ public class Initializer implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        security.configureIndexPage(GUEST);
-        security.configureServlet(PositionCreate.class, ADMIN);
-        security.configureServlet(PositionSearch.class, USER);
-        security.configureServlet(PositionUpdate.class, ADMIN);
-        security.configureServlet(PositionDelete.class, ADMIN);
-        security.configureServlet(UserCreate.class, ADMIN);
-        security.configureServlet(UserSearch.class, USER);
-        security.configureServlet(UserUpdate.class, ADMIN);
-        security.configureServlet(UserDelete.class, ADMIN);
-        security.configureServlet(Profile.class, USER);
-        security.configureServlet(EditProfile.class, USER);
-        security.configureServlet(Authorization.class, GUEST);
-        security.configureServlet(About.class, GUEST);
-        security.configureResource("/resources/");
-        security.configureResource("/storage/");
+        security.configureIndexPage(GUEST)
+                .configureServlet(PositionCreate.class, ADMIN)
+                .configureServlet(PositionSearch.class, USER)
+                .configureServlet(PositionUpdate.class, ADMIN)
+                .configureServlet(PositionDelete.class, ADMIN)
+                .configureServlet(UserCreate.class, ADMIN)
+                .configureServlet(UserSearch.class, USER)
+                .configureServlet(UserUpdate.class, ADMIN)
+                .configureServlet(UserDelete.class, ADMIN)
+                .configureServlet(Profile.class, USER)
+                .configureServlet(EditProfile.class, USER)
+                .configureServlet(Authorization.class, GUEST)
+                .configureServlet(About.class, GUEST)
+                .configureResource("/resources/")
+                .configureResource("/storage/");
         LOGGER.info("Start server");
     }
 

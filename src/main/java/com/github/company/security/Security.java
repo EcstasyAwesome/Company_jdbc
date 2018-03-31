@@ -32,20 +32,23 @@ public class Security {
         return instance;
     }
 
-    public void configureIndexPage(int access) {
+    public Security configureIndexPage(int access) {
         links.put("/", access);
+        return this;
     }
 
-    public void configureServlet(@NotNull Class<?> annotatedClass, int access) {
+    public Security configureServlet(@NotNull Class<?> annotatedClass, int access) {
         if (annotatedClass.isAnnotationPresent(WebServlet.class)) {
             for (String url : annotatedClass.getAnnotation(WebServlet.class).urlPatterns()) {
                 links.put(url, access);
             }
         }
+        return this;
     }
 
-    public void configureResource(@NotNull String resourceRootFolder) {
+    public Security configureResource(@NotNull String resourceRootFolder) {
         if (resourceRootFolder.matches("^/\\w+/$")) resources.add(resourceRootFolder);
+        return this;
     }
 
     public int verify(@Nullable User user, @NotNull String link) {
