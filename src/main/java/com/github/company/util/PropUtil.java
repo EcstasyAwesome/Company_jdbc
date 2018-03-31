@@ -3,18 +3,16 @@ package com.github.company.util;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.FileInputStream;
 import java.util.Properties;
 
-public class PropertiesReader {
+public class PropUtil {
 
-    private static final Logger LOGGER = Logger.getLogger(PropertiesReader.class);
+    private static final Logger LOGGER = Logger.getLogger(PropUtil.class);
     private static Properties PROPERTIES = new Properties();
 
     static {
         try {
-            String file = PropertiesReader.class.getClassLoader().getResource("/").getPath() + "config.properties";
-            PROPERTIES.load(new FileInputStream(file));
+            PROPERTIES.load(PropUtil.class.getClassLoader().getResourceAsStream("config.properties"));
         } catch (Exception e) {
             LOGGER.fatal(e.toString());
             throw new ExceptionInInitializerError(e);

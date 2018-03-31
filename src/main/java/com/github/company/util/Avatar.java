@@ -12,7 +12,7 @@ import java.util.Date;
 public class Avatar {
 
     private static final Logger LOGGER = Logger.getLogger(Avatar.class);
-    private static final String STORAGE_PATH = PropertiesReader.getProperty("app.storage");
+    private static final String STORAGE_PATH = PropUtil.getProperty("app.storage");
     public static final String DEFAULT_AVATAR = "/resources/img/avatar.png";
 
     private String uploaded;

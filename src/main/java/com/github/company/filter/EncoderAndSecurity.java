@@ -2,7 +2,7 @@ package com.github.company.filter;
 
 import com.github.company.dao.entity.User;
 import com.github.company.security.Security;
-import com.github.company.util.PropertiesReader;
+import com.github.company.util.PropUtil;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,7 +23,7 @@ public class EncoderAndSecurity implements Filter {
     private static final Logger LOGGER = Logger.getLogger(EncoderAndSecurity.class);
 
     private Security security = Security.getInstance();
-    private final String encoding = PropertiesReader.getProperty("app.encoding");
+    private final String encoding = PropUtil.getProperty("app.encoding");
 
     @Override
     public void init(FilterConfig filterConfig) {
