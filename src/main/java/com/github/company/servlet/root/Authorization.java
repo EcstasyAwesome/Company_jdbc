@@ -25,10 +25,6 @@ public class Authorization extends HttpServlet {
 
     private static final Logger LOGGER = Logger.getLogger(Authorization.class);
 
-    private final String login = "login";
-    private final String password = "password";
-    private final String message = "message";
-    private final String user = "sessionUser";
     private UserDao userDao = DaoService.getInstance().getUserDao();
 
     @Override
@@ -63,21 +59,21 @@ public class Authorization extends HttpServlet {
     private void login(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession httpSession = request.getSession(false);
         try {
-            String login = request.getParameter(this.login);
-            String password = request.getParameter(this.password);
+            String login = request.getParameter("login");
+            String password = request.getParameter("password");
             User user = userDao.getByLogin(login);
             if (user.getPassword().equals(password)) {
-                httpSession.setAttribute(this.user, user);
+                httpSession.setAttribute("sessionUser", user);
                 LOGGER.info("Login - " + user.basicInfo());
                 response.sendRedirect("/");
             } else {
                 LOGGER.info(login + " - incorrect password");
-                request.setAttribute(message, "Ошибка доступа. Не правильный пароль");
-                request.setAttribute(this.login, login);
+                request.setAttribute("message", "Ошибка доступа. Не правильный пароль");
+                request.setAttribute("login", login);
                 Dispatcher.dispatch(request, response, "login");
             }
         } catch (PersistenceException e) {
-            request.setAttribute(message, e.getMessage());
+            request.setAttribute("message", e.getMessage());
             Dispatcher.dispatch(request, response, "login");
         }
     }
@@ -89,40 +85,31 @@ public class Authorization extends HttpServlet {
         position.setId(5); // default
         Group group = new Group();
         group.setId(USER); // default
-        String login = null;
-        String surname = null;
-        String firstName = null;
-        String middleName = null;
-        long phone = 0;
         try {
-            user.setLogin(login = request.getParameter(this.login));
-            user.setPassword(request.getParameter(password));
-            user.setSurname(surname = request.getParameter("surname"));
-            user.setFirstName(firstName = request.getParameter("firstName"));
-            user.setMiddleName(middleName = request.getParameter("middleName"));
-            user.setPhone(phone = Long.parseLong(request.getParameter("phone")));
+            user.setLogin(request.getParameter("login"));
+            user.setPassword(request.getParameter("password"));
+            user.setSurname(request.getParameter("surname"));
+            user.setFirstName(request.getParameter("firstName"));
+            user.setMiddleName(request.getParameter("middleName"));
+            user.setPhone(Long.parseLong(request.getParameter("phone")));
             user.setGroup(group);
             String img = avatar.upload(request.getPart("avatar"));
             user.setAvatar(img != null ? img : DEFAULT_AVATAR);
             user.setPosition(position);
             userDao.create(user);
-            request.setAttribute(message, "Регистрация успешно завершена");
+            request.setAttribute("message", "Регистрация успешно завершена");
             Dispatcher.dispatch(request, response, "login");
         } catch (Exception e) {
             avatar.rollBack();
-            request.setAttribute("surname", surname);
-            request.setAttribute("firstName", firstName);
-            request.setAttribute("middleName", middleName);
-            request.setAttribute("phone", phone);
-            if (e instanceof IllegalStateException) request.setAttribute(this.login, login);
-            request.setAttribute(message, e.getMessage());
+            request.setAttribute("user", user);
+            request.setAttribute("message", e.getMessage());
             Dispatcher.dispatch(request, response, "registration");
         }
     }
 
     private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
-        User user = (User) session.getAttribute(this.user);
+        User user = (User) session.getAttribute("sessionUser");
         LOGGER.info("Logout - " + user.basicInfo());
         session.invalidate();
         response.sendRedirect("/");

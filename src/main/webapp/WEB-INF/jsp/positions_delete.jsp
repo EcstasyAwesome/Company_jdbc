@@ -1,16 +1,17 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html lang="ru">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Удалить должность</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/stylesheet/style.css">
+    <link rel="stylesheet" href="<c:url value="/resources/stylesheet/style.css"/>">
 </head>
 <body>
 <jsp:include page="/WEB-INF/jsp/static/top.jsp"/>
 <main>
     <article>
         <form method="post">
+            <%--@elvariable id="position" type="com.github.company.dao.entity.Position"--%>
             <input type="hidden" name="id" value="${position.id}">
             <table align="center">
                 <tr>

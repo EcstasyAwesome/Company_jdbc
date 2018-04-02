@@ -37,35 +37,24 @@ public class UserCreate extends HttpServlet {
         User user = new User();
         Position position = new Position();
         Group group = new Group();
-        String surname = null;
-        String firstName = null;
-        String middleName = null;
-        long positionId = 0;
-        long groupId = 0;
-        long phone = 0;
         try {
-            positionId = Long.parseLong(req.getParameter("position"));
-            groupId = Long.parseLong(req.getParameter("group"));
-            position.setId(positionId);
-            group.setId(groupId);
+            position.setId(Long.parseLong(req.getParameter("position")));
+            group.setId(Long.parseLong(req.getParameter("group")));
             user.setLogin(req.getParameter("login"));
             user.setPassword(req.getParameter("password"));
-            user.setSurname(surname = req.getParameter("surname"));
-            user.setFirstName(firstName = req.getParameter("firstName"));
-            user.setMiddleName(middleName = req.getParameter("middleName"));
-            user.setPhone(phone = Long.parseLong(req.getParameter("phone")));
+            user.setSurname(req.getParameter("surname"));
+            user.setFirstName(req.getParameter("firstName"));
+            user.setMiddleName(req.getParameter("middleName"));
+            user.setPhone(Long.parseLong(req.getParameter("phone")));
             user.setAvatar(DEFAULT_AVATAR);
             user.setGroup(group);
             user.setPosition(position);
             userDao.create(user);
             resp.sendRedirect("/users");
         } catch (Exception e) {
-            req.setAttribute("surname", surname);
-            req.setAttribute("firstName", firstName);
-            req.setAttribute("middleName", middleName);
-            req.setAttribute("phone", phone);
-            req.setAttribute("position", positionId);
-            req.setAttribute("group", groupId);
+            req.setAttribute("user", user);
+            req.setAttribute("positions", positionDao.getAll());
+            req.setAttribute("groups", groupDao.getAll());
             req.setAttribute("userError", e.getMessage());
             Dispatcher.dispatch(req, resp, "users_add");
         }

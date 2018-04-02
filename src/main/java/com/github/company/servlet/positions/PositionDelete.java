@@ -22,7 +22,7 @@ public class PositionDelete extends HttpServlet {
         if (query != null && query.matches("^id=\\d+$")) {
             long id = Integer.parseInt(req.getParameter("id"));
             req.setAttribute("position", positionDao.get(id));
-            Dispatcher.dispatch(req, resp, "position_delete");
+            Dispatcher.dispatch(req, resp, "positions_delete");
         } else resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
 

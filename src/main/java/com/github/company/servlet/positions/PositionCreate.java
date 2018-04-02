@@ -24,19 +24,16 @@ public class PositionCreate extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        String description = null;
         Position position = new Position();
         try {
-            String name = req.getParameter("name");
-            description = req.getParameter("description");
-            position.setName(name);
-            position.setDescription(description);
+            position.setName(req.getParameter("name"));
+            position.setDescription(req.getParameter("description"));
             positionDao.create(position);
             resp.sendRedirect("/positions");
         } catch (Exception e) {
             req.setAttribute("positionError", e.getLocalizedMessage());
-            req.setAttribute("description", description);
-            Dispatcher.dispatch(req, resp, "position_add");
+            req.setAttribute("position", position);
+            Dispatcher.dispatch(req, resp, "positions_add");
         }
     }
 }

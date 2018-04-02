@@ -1,16 +1,17 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html lang="ru">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Изменить пользователя</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/stylesheet/style.css">
+    <link rel="stylesheet" href="<c:url value="/resources/stylesheet/style.css"/>">
 </head>
 <body>
 <jsp:include page="/WEB-INF/jsp/static/top.jsp"/>
 <main>
     <article>
         <form method="post">
+            <%--@elvariable id="user" type="com.github.company.dao.entity.User"--%>
             <input type="hidden" name="id" value="${user.id}">
             <p>* - поля, доступные для изменения</p>
             <table align="center">
@@ -27,20 +28,24 @@
                     <tr>
                         <td class="table-main">${user.id}</td>
                         <td class="table-main">
-                            <input class="transparent-input" value="${user.surname}" name="surname" autofocus required>
+                            <input title="Фамилия" class="transparent-input" value="${user.surname}" name="surname"
+                                   autofocus required>
                         </td>
                         <td class="table-main">
-                            <input class="transparent-input" value="${user.firstName}" name="firstName" required>
-                        </td>
-                        <td class="table-main">
-                            <input class="transparent-input" value="${user.middleName}" name="middleName" required>
-                        </td>
-                        <td class="table-main">
-                            <input class="transparent-input" value="${user.phone}" pattern="380[0-9]{9}" name="phone"
+                            <input title="Имя" class="transparent-input" value="${user.firstName}" name="firstName"
                                    required>
                         </td>
                         <td class="table-main">
-                            <select class="transparent-input" name="position" required>
+                            <input title="Отчество" class="transparent-input" value="${user.middleName}"
+                                   name="middleName" required>
+                        </td>
+                        <td class="table-main">
+                            <input title="Телефон" class="transparent-input" value="${user.phone}" pattern="380[0-9]{9}"
+                                   name="phone" required>
+                        </td>
+                        <td class="table-main">
+                            <select title="Должность" class="transparent-input" name="position" required>
+                                    <%--@elvariable id="positions" type="java.util.List"--%>
                                 <c:forEach items="${positions}" var="that">
                                     <c:if test="${user.position.id==that.id}">
                                         <option selected value="${that.id}">${that.name}</option>
@@ -52,7 +57,8 @@
                             </select>
                         </td>
                         <td class="table-main">
-                            <select class="transparent-input" name="group" required>
+                            <select title="Группа" class="transparent-input" name="group" required>
+                                    <%--@elvariable id="groups" type="java.util.List"--%>
                                 <c:forEach items="${groups}" var="that">
                                     <c:if test="${user.group.id==that.id}">
                                         <option selected value="${that.id}">${that.name}</option>
@@ -66,6 +72,7 @@
                     </tr>
                     <tr>
                         <td colspan="7" align="center">
+                                <%--@elvariable id="userError" type="java.lang.String"--%>
                             <c:if test="${userError!=null}">
                                 <p class="server-answer">${userError}</p>
                             </c:if>

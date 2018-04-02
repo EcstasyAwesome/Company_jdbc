@@ -40,13 +40,10 @@ public class UserUpdate extends HttpServlet {
         User user = new User();
         Position position = new Position();
         Group group = new Group();
-        long userId = 0;
-        long groupId = 0;
-        long positionId = 0;
         try {
-            position.setId(positionId = Long.parseLong(req.getParameter("position")));
-            group.setId(groupId = Long.parseLong(req.getParameter("group")));
-            user.setId(userId = Long.parseLong(req.getParameter("id")));
+            position.setId(Long.parseLong(req.getParameter("position")));
+            group.setId(Long.parseLong(req.getParameter("group")));
+            user.setId(Long.parseLong(req.getParameter("id")));
             user.setSurname(req.getParameter("surname"));
             user.setFirstName(req.getParameter("firstName"));
             user.setMiddleName(req.getParameter("middleName"));
@@ -57,9 +54,9 @@ public class UserUpdate extends HttpServlet {
             resp.sendRedirect("/users");
         } catch (Exception e) {
             req.setAttribute("userError", e.getLocalizedMessage());
-            req.setAttribute("user", userDao.get(userId));
-            req.setAttribute("position", positionDao.get(positionId));
-            req.setAttribute("group", groupDao.get(groupId));
+            req.setAttribute("user", userDao.get(user.getId()));
+            req.setAttribute("position", positionDao.getAll());
+            req.setAttribute("group", groupDao.getAll());
             Dispatcher.dispatch(req, resp, "users_update");
         }
     }

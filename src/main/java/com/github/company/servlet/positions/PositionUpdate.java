@@ -31,19 +31,15 @@ public class PositionUpdate extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         Position position = new Position();
-        long id = 0;
         try {
-            id = Long.parseLong(req.getParameter("id"));
-            String name = req.getParameter("name");
-            String description = req.getParameter("description");
-            position.setId(id);
-            position.setName(name);
-            position.setDescription(description);
+            position.setId(Long.parseLong(req.getParameter("id")));
+            position.setName(req.getParameter("name"));
+            position.setDescription(req.getParameter("description"));
             positionDao.update(position);
             resp.sendRedirect("/positions");
         } catch (Exception e) {
             req.setAttribute("positionError", e.getLocalizedMessage());
-            req.setAttribute("position", positionDao.get(id));
+            req.setAttribute("position", positionDao.get(position.getId()));
             Dispatcher.dispatch(req, resp, "positions_update");
         }
     }

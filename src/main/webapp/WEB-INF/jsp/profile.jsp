@@ -1,11 +1,12 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html lang="ru">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Профиль пользователя</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/stylesheet/style.css">
+    <link rel="stylesheet" href="<c:url value="/resources/stylesheet/style.css"/>">
 </head>
 <body>
 <jsp:include page="/WEB-INF/jsp/static/top.jsp"/>
@@ -13,7 +14,8 @@
     <table align="center">
         <tr>
             <td rowspan="8" width="250" align="center">
-                <img src="${pageContext.request.contextPath}${sessionUser.avatar}" width="200">
+                <%--@elvariable id="sessionUser" type="com.github.company.dao.entity.User"--%>
+                <img src="<c:url value="${sessionUser.avatar}"/>" width="200">
             </td>
             <td width="110">Логин:</td>
             <td>${sessionUser.login}</td>
@@ -32,7 +34,8 @@
         </tr>
         <tr>
             <td>Телефон:</td>
-            <td>${sessionUser.phone}</td>
+            <c:set value="${sessionUser.phone}" var="p"/>
+            <td>+${fn:substring(p, 0, 2)}(${fn:substring(p, 2, 5)})-${fn:substring(p, 5, 8)}-${fn:substring(p, 8, 12)}</td>
         </tr>
         <tr>
             <td>Должность:</td>
