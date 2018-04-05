@@ -24,6 +24,8 @@
             <%--@elvariable id="users" type="java.util.List"--%>
             <c:if test="${users!=null}">
                 <c:forEach items="${users}" var="user">
+                    <c:url value="/users/update" var="update"><c:param name="id" value="${user.id}"/></c:url>
+                    <c:url value="/users/delete" var="delete"><c:param name="id" value="${user.id}"/></c:url>
                     <tr>
                         <td class="table-main">${user.id}</td>
                         <td class="table-main">${user.surname}</td>
@@ -31,17 +33,13 @@
                         <td class="table-main">${user.middleName}</td>
                         <c:set value="${user.phone}" var="p"/>
                         <td class="table-main">
-                                +${fn:substring(p, 0, 2)}(${fn:substring(p, 2, 5)})-${fn:substring(p, 5, 8)}-${fn:substring(p, 8, 12)}
+                            +${fn:substring(p, 0, 2)}(${fn:substring(p, 2, 5)})-${fn:substring(p, 5, 8)}-${fn:substring(p, 8, 12)}
                         </td>
                         <td class="table-main">${user.position.name}</td>
                         <td class="table-main">${user.group.name}</td>
                         <td class="table-main">
-                            <a href="<c:url value="/users/update?id=${user.id}"/>">
-                                <img src="<c:url value="/resources/img/edit_icon.png"/>">
-                            </a>
-                            <a href="<c:url value="/users/delete?id=${user.id}"/>">
-                                <img src="<c:url value="/resources/img/delete_icon.png"/>">
-                            </a>
+                            <a href="${update}"><img src="<c:url value="/resources/img/edit_icon.png"/>"></a>
+                            <a href="${delete}"><img src="<c:url value="/resources/img/delete_icon.png"/>"></a>
                         </td>
                     </tr>
                 </c:forEach>

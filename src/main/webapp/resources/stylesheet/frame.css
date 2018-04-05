@@ -50,6 +50,38 @@
     font-size: 14px;
 }
 
+.error-name {
+    font-family: arial, serif;
+    font-size:32px;
+    color:#4d4d4d;
+    white-space:nowrap;
+    padding-bottom:5px;
+}
+
+.error-description {
+    font-family: georgia, serif;
+    font-size:11px;
+    color:#707070;
+    font-weight:bold;
+    white-space:nowrap;
+    padding-bottom:5px;
+}
+
+.error-support {
+    font-family: arial, serif;
+    font-size:11px;
+    color:#707070;
+}
+
+.error-block {
+    border-top:1px solid #cccccc;
+    border-bottom:1px solid #cccccc;
+    padding-top:20px;
+    padding-bottom:20px;
+    margin-top:25px;
+    margin-bottom:25px;
+}
+
 body {
     background: #FFFFFF;
 }

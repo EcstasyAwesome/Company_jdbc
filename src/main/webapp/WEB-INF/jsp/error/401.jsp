@@ -10,10 +10,14 @@
 <body>
 <div class="page">
     <div class="form">
-        <img src="<c:url value="/resources/img/401.png"/>">
+        <img src="<c:url value="/resources/img/logo.png"/>">
+        <div class="error-block">
+            <div class="error-name">Unauthorized operation</div>
+            <div class="error-description">Your request can not currently be completed</div>
+            <div class="error-support">You can contact our technical staff to inform them of the problem by sending an e-mail to <a href="mailto:ecstasy.awesome@gmail.com">ecstasy.awesome@gmail.com</a>.</div>
+        </div>
         <form action="<c:url value="/authorization"/>" method="post">
             <input type="hidden" name="method" value="GO_LOGIN">
-            <br>
             <button>вход</button>
         </form>
         <form action="<c:url value="/authorization"/>" method="post">

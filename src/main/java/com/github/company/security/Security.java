@@ -15,6 +15,7 @@ public class Security {
     public static final int SUCCESS = 1;
     public static final int UNAUTHORIZED = 2;
     public static final int FORBIDDEN = 3;
+    public static final int NOT_FOUND = 4;
 
     public static final int GUEST = 1;
     public static final int USER = 2;
@@ -58,6 +59,6 @@ public class Security {
             else if (user.getGroup().getId() >= links.get(link)) return SUCCESS;
             else return FORBIDDEN;
         } else if (resources.contains(link.substring(0, link.substring(1).indexOf("/") + 2))) return SUCCESS;
-        return FORBIDDEN;
+        return NOT_FOUND;
     }
 }

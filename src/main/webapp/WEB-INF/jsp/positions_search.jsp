@@ -19,17 +19,15 @@
             <%--@elvariable id="positions" type="java.util.List"--%>
             <c:if test="${positions!=null}">
                 <c:forEach items="${positions}" var="position">
+                    <c:url value="/positions/update" var="update"><c:param name="id" value="${position.id}"/></c:url>
+                    <c:url value="/positions/delete" var="delete"><c:param name="id" value="${position.id}"/></c:url>
                     <tr>
                         <td class="table-main">${position.id}</td>
                         <td class="table-main">${position.name}</td>
                         <td class="table-main">${position.description}</td>
                         <td class="table-main">
-                            <a href="<c:url value="/positions/update?id=${position.id}"/>">
-                                <img src="<c:url value="/resources/img/edit_icon.png"/>">
-                            </a>
-                            <a href="<c:url value="/positions/delete?id=${position.id}"/>">
-                                <img src="<c:url value="/resources/img/delete_icon.png"/>">
-                            </a>
+                            <a href="${update}"><img src="<c:url value="/resources/img/edit_icon.png"/>"></a>
+                            <a href="${delete}"><img src="<c:url value="/resources/img/delete_icon.png"/>"></a>
                         </td>
                     </tr>
                 </c:forEach>

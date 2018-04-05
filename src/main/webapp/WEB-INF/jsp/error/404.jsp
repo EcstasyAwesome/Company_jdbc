@@ -10,9 +10,12 @@
 <body>
 <div class="page">
     <div class="form">
-        <img src="<c:url value="/resources/img/404.png"/>">
-        <br>
-        <br>
+        <img src="<c:url value="/resources/img/logo.png"/>">
+        <div class="error-block">
+            <div class="error-name">Not found</div>
+            <div class="error-description">Your request can not currently be completed</div>
+            <div class="error-support">You can contact our technical staff to inform them of the problem by sending an e-mail to <a href="mailto:ecstasy.awesome@gmail.com">ecstasy.awesome@gmail.com</a>.</div>
+        </div>
         <button onclick="history.back()">Назад</button>
         <form action="<c:url value="/"/>">
             <br>

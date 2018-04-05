@@ -13,9 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-import static com.github.company.security.Security.FORBIDDEN;
-import static com.github.company.security.Security.SUCCESS;
-import static com.github.company.security.Security.UNAUTHORIZED;
+import static com.github.company.security.Security.*;
 
 @WebFilter(filterName = "Encoder and Security", urlPatterns = "/*")
 public class EncoderAndSecurity implements Filter {
@@ -50,6 +48,9 @@ public class EncoderAndSecurity implements Filter {
                     break;
                 case UNAUTHORIZED:
                     resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                    break;
+                case NOT_FOUND:
+                    resp.sendError(HttpServletResponse.SC_NOT_FOUND);
                     break;
             }
         } else resp.sendRedirect(link);
