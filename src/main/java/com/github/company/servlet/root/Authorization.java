@@ -7,6 +7,7 @@ import com.github.company.dao.entity.User;
 import com.github.company.dao.model.UserDao;
 import com.github.company.util.Avatar;
 import com.github.company.util.Dispatcher;
+import com.github.company.util.Uploader;
 import org.apache.log4j.Logger;
 
 import javax.persistence.PersistenceException;
@@ -82,7 +83,7 @@ public class Authorization extends HttpServlet {
     }
 
     private void registration(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        Avatar avatar = new Avatar();
+        Uploader avatar = new Avatar();
         User user = new User();
         try {
             user.setLogin(request.getParameter("login"));

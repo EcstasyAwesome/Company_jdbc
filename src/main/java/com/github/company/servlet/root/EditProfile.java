@@ -5,6 +5,7 @@ import com.github.company.dao.entity.User;
 import com.github.company.dao.model.UserDao;
 import com.github.company.util.Avatar;
 import com.github.company.util.Dispatcher;
+import com.github.company.util.Uploader;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -44,7 +45,7 @@ public class EditProfile extends HttpServlet {
     }
 
     private void updateProfile(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        Avatar avatar = new Avatar();
+        Uploader avatar = new Avatar();
         HttpSession httpSession = req.getSession(false);
         User user = (User) httpSession.getAttribute("sessionUser");
         try {
