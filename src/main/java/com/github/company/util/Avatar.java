@@ -43,9 +43,7 @@ public class Avatar implements Uploader {
         } else return null;
     }
 
-
-
-    public void delete(@NotNull String path) {
+    public static void delete(@NotNull String path) {
         if (!path.equals(DEFAULT_AVATAR)) {
             File avatar = new File(STORAGE_PATH + path);
             if (avatar.exists())

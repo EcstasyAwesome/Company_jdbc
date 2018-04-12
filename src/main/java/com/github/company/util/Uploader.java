@@ -7,6 +7,5 @@ import javax.servlet.http.Part;
 
 public interface Uploader {
     @Nullable String upload(@NotNull Part file) throws IllegalStateException;
-    void delete(@NotNull String path);
     void rollBack();
 }
