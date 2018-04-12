@@ -13,8 +13,11 @@ import javax.persistence.PersistenceException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
-import java.io.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 import static com.github.company.security.Security.USER;
 import static com.github.company.util.Avatar.DEFAULT_AVATAR;
@@ -81,10 +84,6 @@ public class Authorization extends HttpServlet {
     private void registration(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         Avatar avatar = new Avatar();
         User user = new User();
-        Position position = new Position();
-        position.setId(5); // default
-        Group group = new Group();
-        group.setId(USER); // default
         try {
             user.setLogin(request.getParameter("login"));
             user.setPassword(request.getParameter("password"));
@@ -92,10 +91,10 @@ public class Authorization extends HttpServlet {
             user.setFirstName(request.getParameter("firstName"));
             user.setMiddleName(request.getParameter("middleName"));
             user.setPhone(Long.parseLong(request.getParameter("phone")));
-            user.setGroup(group);
+            user.setGroup(new Group(USER)); // default group
+            user.setPosition(new Position(5)); // default position
             String img = avatar.upload(request.getPart("avatar"));
             user.setAvatar(img != null ? img : DEFAULT_AVATAR);
-            user.setPosition(position);
             userDao.create(user);
             request.setAttribute("message", "Регистрация успешно завершена");
             Dispatcher.dispatch(request, response, "login");

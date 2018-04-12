@@ -52,6 +52,10 @@ public class Position {
     public Position() {
     }
 
+    public Position(long id) {
+        this.id = id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
-public class Avatar {
+public class Avatar implements Uploader {
 
     private static final Logger LOGGER = Logger.getLogger(Avatar.class);
     private static final String STORAGE_PATH = PropUtil.getProperty("app.storage");
@@ -18,8 +18,7 @@ public class Avatar {
     private String uploaded;
     private boolean isWrite;
 
-    @Nullable
-    public String upload(@NotNull Part file) throws IllegalStateException {
+    public @Nullable String upload(@NotNull Part file) throws IllegalStateException {
         long maxFileSize = 1024 * 1024;
         if (file.getSize() > maxFileSize) throw new IllegalStateException("Загружаемый файл слишком большой");
         else if (file.getSize() > 0) {
@@ -44,27 +43,15 @@ public class Avatar {
         } else return null;
     }
 
-    /**
-     * delete image from storage
-     *
-     * @param path - path to avatar
-     * @see #delete(String)
-     */
 
-    public static void delete(@NotNull String path) {
+
+    public void delete(@NotNull String path) {
         if (!path.equals(DEFAULT_AVATAR)) {
             File avatar = new File(STORAGE_PATH + path);
             if (avatar.exists())
                 if (!avatar.delete()) LOGGER.error("Can`t delete " + avatar.getAbsolutePath());
         }
     }
-
-    /**
-     * delete from storage saved image if something went wrong (example - fail registration) {@link #isWrite}
-     * does not allow the storage of unnecessary files
-     *
-     * @see #rollBack()
-     */
 
     public void rollBack() {
         if (isWrite) {

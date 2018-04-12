@@ -60,7 +60,7 @@ public class EditProfile extends HttpServlet {
             user.setPassword(password);
             String img = avatar.upload(req.getPart("avatar"));
             if (img != null) {
-                Avatar.delete(user.getAvatar());
+                avatar.delete(user.getAvatar());
                 user.setAvatar(img);
             }
             userDao.update(user);
@@ -77,7 +77,7 @@ public class EditProfile extends HttpServlet {
         HttpSession httpSession = req.getSession(false);
         User user = (User) httpSession.getAttribute("sessionUser");
         if (!user.getAvatar().equals(DEFAULT_AVATAR)) {
-            Avatar.delete(user.getAvatar());
+            new Avatar().delete(user.getAvatar());
             user.setAvatar(DEFAULT_AVATAR);
             httpSession.setAttribute("sessionUser", user);
             userDao.update(user);

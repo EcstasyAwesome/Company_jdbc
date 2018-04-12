@@ -35,11 +35,7 @@ public class UserCreate extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         User user = new User();
-        Position position = new Position();
-        Group group = new Group();
         try {
-            position.setId(Long.parseLong(req.getParameter("position")));
-            group.setId(Long.parseLong(req.getParameter("group")));
             user.setLogin(req.getParameter("login"));
             user.setPassword(req.getParameter("password"));
             user.setSurname(req.getParameter("surname"));
@@ -47,8 +43,8 @@ public class UserCreate extends HttpServlet {
             user.setMiddleName(req.getParameter("middleName"));
             user.setPhone(Long.parseLong(req.getParameter("phone")));
             user.setAvatar(DEFAULT_AVATAR);
-            user.setGroup(group);
-            user.setPosition(position);
+            user.setGroup(new Group(Long.parseLong(req.getParameter("position"))));
+            user.setPosition(new Position(Long.parseLong(req.getParameter("group"))));
             userDao.create(user);
             resp.sendRedirect("/users");
         } catch (Exception e) {

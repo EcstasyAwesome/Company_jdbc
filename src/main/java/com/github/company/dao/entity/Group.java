@@ -38,6 +38,13 @@ public class Group {
         return true;
     }
 
+    public Group() {
+    }
+
+    public Group(long id) {
+        this.id = id;
+    }
+
     @Override
     public int hashCode() {
         int result = 1;
