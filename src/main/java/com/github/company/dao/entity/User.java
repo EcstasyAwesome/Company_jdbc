@@ -2,6 +2,7 @@ package com.github.company.dao.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -129,60 +130,40 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User that = (User) o;
-        if (id != that.id) return false;
-        if (phone != that.phone) return false;
-        if (surname != null ? !surname.equals(that.surname) : that.surname != null) return false;
-        if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null)
-            return false;
-        if (middleName != null ? !middleName.equals(that.middleName) : that.middleName != null)
-            return false;
-        if (avatar != null ? !avatar.equals(that.avatar) : that.avatar != null)
-            return false;
-        if (login != null ? !login.equals(that.login) : that.login != null) return false;
-        if (password != null ? !password.equals(that.password) : that.password != null) return false;
-        if (registerDate != null ? !registerDate.equals(that.registerDate) : that.registerDate != null)
-            return false;
-        if (group != null ? !group.equals(that.group) : that.group != null) return false;
-        if (position != null ? !position.equals(that.position) : that.position != null) return false;
-        return true;
+        User user = (User) o;
+        return id == user.id &&
+                phone == user.phone &&
+                Objects.equals(surname, user.surname) &&
+                Objects.equals(firstName, user.firstName) &&
+                Objects.equals(middleName, user.middleName) &&
+                Objects.equals(avatar, user.avatar) &&
+                Objects.equals(login, user.login) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(registerDate, user.registerDate) &&
+                Objects.equals(group, user.group) &&
+                Objects.equals(position, user.position);
     }
 
     @Override
     public int hashCode() {
-        int result = 1;
-        result = 31 * result + Long.hashCode(id);
-        result = 31 * result + (surname != null ? surname.hashCode() : 0);
-        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
-        result = 31 * result + (middleName != null ? middleName.hashCode() : 0);
-        result = 31 * result + (avatar != null ? avatar.hashCode() : 0);
-        result = 31 * result + Long.hashCode(phone);
-        result = 31 * result + (login != null ? login.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (registerDate != null ? registerDate.hashCode() : 0);
-        result = 31 * result + (group != null ? group.hashCode() : 0);
-        result = 31 * result + (position != null ? position.hashCode() : 0);
-        return result;
-    }
-
-    public String basicInfo() {
-        return surname + " " +
-                firstName + " " +
-                middleName;
+        return Objects.hash(id, surname, firstName, middleName, avatar,
+                phone, login, password, registerDate, group, position);
     }
 
     @Override
     public String toString() {
-        return id + ", " +
-                surname + ", " +
-                firstName + ", " +
-                middleName + ", " +
-                avatar + ", " +
-                phone + ", " +
-                login + ", " +
-                password + ", " +
-                registerDate + ", " +
-                group + ", " +
-                position;
+        return "User{" +
+                "id=" + id +
+                ", surname='" + surname + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", phone=" + phone +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", registerDate=" + registerDate +
+                ", group=" + group +
+                ", position=" + position +
+                '}';
     }
 }

@@ -1,6 +1,7 @@
 package com.github.company.dao.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "groups")
@@ -28,16 +29,6 @@ public class Group {
         this.name = name;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Group that = (Group) o;
-        if (id != that.id) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        return true;
-    }
-
     public Group() {
     }
 
@@ -46,15 +37,24 @@ public class Group {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Group group = (Group) o;
+        return id == group.id &&
+                Objects.equals(name, group.name);
+    }
+
+    @Override
     public int hashCode() {
-        int result = 1;
-        result = 31 * result + Long.hashCode(id);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        return result;
+        return Objects.hash(id, name);
     }
 
     @Override
     public String toString() {
-        return id + ", " + name;
+        return "Group{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

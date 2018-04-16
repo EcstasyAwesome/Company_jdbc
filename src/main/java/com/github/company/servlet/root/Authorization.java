@@ -68,7 +68,7 @@ public class Authorization extends HttpServlet {
             User user = userDao.getByLogin(login);
             if (user.getPassword().equals(password)) {
                 httpSession.setAttribute("sessionUser", user);
-                LOGGER.info("Login - " + user.basicInfo());
+                LOGGER.info("Login - " + user);
                 response.sendRedirect("/");
             } else {
                 LOGGER.info(login + " - incorrect password");
@@ -110,7 +110,7 @@ public class Authorization extends HttpServlet {
     private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("sessionUser");
-        LOGGER.info("Logout - " + user.basicInfo());
+        LOGGER.info("Logout - " + user);
         session.invalidate();
         response.sendRedirect("/");
     }
