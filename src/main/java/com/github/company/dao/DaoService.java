@@ -11,10 +11,6 @@ public class DaoService {
 
     private static DaoService instance = new DaoService();
 
-    private UserDao userDao = UserImpl.getInstance();
-    private PositionDao positionDao = PositionImpl.getInstance();
-    private GroupDao groupDao = GroupImpl.getInstance();
-
     private DaoService() {
     }
 
@@ -23,14 +19,14 @@ public class DaoService {
     }
 
     public UserDao getUserDao() {
-        return userDao;
+        return UserImpl.getInstance();
     }
 
     public PositionDao getPositionDao() {
-        return positionDao;
+        return PositionImpl.getInstance();
     }
 
     public GroupDao getGroupDao() {
-        return groupDao;
+        return GroupImpl.getInstance();
     }
 }
