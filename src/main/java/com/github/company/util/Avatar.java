@@ -18,6 +18,7 @@ public class Avatar implements Uploader {
     private String uploaded;
     private boolean isWrite;
 
+    @Override
     public @Nullable String upload(@NotNull Part file) throws IllegalStateException {
         long maxFileSize = 1024 * 1024;
         if (file.getSize() > maxFileSize) throw new IllegalStateException("Загружаемый файл слишком большой");
@@ -51,6 +52,7 @@ public class Avatar implements Uploader {
         }
     }
 
+    @Override
     public void rollBack() {
         if (isWrite) {
             File avatar = new File(uploaded);
