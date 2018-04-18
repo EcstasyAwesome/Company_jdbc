@@ -21,6 +21,7 @@
         <c:if test="${message!=null}">
             <p class="server-answer">${message}</p><br>
         </c:if>
+        <br>
         <form class="register-page" method="post">
             <input type="hidden" name="method" value="GO_REGISTER">
             <button>регистрация</button>

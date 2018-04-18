@@ -18,7 +18,7 @@
                 <th width="130" class="table-top">Фамилия</th>
                 <th width="130" class="table-top">Имя</th>
                 <th width="130" class="table-top">Отчество</th>
-                <th width="130" class="table-top">Телефон</th>
+                <th width="150" class="table-top">Телефон</th>
                 <th width="130" class="table-top">Должность</th>
                 <th width="130" class="table-top">Группа</th>
             </tr>
@@ -52,15 +52,34 @@
             </c:if>
         </table>
         <c:if test="${users!=null}">
+            <%--pagination--%>
             <div class="pagination">
                     <%--@elvariable id="currentPage" type="java.lang.Integer"--%>
                 <c:if test="${currentPage != 1}">
-                    <a href="<c:url value="/users?page=${currentPage - 1}"/>">${currentPage - 1}</a>
+                    <c:url value="/users" var="url">
+                        <c:param name="page" value="${currentPage - 1}"/>
+                    </c:url>
+                    <a href="${url}"><<<</a>
                 </c:if>
-                <a class="current-link">${currentPage}</a>
                     <%--@elvariable id="availablePages" type="java.lang.Integer"--%>
+                <c:forEach begin="1" end="${availablePages}" var="i">
+                    <c:choose>
+                        <c:when test="${currentPage eq i}">
+                            <a class="current-link">${i}</a>
+                        </c:when>
+                        <c:otherwise>
+                            <c:url value="/users" var="url">
+                                <c:param name="page" value="${i}"/>
+                            </c:url>
+                            <a href="${url}">${i}</a>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
                 <c:if test="${currentPage lt availablePages}">
-                    <a href="<c:url value="/users?page=${currentPage + 1}"/>">${currentPage + 1}</a>
+                    <c:url value="/users" var="url">
+                        <c:param name="page" value="${currentPage + 1}"/>
+                    </c:url>
+                    <a href="${url}">>>></a>
                 </c:if>
             </div>
         </c:if>

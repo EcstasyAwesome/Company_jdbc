@@ -21,10 +21,12 @@
             <input type="hidden" name="method" value="GO_LOGIN">
             <button>вход</button>
         </form>
+        <br>
         <form action="<c:url value="/authorization"/>" method="post">
             <input type="hidden" name="method" value="GO_REGISTER">
             <button>регистрация</button>
         </form>
+        <br>
         <form action="<c:url value="/"/>">
             <button>главная</button>
         </form>

@@ -40,15 +40,34 @@
             </c:if>
         </table>
         <c:if test="${positions!=null}">
+            <%--pagination--%>
             <div class="pagination">
                     <%--@elvariable id="currentPage" type="java.lang.Integer"--%>
                 <c:if test="${currentPage != 1}">
-                    <a href="<c:url value="/positions?page=${currentPage - 1}"/>">${currentPage - 1}</a>
+                    <c:url value="/positions" var="url">
+                        <c:param name="page" value="${currentPage - 1}"/>
+                    </c:url>
+                    <a href="${url}"><<<</a>
                 </c:if>
-                <a class="current-link">${currentPage}</a>
                     <%--@elvariable id="availablePages" type="java.lang.Integer"--%>
+                <c:forEach begin="1" end="${availablePages}" var="i">
+                    <c:choose>
+                        <c:when test="${currentPage eq i}">
+                            <a class="current-link">${i}</a>
+                        </c:when>
+                        <c:otherwise>
+                            <c:url value="/positions" var="url">
+                                <c:param name="page" value="${i}"/>
+                            </c:url>
+                            <a href="${url}">${i}</a>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
                 <c:if test="${currentPage lt availablePages}">
-                    <a href="<c:url value="/positions?page=${currentPage + 1}"/>">${currentPage + 1}</a>
+                    <c:url value="/positions" var="url">
+                        <c:param name="page" value="${currentPage + 1}"/>
+                    </c:url>
+                    <a href="${url}">>>></a>
                 </c:if>
             </div>
         </c:if>

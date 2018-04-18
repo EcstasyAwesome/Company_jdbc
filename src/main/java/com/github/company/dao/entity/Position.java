@@ -78,7 +78,6 @@ public class Position {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", users=" + users +
                 '}';
     }
 }

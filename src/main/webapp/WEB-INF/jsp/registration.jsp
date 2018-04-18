@@ -67,6 +67,7 @@
         <c:if test="${message!=null}">
             <p class="server-answer">${message}</p><br>
         </c:if>
+        <br>
         <form class="login-page" method="post">
             <input type="hidden" name="method" value="GO_LOGIN">
             <button>вход</button>
