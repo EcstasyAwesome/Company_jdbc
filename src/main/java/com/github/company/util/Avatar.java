@@ -25,7 +25,7 @@ public class Avatar implements Uploader {
         else if (file.getSize() > 0) {
             File storage = new File(STORAGE_PATH + "storage" + File.separator + "avatar");
             if (!storage.exists())
-                if (storage.mkdir()) LOGGER.info("Create " + storage.getAbsolutePath());
+                if (storage.mkdirs()) LOGGER.info("Create " + storage.getAbsolutePath());
                 else {
                     LOGGER.error("Can`t create " + storage.getAbsolutePath());
                     return null;
