@@ -1,5 +1,7 @@
 package com.github.company.listener;
 
+import com.github.company.security.Security;
+import com.github.company.security.SecurityImpl;
 import com.github.company.servlet.positions.PositionCreate;
 import com.github.company.servlet.positions.PositionDelete;
 import com.github.company.servlet.positions.PositionSearch;
@@ -12,22 +14,19 @@ import com.github.company.servlet.users.UserCreate;
 import com.github.company.servlet.users.UserDelete;
 import com.github.company.servlet.users.UserSearch;
 import com.github.company.servlet.users.UserUpdate;
-import com.github.company.security.Security;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
-import static com.github.company.security.Security.ADMIN;
-import static com.github.company.security.Security.GUEST;
-import static com.github.company.security.Security.USER;
+import static com.github.company.security.SecurityImpl.*;
 
 @WebListener
 public class Initializer implements ServletContextListener {
 
     private static final Logger LOGGER = Logger.getLogger(Initializer.class);
-    private Security security = Security.getInstance();
+    private Security security = SecurityImpl.getInstance();
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {

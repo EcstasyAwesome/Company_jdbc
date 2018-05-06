@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-import static com.github.company.security.Security.USER;
+import static com.github.company.security.SecurityImpl.USER;
 import static com.github.company.util.Avatar.DEFAULT_AVATAR;
 
 @WebServlet(name = "Authorization", urlPatterns = "/authorization")

@@ -2,6 +2,7 @@ package com.github.company.filter;
 
 import com.github.company.dao.entity.User;
 import com.github.company.security.Security;
+import com.github.company.security.SecurityImpl;
 import com.github.company.util.PropUtil;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -13,14 +14,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-import static com.github.company.security.Security.*;
+import static com.github.company.security.SecurityImpl.*;
 
 @WebFilter(filterName = "Encoder and Security", urlPatterns = "/*")
 public class EncoderAndSecurity implements Filter {
 
     private static final Logger LOGGER = Logger.getLogger(EncoderAndSecurity.class);
 
-    private Security security = Security.getInstance();
+    private Security security = SecurityImpl.getInstance();
     private final String encoding = PropUtil.getProperty("app.encoding");
 
     @Override
