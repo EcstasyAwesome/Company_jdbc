@@ -2,104 +2,122 @@ package com.github.company.dao.impl;
 
 import com.github.company.dao.entity.Group;
 import com.github.company.dao.model.GroupDao;
-import com.github.company.util.HibernateUtil;
-import org.hibernate.Session;
-import org.hibernate.exception.ConstraintViolationException;
-import org.hibernate.query.Query;
+import com.github.company.database.ConnectionPool;
+import org.apache.log4j.Logger;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GroupImpl implements GroupDao {
 
     private static GroupImpl instance = new GroupImpl();
 
-    private GroupImpl() {
-    }
-
     public static GroupImpl getInstance() {
         return instance;
     }
 
-    private final String duplicate = "Группа '%s' уже существует";
+    private static final Logger LOGGER = Logger.getLogger(GroupImpl.class);
 
-    @Override
-    public List<Group> getAll() {
-        try (Session session = HibernateUtil.getSession()) {
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Group> query = builder.createQuery(Group.class);
-            query.select(query.from(Group.class));
-            Query<Group> groupQuery = session.createQuery(query);
-            return groupQuery.getResultList();
+    private GroupImpl() {
+    }
+
+    private boolean isAvailable(Connection current, String name) throws SQLException {
+        String request = "SELECT EXISTS(SELECT * FROM company.tbl_groups WHERE group_name=?)";
+        try (PreparedStatement ps = current.prepareStatement(request)) {
+            ps.setString(1, name);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() && !rs.getBoolean(1);
+            }
         }
     }
 
+    private Group getFromResultSet(ResultSet resultSet) throws SQLException {
+        Group group = new Group();
+        group.setId(resultSet.getLong("group_id"));
+        group.setName(resultSet.getString("group_name"));
+        return group;
+    }
+
     @Override
-    public void create(Group newInstance) throws ConstraintViolationException {
-        Session session = HibernateUtil.getSession();
-        String name = newInstance.getName();
-        try {
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Group> query = builder.createQuery(Group.class);
-            Root<Group> root = query.from(Group.class);
-            query.select(root).where(builder.equal(root.get("name"), name));
-            Query<Group> groupQuery = session.createQuery(query);
-            if (!groupQuery.list().isEmpty())
-                throw new ConstraintViolationException(String.format(duplicate, name), null, name);
-            session.beginTransaction();
-            session.save(newInstance);
-            session.getTransaction().commit();
-        } finally {
-            if (session.getTransaction() != null) session.getTransaction().rollback();
-            session.close();
+    public List<Group> getAll() {
+        List<Group> result = new ArrayList<>();
+        String request = "SELECT * FROM company.tbl_groups";
+        try (Connection connection = ConnectionPool.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet rs = statement.executeQuery(request)) {
+            while (rs.next()) {
+                result.add(getFromResultSet(rs));
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.toString());
         }
+        return result;
+    }
+
+    @Override
+    public Long create(Group newInstance) {
+        String request = "INSERT INTO company.tbl_groups VALUES(NULL,?)";
+        try (Connection connection = ConnectionPool.getConnection()) {
+            if (isAvailable(connection, newInstance.getName())) {
+                try (PreparedStatement ps = connection.prepareStatement(request, Statement.RETURN_GENERATED_KEYS)) {
+                    ps.setString(1, newInstance.getName());
+                    ps.executeUpdate();
+                    try (ResultSet rs = ps.getGeneratedKeys()) {
+                        if (rs.next()) return rs.getLong(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.toString());
+        }
+        return 0L;
     }
 
     @Override
     public Group get(Long id) {
-        try (Session session = HibernateUtil.getSession()) {
-            return session.get(Group.class, id);
+        String request = "SELECT * FROM company.tbl_groups WHERE group_id=?";
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(request)) {
+            ps.setLong(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return getFromResultSet(rs);
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.toString());
         }
+        return null;
     }
 
     @Override
-    public void update(Group instance) {
-        Session session = HibernateUtil.getSession();
-        String name = instance.getName();
-        try {
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Group> query = builder.createQuery(Group.class);
-            Root<Group> root = query.from(Group.class);
-            query.select(root).where(builder.equal(root.get("name"), name));
-            Query<Group> groupQuery = session.createQuery(query);
-            if (!groupQuery.list().isEmpty()) {
-                Group group = groupQuery.getSingleResult();
-                if (group.getId() != instance.getId())
-                    throw new ConstraintViolationException(String.format(duplicate, name), null, name);
+    public Long update(Group instance) {
+        String request = "UPDATE company.tbl_groups SET group_name=? WHERE group_id=?";
+        try (Connection connection = ConnectionPool.getConnection()) {
+            if (isAvailable(connection, instance.getName())) {
+                try (PreparedStatement ps = connection.prepareStatement(request, Statement.RETURN_GENERATED_KEYS)) {
+                    ps.setString(1, instance.getName());
+                    ps.setLong(2, instance.getId());
+                    ps.executeUpdate();
+                    try (ResultSet rs = ps.getGeneratedKeys()) {
+                        if (rs.next()) return rs.getLong(1);
+                    }
+                }
             }
-            session.clear();
-            session.beginTransaction();
-            session.update(instance);
-            session.getTransaction().commit();
-        } finally {
-            if (session.getTransaction() != null) session.getTransaction().rollback();
-            session.close();
+        } catch (SQLException e) {
+            LOGGER.error(e.toString());
         }
+        return 0L;
     }
 
     @Override
     public void delete(Long id) {
-        Session session = HibernateUtil.getSession();
-        try {
-            session.beginTransaction();
-            Group group = session.load(Group.class, id);
-            session.delete(group);
-            session.getTransaction().commit();
-        } finally {
-            if (session.getTransaction() != null) session.getTransaction().rollback();
-            session.close();
+        String request = "DELETE FROM company.tbl_groups WHERE group_id=?";
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(request)) {
+            ps.setLong(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error(e.toString());
         }
     }
 }

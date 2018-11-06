@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 @WebServlet(name = "Positions update", urlPatterns = "/positions/update")
 
@@ -35,7 +36,8 @@ public class PositionUpdate extends HttpServlet {
             position.setId(Long.parseLong(req.getParameter("id")));
             position.setName(req.getParameter("name"));
             position.setDescription(req.getParameter("description"));
-            positionDao.update(position);
+            if (positionDao.update(position) == 0)
+                throw new SQLIntegrityConstraintViolationException("Должность уже существует");
             resp.sendRedirect("/positions");
         } catch (Exception e) {
             req.setAttribute("positionError", e.getLocalizedMessage());

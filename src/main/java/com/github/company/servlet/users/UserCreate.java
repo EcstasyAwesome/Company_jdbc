@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 import static com.github.company.util.Avatar.DEFAULT_AVATAR;
 
@@ -45,7 +46,8 @@ public class UserCreate extends HttpServlet {
             user.setAvatar(DEFAULT_AVATAR);
             user.setGroup(new Group(Long.parseLong(req.getParameter("position"))));
             user.setPosition(new Position(Long.parseLong(req.getParameter("group"))));
-            userDao.create(user);
+            if (userDao.create(user) == 0)
+                throw new SQLIntegrityConstraintViolationException("Логин зянят");
             resp.sendRedirect("/users");
         } catch (Exception e) {
             req.setAttribute("user", user);

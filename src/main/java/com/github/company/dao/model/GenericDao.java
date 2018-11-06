@@ -2,11 +2,11 @@ package com.github.company.dao.model;
 
 public interface GenericDao<T, E> {
 
-    void create(T newInstance);
+    E create(T newInstance);
 
     T get(E id);
 
-    void update(T instance);
+    E update(T instance);
 
     void delete(E id);
 }

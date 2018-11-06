@@ -49,16 +49,11 @@ public class EditProfile extends HttpServlet {
         HttpSession httpSession = req.getSession(false);
         User user = (User) httpSession.getAttribute("sessionUser");
         try {
-            String surname = req.getParameter("surname");
-            String firstName = req.getParameter("firstName");
-            String middleName = req.getParameter("middleName");
-            long phone = Long.parseLong(req.getParameter("phone"));
-            String password = req.getParameter("password");
-            user.setSurname(surname);
-            user.setFirstName(firstName);
-            user.setMiddleName(middleName);
-            user.setPhone(phone);
-            user.setPassword(password);
+            user.setSurname(req.getParameter("surname"));
+            user.setFirstName(req.getParameter("firstName"));
+            user.setMiddleName(req.getParameter("middleName"));
+            user.setPhone(Long.parseLong(req.getParameter("phone")));
+            user.setPassword(req.getParameter("password"));
             String img = avatar.upload(req.getPart("avatar"));
             if (img != null) {
                 Avatar.delete(user.getAvatar());

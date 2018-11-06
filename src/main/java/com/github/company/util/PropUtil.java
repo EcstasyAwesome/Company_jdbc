@@ -15,7 +15,7 @@ public class PropUtil {
             PROPERTIES.load(PropUtil.class.getClassLoader().getResourceAsStream("config.properties"));
         } catch (Exception e) {
             LOGGER.fatal(e.toString());
-            throw new ExceptionInInitializerError(e);
+            throw new ExceptionInInitializerError();
         }
     }
 
@@ -24,7 +24,7 @@ public class PropUtil {
         if ((result = PROPERTIES.getProperty(property)) == null) {
             String error = String.format("not found property '%s'", property);
             LOGGER.fatal(error);
-            throw new ExceptionInInitializerError(error);
+            throw new RuntimeException();
         }
         return result;
     }

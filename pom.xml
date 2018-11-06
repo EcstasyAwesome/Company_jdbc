@@ -3,8 +3,8 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>Company</groupId>
-    <artifactId>Company</artifactId>
+    <groupId>Company_jdbc</groupId>
+    <artifactId>Company_jdbc</artifactId>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
     <name>Company Maven Webapp</name>
@@ -15,11 +15,9 @@
         <jetbrains.annotations.version>16.0.1</jetbrains.annotations.version>
         <servlet.version>4.0.0</servlet.version>
         <jstl.version>1.2</jstl.version>
-        <jdbc.version>6.0.6</jdbc.version>
+        <jdbc.version>8.0.11</jdbc.version>
+        <tomcat.jdbc>9.0.6</tomcat.jdbc>
         <log4j.version>1.2.17</log4j.version>
-        <hibernate.version>5.2.16.Final</hibernate.version>
-        <jaxb.version>2.3.0</jaxb.version>
-        <activation.version>1.1.1</activation.version>
     </properties>
     <dependencies>
         <!--jetbrains annotations-->
@@ -47,38 +45,16 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>${jdbc.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jdbc</artifactId>
+            <version>${tomcat.jdbc}</version>
+        </dependency>
         <!--logger-->
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>${log4j.version}</version>
-        </dependency>
-        <!--hibernate-->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>${hibernate.version}</version>
-        </dependency>
-        <!--if used jdk 9 and hibernate 5 need this libs-->
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>${jaxb.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-core</artifactId>
-            <version>${jaxb.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-impl</artifactId>
-            <version>${jaxb.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.activation</groupId>
-            <artifactId>activation</artifactId>
-            <version>${activation.version}</version>
         </dependency>
     </dependencies>
     <build>

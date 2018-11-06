@@ -2,129 +2,157 @@ package com.github.company.dao.impl;
 
 import com.github.company.dao.model.PositionDao;
 import com.github.company.dao.entity.Position;
-import com.github.company.util.HibernateUtil;
-import org.hibernate.Session;
-import org.hibernate.exception.ConstraintViolationException;
-import org.hibernate.query.Query;
+import com.github.company.database.ConnectionPool;
+import org.apache.log4j.Logger;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PositionImpl implements PositionDao {
 
     private static PositionImpl instance = new PositionImpl();
 
-    private PositionImpl() {
-    }
-
     public static PositionImpl getInstance() {
         return instance;
     }
 
-    private final String duplicate = "Должность '%s' уже существует";
+    private static final Logger LOGGER = Logger.getLogger(PositionImpl.class);
 
-    @Override
-    public List<Position> getAll() {
-        try (Session session = HibernateUtil.getSession()) {
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Position> query = builder.createQuery(Position.class);
-            query.select(query.from(Position.class));
-            Query<Position> positionQuery = session.createQuery(query);
-            return positionQuery.getResultList();
+    private PositionImpl() {
+    }
+
+    private boolean isAvailable(Connection current, String name) throws SQLException {
+        String request = "SELECT EXISTS(SELECT * FROM company.tbl_positions WHERE position_name=?)";
+        try (PreparedStatement ps = current.prepareStatement(request)) {
+            ps.setString(1, name);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() && !rs.getBoolean(1);
+            }
         }
     }
 
+    private Position getFromResultSet(ResultSet resultSet) throws SQLException {
+        Position position = new Position();
+        position.setId(resultSet.getLong("position_id"));
+        position.setName(resultSet.getString("position_name"));
+        position.setDescription(resultSet.getString("position_description"));
+        return position;
+    }
+
     @Override
-    public void create(Position newInstance) throws ConstraintViolationException {
-        Session session = HibernateUtil.getSession();
-        String name = newInstance.getName();
-        try {
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Position> query = builder.createQuery(Position.class);
-            Root<Position> root = query.from(Position.class);
-            query.select(root).where(builder.equal(root.get("name"), name));
-            Query<Position> positionQuery = session.createQuery(query);
-            if (!positionQuery.list().isEmpty())
-                throw new ConstraintViolationException(String.format(duplicate, name), null, name);
-            session.beginTransaction();
-            session.save(newInstance);
-            session.getTransaction().commit();
-        } finally {
-            if (session.getTransaction() != null) session.getTransaction().rollback();
-            session.close();
+    public List<Position> getAll() {
+        List<Position> result = new ArrayList<>();
+        String request = "SELECT * FROM company.tbl_positions";
+        try (Connection connection = ConnectionPool.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet rs = statement.executeQuery(request)) {
+            while (rs.next()) {
+                result.add(getFromResultSet(rs));
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.toString());
         }
+        return result;
+    }
+
+    @Override
+    public Long create(Position newInstance) {
+        String request = "INSERT INTO company.tbl_positions VALUES(NULL,?,?)";
+        try (Connection connection = ConnectionPool.getConnection()) {
+            if (isAvailable(connection, newInstance.getName())) {
+                try (PreparedStatement ps = connection.prepareStatement(request, Statement.RETURN_GENERATED_KEYS)) {
+                    ps.setString(1, newInstance.getName());
+                    ps.setString(2, newInstance.getDescription());
+                    ps.executeUpdate();
+                    try (ResultSet rs = ps.getGeneratedKeys()) {
+                        if (rs.next()) return rs.getLong(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.toString());
+        }
+        return 0L;
     }
 
     @Override
     public Position get(Long id) {
-        try (Session session = HibernateUtil.getSession()) {
-            return session.get(Position.class, id);
+        String request = "SELECT * FROM company.tbl_positions WHERE position_id=?";
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(request)) {
+            ps.setLong(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return getFromResultSet(rs);
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.toString());
         }
+        return null;
     }
 
     @Override
-    public void update(Position instance) throws ConstraintViolationException {
-        Session session = HibernateUtil.getSession();
-        String name = instance.getName();
-        try {
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Position> query = builder.createQuery(Position.class);
-            Root<Position> root = query.from(Position.class);
-            query.select(root).where(builder.equal(root.get("name"), name));
-            Query<Position> positionQuery = session.createQuery(query);
-            if (!positionQuery.list().isEmpty()) {
-                Position position = positionQuery.getSingleResult();
-                if (position.getId() != instance.getId())
-                    throw new ConstraintViolationException(String.format(duplicate, name), null, name);
+    public Long update(Position instance) {
+        String request = "UPDATE company.tbl_positions SET position_name=?,position_description=? WHERE position_id=?";
+        try (Connection connection = ConnectionPool.getConnection()) {
+            if (isAvailable(connection, instance.getName())) {
+                try (PreparedStatement ps = connection.prepareStatement(request, Statement.RETURN_GENERATED_KEYS)) {
+                    ps.setString(1, instance.getName());
+                    ps.setString(2, instance.getDescription());
+                    ps.setLong(3, instance.getId());
+                    ps.executeUpdate();
+                    try (ResultSet rs = ps.getGeneratedKeys()) {
+                        if (rs.next()) return rs.getLong(1);
+                    }
+                }
             }
-            session.clear();
-            session.beginTransaction();
-            session.update(instance);
-            session.getTransaction().commit();
-        } finally {
-            if (session.getTransaction() != null) session.getTransaction().rollback();
-            session.close();
+        } catch (SQLException e) {
+            LOGGER.error(e.toString());
         }
+        return 0L;
     }
 
     @Override
     public void delete(Long id) {
-        Session session = HibernateUtil.getSession();
-        try {
-            session.beginTransaction();
-            Position position = session.load(Position.class, id);
-            session.delete(position);
-            session.getTransaction().commit();
-        } finally {
-            if (session.getTransaction() != null) session.getTransaction().rollback();
-            session.close();
+        String request = "DELETE FROM company.tbl_positions WHERE position_id=?";
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(request)) {
+            ps.setLong(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error(e.toString());
         }
     }
 
     @Override
     public int countPages(int recordsOnPage) {
-        try (Session session = HibernateUtil.getSession()) {
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Long> query = builder.createQuery(Long.class);
-            query.select(builder.count(query.from(Position.class)));
-            Query<Long> longQuery = session.createQuery(query);
-            long records = longQuery.getSingleResult();
-            return (int) Math.ceil(records * 1.0 / recordsOnPage);
+        String request = "SELECT COUNT(*) FROM company.tbl_positions";
+        try (Connection connection = ConnectionPool.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet rs = statement.executeQuery(request)) {
+            if (rs.next()) return (int) Math.ceil(rs.getInt(1) * 1.0 / recordsOnPage);
+        } catch (Exception e) {
+            LOGGER.error(e.toString());
         }
+        return 0;
     }
 
     @Override
     public List<Position> getPage(int page, int recordsOnPage) {
-        try (Session session = HibernateUtil.getSession()) {
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Position> query = builder.createQuery(Position.class);
-            query.select(query.from(Position.class));
-            Query<Position> positionQuery = session.createQuery(query);
-            positionQuery.setFirstResult(page * recordsOnPage - recordsOnPage);
-            positionQuery.setMaxResults(recordsOnPage);
-            return positionQuery.getResultList();
+        List<Position> result = new ArrayList<>();
+        String request = "SELECT * FROM company.tbl_positions LIMIT ?,?";
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(request)) {
+            ps.setInt(1, page - 1);
+            ps.setInt(2, recordsOnPage);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    result.add(getFromResultSet(rs));
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.toString());
         }
+        return result;
     }
 }

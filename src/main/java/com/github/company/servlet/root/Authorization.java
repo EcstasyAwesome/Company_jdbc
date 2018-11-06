@@ -10,7 +10,6 @@ import com.github.company.util.Dispatcher;
 import com.github.company.util.Uploader;
 import org.apache.log4j.Logger;
 
-import javax.persistence.PersistenceException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -19,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 import static com.github.company.security.SecurityImpl.USER;
 import static com.github.company.util.Avatar.DEFAULT_AVATAR;
@@ -76,7 +76,7 @@ public class Authorization extends HttpServlet {
                 request.setAttribute("login", login);
                 Dispatcher.dispatch(request, response, "login");
             }
-        } catch (PersistenceException e) {
+        } catch (Exception e) {
             request.setAttribute("message", e.getMessage());
             Dispatcher.dispatch(request, response, "login");
         }
@@ -93,10 +93,11 @@ public class Authorization extends HttpServlet {
             user.setMiddleName(request.getParameter("middleName"));
             user.setPhone(Long.parseLong(request.getParameter("phone")));
             user.setGroup(new Group(USER)); // default group
-            user.setPosition(new Position(5)); // default position
+            user.setPosition(new Position(4)); // default position
             String img = avatar.upload(request.getPart("avatar"));
             user.setAvatar(img != null ? img : DEFAULT_AVATAR);
-            userDao.create(user);
+            if (userDao.create(user) == 0)
+                throw new SQLIntegrityConstraintViolationException("Логин занят");
             request.setAttribute("message", "Регистрация успешно завершена");
             Dispatcher.dispatch(request, response, "login");
         } catch (Exception e) {

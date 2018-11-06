@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 @WebServlet(name = "Positions create", urlPatterns = "/positions/add")
 public class PositionCreate extends HttpServlet {
@@ -28,7 +29,8 @@ public class PositionCreate extends HttpServlet {
         try {
             position.setName(req.getParameter("name"));
             position.setDescription(req.getParameter("description"));
-            positionDao.create(position);
+            if (positionDao.create(position) == 0)
+                throw new SQLIntegrityConstraintViolationException("Должность уже существует");
             resp.sendRedirect("/positions");
         } catch (Exception e) {
             req.setAttribute("positionError", e.getLocalizedMessage());

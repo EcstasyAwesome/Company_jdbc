@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 @WebServlet(name = "Users update", urlPatterns = "/users/update")
 public class UserUpdate extends HttpServlet {
@@ -50,7 +51,8 @@ public class UserUpdate extends HttpServlet {
             user.setPhone(Long.parseLong(req.getParameter("phone")));
             user.setPosition(position);
             user.setGroup(group);
-            userDao.update(user);
+            if (userDao.update(user) == 0)
+                throw new SQLIntegrityConstraintViolationException("Логин зянят");
             resp.sendRedirect("/users");
         } catch (Exception e) {
             req.setAttribute("userError", e.getLocalizedMessage());

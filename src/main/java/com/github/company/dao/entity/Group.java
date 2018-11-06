@@ -1,17 +1,11 @@
 package com.github.company.dao.entity;
 
-import javax.persistence.*;
 import java.util.Objects;
 
-@Entity
-@Table(name = "groups")
 public class Group {
     private long id;
     private String name;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     public long getId() {
         return id;
     }
@@ -20,7 +14,6 @@ public class Group {
         this.id = id;
     }
 
-    @Column(name = "name", nullable = false, unique = true, length = 20)
     public String getName() {
         return name;
     }

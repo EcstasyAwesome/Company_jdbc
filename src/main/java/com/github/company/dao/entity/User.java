@@ -1,11 +1,8 @@
 package com.github.company.dao.entity;
 
-import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
 
-@Entity
-@Table(name = "users")
 public class User {
     private long id;
     private String surname;
@@ -19,9 +16,6 @@ public class User {
     private Group group;
     private Position position;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     public long getId() {
         return id;
     }
@@ -30,7 +24,6 @@ public class User {
         this.id = id;
     }
 
-    @Column(name = "surname", nullable = false, length = 20)
     public String getSurname() {
         return surname;
     }
@@ -39,7 +32,6 @@ public class User {
         this.surname = surname;
     }
 
-    @Column(name = "firstName", nullable = false, length = 20)
     public String getFirstName() {
         return firstName;
     }
@@ -48,7 +40,6 @@ public class User {
         this.firstName = firstName;
     }
 
-    @Column(name = "middleName", nullable = false, length = 20)
     public String getMiddleName() {
         return middleName;
     }
@@ -57,7 +48,6 @@ public class User {
         this.middleName = middleName;
     }
 
-    @Column(name = "avatar", nullable = false, length = 50)
     public String getAvatar() {
         return avatar;
     }
@@ -66,7 +56,6 @@ public class User {
         this.avatar = avatar;
     }
 
-    @Column(name = "phone", nullable = false, length = 12)
     public long getPhone() {
         return phone;
     }
@@ -75,7 +64,6 @@ public class User {
         this.phone = phone;
     }
 
-    @Column(name = "login", unique = true, nullable = false, length = 20, updatable = false)
     public String getLogin() {
         return login;
     }
@@ -84,7 +72,6 @@ public class User {
         this.login = login;
     }
 
-    @Column(name = "password", nullable = false, length = 20)
     public String getPassword() {
         return password;
     }
@@ -93,8 +80,6 @@ public class User {
         this.password = password;
     }
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "registerDate", nullable = false)
     public Date getRegisterDate() {
         return registerDate;
     }
@@ -103,8 +88,6 @@ public class User {
         this.registerDate = registerDate;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "groups", nullable = false)
     public Group getGroup() {
         return group;
     }
@@ -113,8 +96,6 @@ public class User {
         this.group = group;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "position")
     public Position getPosition() {
         return position;
     }
